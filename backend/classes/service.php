@@ -1,19 +1,16 @@
 <?php
 
-require __DIR__ . '/backend/bd.php';
-require __DIR__ . '/backend/professional/classes/scheduling.php'; // Inclui a classe de agendamento
+require_once __DIR__ . '/scheduling.php'; // Inclui a classe de agendamento
 
 class Service
 {
     private $conn;
     private $sche;
 
-    public function __construct()
+    public function __construct($conn)
     {
-        $db = new Database;
-        $this->conn = $db->connect();
-
-        $this->sche = new Scheduling; // Instancia a classe de agendamento
+        $this->conn = $conn;
+        $this->sche = new Scheduling($conn); // Instancia a classe de agendamento
     }
 
     public function get()

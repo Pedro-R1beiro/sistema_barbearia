@@ -1,19 +1,16 @@
 <?php
 
-require '../bd.php';
-require 'scheduling.php';
+require_once __DIR__ . '/scheduling.php';
 
 class Client
 {
     public $conn;
     public $sche;
 
-    public function __construct()
+    public function __construct($conn)
     {
-        $db = new Database;
-        $this->conn = $db->connect();
-
-        $this->sche = new Scheduling; // Instancia a classe de agendamento
+        $this->conn = $conn;
+        $this->sche = new Scheduling($conn); // Instancia a classe de agendamento
     }
 
     public function getData()

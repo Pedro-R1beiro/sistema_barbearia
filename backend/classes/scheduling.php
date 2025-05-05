@@ -1,19 +1,12 @@
 <?php
 
-require '../bd.php';
-require 'service.php'; // Inclui a classe de serviço
-
 class Scheduling
 {
     private $conn;
-    private $serv;
 
-    public function __construct()
+    public function __construct($conn)
     {
-        $db = new Database();
-        $this->conn = $db->connect();
-
-        $this->serv = new Service; // Instancia a classe de serviço
+        $this->conn = $conn;
     }
 
     public function isOnScheduling($date, $idProfessional, $startTime, $endTime)
@@ -218,34 +211,25 @@ class Scheduling
     }
 
 
-    public function post($date, $startTime, $idService, $idProfessional, $idClient)
+    public function post($date, $startTime, $endTime, $idService, $idProfessional, $idClient)
     {
-        if (!empty($date) && !empty($startTime) && is_numeric($idService) && is_numeric($idProfessional) && is_numeric($idClient)) {
+        if (!empty($date) && !empty($startTime) && !empty($startTime) && is_numeric($idService) && is_numeric($idProfessional) && is_numeric($idClient)) {
             $date = trim($date);
             $startTime = trim($startTime);
+            $endTime  = trim($endTime);
 
-            $service = $this->serv->getById($idService); // Busca os detalhes do serviço
+            $sql = "INSERT INTO schedulings (date, startTime, endTime, idClient, idService, idProfessional) VALUE (:date, :startTime, :endTime, :idClient, :idService, :idProfessional)";
 
-            if ($service) {
-                $sql = "INSERT INTO schedulings (date, startTime, endTime, idClient, idService, idProfessional) VALUE (:date, :startTime, :endTime, :idClient, :idService, :idProfessional)";
-                $startTimeObj = new DateTime($startTime);
-                $startTimeFormatted = $startTimeObj->format('H:i:s');
+            $stmt = $this->conn->prepare($sql);
+            $stmt->bindParam(':date', $date);
+            $stmt->bindParam(':startTime', $startTime);
+            $stmt->bindParam(':endTime', $endTime);
+            $stmt->bindParam(':idClient', $idClient);
+            $stmt->bindParam(':idService', $idService);
+            $stmt->bindParam(':idProfessional', $idProfessional);
 
-                $endTimeObj = clone $startTimeObj;
-                $endTimeObj->add(new DateInterval('PT' . $service['duration'] . 'M')); // Adiciona a duração do serviço
-                $endTimeFormatted = $endTimeObj->format('H:i:s');
-
-                $stmt = $this->conn->prepare($sql);
-                $stmt->bindParam(':date', $date);
-                $stmt->bindParam(':startTime', $startTimeFormatted);
-                $stmt->bindParam(':endTime', $endTimeFormatted);
-                $stmt->bindParam(':idClient', $idClient);
-                $stmt->bindParam(':idService', $idService);
-                $stmt->bindParam(':idProfessional', $idProfessional);
-
-                if ($stmt->execute()) {
-                    return true; // Retorna true em caso de sucesso
-                }
+            if ($stmt->execute()) {
+                return true; // Retorna true em caso de sucesso
             }
         }
         return false; // Retorna false se os dados forem inválidos

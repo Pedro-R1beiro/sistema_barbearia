@@ -1,7 +1,8 @@
 <?php
-class Database {
+class Database 
+{
     private $host = "localhost";
-    private $dbname = "meubanco";
+    private $dbname = "barbershop-system";
     private $username = "root";
     private $password = "";
     public $conn;

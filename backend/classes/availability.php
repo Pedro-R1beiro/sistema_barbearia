@@ -1,15 +1,12 @@
 <?php
 
-require '../bd.php';
-
 class Availability
 {
     public $conn;
 
-    public function __construct()
+    public function __construct($conn)
     {
-        $db = new Database;
-        $this->conn = $db->connect();
+        $this->conn = $conn;
     }
 
     public function getByProfessional($idProfessional, $dayWeek = null)

@@ -1,15 +1,12 @@
 <?php
 
-require '../bd.php';
-
 class Vacation
 {
     public $conn;
 
-    public function __construct()
+    public function __construct($conn)
     {
-        $db = new Database;
-        $this->conn = $db->connect();
+        $this->conn = $conn;
     }
 
     // Verifica se o profissional está de férias em uma data específica

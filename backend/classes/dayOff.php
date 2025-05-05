@@ -1,15 +1,12 @@
 <?php
 
-require '../bd.php';
-
 class DayOff
 {
     public $conn;
 
-    public function __construct()
+    public function __construct($conn)
     {
-        $db = new Database;
-        $this->conn = $db->connect();
+        $this->conn = $conn;
     }
 
     public function isOnDayOff($idProfessional, $date)
