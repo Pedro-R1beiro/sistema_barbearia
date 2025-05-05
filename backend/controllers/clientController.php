@@ -65,7 +65,7 @@ class ClientController
     public function signup($data)
     {
         if (empty($data['name']) || empty($data['email']) || empty($data['password']) || empty($data['phone'])) {
-            return ['status' => 'error', 'message' => 'Email e senha obrigatórios'];
+            return ['status' => 'error', 'message' => 'Dados Insuficientes'];
         }
 
         $name = trim($data['name']);

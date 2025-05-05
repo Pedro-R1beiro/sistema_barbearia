@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Cadastro AJAX</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+
+<h2>Cadastro de Cliente</h2>
+<form id="signupForm">
+    <input type="text" name="name" placeholder="Nome" required><br>
+    <input type="email" name="email" placeholder="Email" required><br>
+    <input type="password" name="password" placeholder="Senha" required><br>
+    <button type="submit">Cadastrar</button>
+</form>
+
+<div id="resultado"></div>
+
+<script>
+$('#signupForm').on('submit', function(e) {
+    e.preventDefault();
+
+    const data = {
+        name: $('input[name="name"]').val(),
+        email: $('input[name="email"]').val(),
+        password: $('input[name="password"]').val()
+    };
+
+    $.ajax({
+        url: 'backend/client/signup', // ajusta a rota se necessário
+        method: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify(data),
+        success: function(response) {
+            $('#resultado').html('<pre>' + JSON.stringify(response, null, 2) + '</pre>');
+        },
+        error: function(xhr) {
+            $('#resultado').html('<p style="color:red;">Erro ao cadastrar</p>');
+        }
+    });
+});
+</script>
+
+</body>
+</html>
