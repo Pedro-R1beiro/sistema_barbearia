@@ -13,7 +13,7 @@ class EmailSender {
         $this->mail = new PHPMailer(true);
         require 'lib/vendor/autoload.php';
 
-        $this->mail->SMTPDebug = SMTP::DEBUG_SERVER;
+        $this->mail->SMTPDebug = false;
         $this->mail->CharSet = "UTF-8";
         $this->mail->isSMTP();
         $this->mail->Host = 'sandbox.smtp.mailtrap.io';
