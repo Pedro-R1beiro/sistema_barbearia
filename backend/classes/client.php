@@ -80,6 +80,21 @@ class Client
         return false; // Retorna false se o email estiver vazio ou ocorrer um erro
     }
 
+    public function getByCode($code)
+    {
+        if (!empty($code)) {
+            $code = trim($code);
+            $sql = "SELECT * FROM clients WHERE code = :code AND active = 1";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->bindParam(':code', $code);
+
+            if ($stmt->execute()) {
+                return $stmt->fetch(PDO::FETCH_ASSOC); // Retorna o cliente encontrado ou false
+            }
+        }
+        return false; // Retorna false se o email estiver vazio ou ocorrer um erro
+    }
+
     public function post($name, $email, $password, $phone)
     {
         if (!empty($name) && !empty($email) && !empty($password) && !empty($phone)) {
@@ -99,13 +114,13 @@ class Client
             $stmt->bindParam(':code', $code);
 
             if ($stmt->execute()) {
-                return true; // Retorna true em caso de sucesso
+                return $code; // Retorna true em caso de sucesso
             }
         }
         return false; // Retorna false se algum campo estiver vazio ou ocorrer um erro
     }
 
-    public function update($id, $name = null, $email = null, $password = null, $phone = null)
+    public function update($id, $name = null, $email = null, $password = null, $phone = null, $verified = null)
     {
         if (is_numeric($id)) {
             $fields = [];
@@ -129,6 +144,11 @@ class Client
             if (!empty($phone)) {
                 $fields[] = "phone = :phone";
                 $params[':phone'] = trim($phone);
+            }
+
+            if (!empty($verified) && ($verified == 1 || $verified == 0)) {
+                $fields[] = "verified = :verified";
+                $params[':verified'] = trim($verified);
             }
 
             // Verifica se algum campo foi fornecido para atualizar
