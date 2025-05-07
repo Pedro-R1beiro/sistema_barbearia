@@ -3,8 +3,8 @@
 - [Professional](#professional-documentation)
 
 # Client Documentation
-- [Login](#login-(client))
-- [Signup](#signup-(client))
+- [Login](#login-client)
+- [Signup](#signup-client)
 - Validar Email
 
 ## Login (Client)
