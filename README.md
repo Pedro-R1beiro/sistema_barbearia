@@ -15,7 +15,7 @@
 # Client Documentation
 - [Login](#login-client)
 - [Signup](#signup-client)
-- Validar Email
+- [Validar Email](#validar-email-client)
 
 ## Login (Client)
 
@@ -57,7 +57,8 @@ POST /backend/client/signup
   'name': 'User Name', // Deve conter entre 3 e 30 caracteres
   'email': 'user@gmail.com', // Deve conter menos que 50 caracteres
   'password': '12345678', // Deve conter no mínimo 8 caracteres
-  'phone': '(xx) xxxxx-xxxx'
+  'phone': '(xx) xxxxx-xxxx',
+  'validationScreen': 'url/validationScreen.com.br' // Url da tela para validar e-mail
 }
 ```
 
@@ -75,3 +76,22 @@ POST /backend/client/signup
 - 409: E-mail já cadastrado
 - 500: Erro ao cadastrar no banco de dados
 
+## Validar Email (Client)
+
+### Caminho para Signup
+```http
+Update /backend/client/validateEmail
+```
+
+### Formato de dados esperado:
+```json
+{
+  'code': // Código único do usuário que estará na url
+}
+```
+
+### Códigos http
+- 200: E-mail validado
+- 400: Sem código para validar
+- 404: Nenhuma conta registrada com esse código
+- 500: Erro ao atualizar no banco de dados
