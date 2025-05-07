@@ -20,6 +20,13 @@ POST /backend/client/login
   'status': 'success' | 'error',
   'message': 'Mensagem Explicativa'
 }
+// Mensagem em caso de sucesso:
+{
+  'message': {
+    'email': 'user@gmail.com,
+    'code': // Código único do usuário
+  }
+}
 ```
 ### Juntamente com o json será retornado o código http
 - 200: Login efetuado com Sucesso
