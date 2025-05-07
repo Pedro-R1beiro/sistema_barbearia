@@ -1,5 +1,5 @@
 # Client Documentation
 
-```http POST
-backend/client/signup
+```http 
+POST backend/client/signup
 ```
