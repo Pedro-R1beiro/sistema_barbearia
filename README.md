@@ -19,7 +19,7 @@
 
 ## Login (Client)
 
-### Caminho para Login
+### Caminho
 ```http
 POST /backend/client/login
 ```
@@ -46,7 +46,7 @@ POST /backend/client/login
 
 ## Signup (Client)
 
-### Caminho para Signup
+### Caminho
 ```http
 POST /backend/client/signup
 ```
@@ -78,7 +78,7 @@ POST /backend/client/signup
 
 ## Validar Email (Client)
 
-### Caminho para Signup
+### Caminho
 ```http
 Update /backend/client/validateEmail
 ```
