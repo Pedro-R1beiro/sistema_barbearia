@@ -80,7 +80,7 @@ POST /backend/client/signup
 
 ### Caminho
 ```http
-Update /backend/client/validateEmail
+UPDATE /backend/client/validateEmail
 ```
 
 ### Formato de dados esperado:
