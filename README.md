@@ -1,3 +1,29 @@
+# Client Documentation
+## Login
+
+### Caminho para Login
 ```http
-POST /backend/client/signup
+POST /backend/client/login
 ```
+
+### Formato de dados esperado:
+```json
+{
+  'email': 'user@gmail.com',
+  'password': '12345678' // Password deve conter no mínimo 8 caracteres
+}
+```
+
+### Resposta do Servidor:
+```json
+{
+  'status': 'success' | 'error',
+  'message': 'Mensagem Explicativa'
+}
+```
+<sub>Juntamente com o json será retornado o código http</sub>
+<sub>
+- 200: Login efetuado com Sucesso
+- 400: Dados Inválidos
+- 401: E-mail ou senha incorretos
+</sub>
