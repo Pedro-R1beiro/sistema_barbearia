@@ -21,9 +21,7 @@ POST /backend/client/login
   'message': 'Mensagem Explicativa'
 }
 ```
-<sub>Juntamente com o json será retornado o código http</sub>
-<sub>
+### Juntamente com o json será retornado o código http
 - 200: Login efetuado com Sucesso
 - 400: Dados Inválidos
 - 401: E-mail ou senha incorretos
-</sub>
