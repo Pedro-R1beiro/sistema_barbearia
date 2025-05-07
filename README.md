@@ -1,10 +1,10 @@
 # Documetation
-- Client [Link Text](#client-documentation)
-- Professional [Link Text](#professional-documentation)
+- [Client](#client-documentation)
+- [Professional](#professional-documentation)
 
 # Client Documentation
-- Login [Link Text](#login-(client))
-- Signup [Link Text](#signup-(client))
+- [Login](#login-(client))
+- [Signup](#signup-(client))
 - Validar Email
 
 ## Login (Client)
