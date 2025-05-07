@@ -86,7 +86,7 @@ Update /backend/client/validateEmail
 ### Formato de dados esperado:
 ```json
 {
-  'code': // Código único do usuário que estará na url
+  'code': // Código único do usuário que estará na url que foi enviada para o e-mail do usuário
 }
 ```
 
