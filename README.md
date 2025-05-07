@@ -1,5 +1,13 @@
+# Documetation
+- Client [Link Text](#client-documentation)
+- Professional [Link Text](#professional-documentation)
+
 # Client Documentation
-## Login
+- Login [Link Text](#login-(client))
+- Signup [Link Text](#signup-(client))
+- Validar Email
+
+## Login (Client)
 
 ### Caminho para Login
 ```http
@@ -21,11 +29,9 @@ POST /backend/client/login
   'message': 'Mensagem Explicativa'
 }
 // Mensagem em caso de sucesso:
-{
-  'message': {
+'message': {
     'email': 'user@gmail.com,
     'code': // Código único do usuário
-  }
 }
 ```
 ### Juntamente com o json será retornado o código http
