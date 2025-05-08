@@ -14,23 +14,18 @@ export default function Services() {
       <h1 className="text-3xl font-bold tracking-tight">BARBER SHOP</h1>
       <p className="text-[1.625rem]">Nossos melhores serviços</p>
 
-      <div className="mt-6 space-y-12">
+      <div className="mt-6 space-y-12 md:flex md:gap-6">
         <CardServices image={manCuttingHair}>
-          <p>
-            O corte de cabelo é uma prática essencial para manter uma aparência
-            arrumada e estilosa. Envolve a escolha de um estilo que melhor se
-            adapte à forma do rosto, tipo de cabelo e preferências pessoais.
-          </p>
+          O corte de cabelo é uma prática essencial para manter uma aparência
+          arrumada e estilosa. Envolve a escolha de um estilo que melhor se
+          adapte à forma do rosto, tipo de cabelo e preferências pessoais.
         </CardServices>
         <CardServices image={manCuttingBeard}>
-          <p>
-            A barba é mais do que apenas pelos faciais; é um componente
-            significativo do estilo pessoal e transmite personalidade. A
-            manutenção da barba inclui aparar regularmente, lavar e hidratar com
-            produtos específicos, e estilizar conforme a preferência.
-          </p>
+          A barba é mais do que apenas pelos faciais; é um componente
+          significativo do estilo pessoal e transmite personalidade. A
+          manutenção da barba inclui aparar regularmente, lavar e hidratar com
+          produtos específicos, e estilizar conforme a preferência.
         </CardServices>
-
         <Card className="bg-foreground/90 text-background mx-auto h-112 w-[20rem] rounded-md pt-7">
           <CardTitle className="leading-tight">
             Faça seu agendamento e veja a diferença.

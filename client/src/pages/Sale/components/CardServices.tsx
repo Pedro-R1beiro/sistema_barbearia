@@ -12,7 +12,7 @@ export default function CardServices({ image, children }: CardServicesProps) {
         <img src={image} alt="" className="min-w-full" />
       </div>
       <div className="text-foreground dark:text-background p-3 text-justify">
-        {children}
+        <p className="max-h-64 overflow-y-auto">{children}</p>
       </div>
     </div>
   );
