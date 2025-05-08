@@ -1,6 +1,5 @@
 import { Button } from "./ui/button";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEllipsisVertical } from "@fortawesome/free-solid-svg-icons";
+import { NavMenu } from "./NavMenu";
 
 export function Header() {
   return (
@@ -22,7 +21,7 @@ export function Header() {
         <Button className="hover:bg-muted-foreground/30 bg-transparent font-bold">
           Cadastrar
         </Button>
-        <FontAwesomeIcon icon={faEllipsisVertical} size="lg" />
+        <NavMenu />
       </nav>
     </header>
   );
