@@ -7,23 +7,41 @@ $basePath = '/sistema_barbearia_2.0/backend/';
 $requestUri = str_replace($basePath, '', $_SERVER['REQUEST_URI']);
 $requestUri = trim(parse_url($requestUri, PHP_URL_PATH), '/');
 $httpMethod = $_SERVER['REQUEST_METHOD'];
-$data = $httpMethod === 'POST' ? json_decode(file_get_contents('php://input'), true) ?? [] : $_GET;
+$data = in_array($httpMethod, ['POST', 'PUT', 'PATCH', 'DELETE']) ? json_decode(file_get_contents("php://input"), true) : $_GET;
 
 header('Content-Type: application/json');
 
-switch ($requestUri) {
-    case 'client/signup':
+function sendResponse($data, $statusCode = 200)
+{
+    http_response_code($statusCode);
+    echo json_encode($data);
+    exit;
+}
+
+switch ($httpMethod . $requestUri) {
+    case 'POSTclient/signup':
         $controller = new ClientController();
-        echo json_encode($controller->signup($data));
+        $response = $controller->signup($data);
+        sendResponse($response['body'], $response['code']);
         break;
 
-    case 'client/login':
+    case 'POSTclient/login':
         $controller = new ClientController();
-        echo json_encode($controller->login($data));
+        $response = $controller->login($data);
+        sendResponse($response['body'], $response['code']);
+        break;
+
+    case 'PATCHclient/validateEmail':
+        $controller = new ClientController();
+        $response = $controller->validateEmail($data);
+        sendResponse($response['body'], $response['code']);
+        break;
+    case 'DELETEclient/delete':
+        $controller = new ClientController();
+        //$response = $controller->delet
         break;
 
     default:
-        http_response_code(404);
-        echo json_encode(['status' => 'error', 'message' => 'Rota não encontrada']);
+        sendResponse(['status' => 'error', 'message' => 'Rota não encontrada'], 404);
         break;
 }
