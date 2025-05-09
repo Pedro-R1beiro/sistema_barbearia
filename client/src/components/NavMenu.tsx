@@ -18,8 +18,27 @@ import {
 export function NavMenu() {
   return (
     <>
+      <ul className="hidden gap-7 font-bold md:flex">
+        <li className="space-x-2">
+          <FontAwesomeIcon icon={faHouse} />
+          <span>Ínicio</span>
+        </li>
+        <li className="space-x-2">
+          <FontAwesomeIcon icon={faBuilding} />
+          <span>Sobre</span>
+        </li>
+        <li className="space-x-2">
+          <FontAwesomeIcon icon={faScissors} />
+          <span>Serviços</span>
+        </li>
+        <li className="space-x-2">
+          <FontAwesomeIcon icon={faPhone} />
+          <span>Contato</span>
+        </li>
+      </ul>
+
       <DropdownMenu>
-        <DropdownMenuTrigger className="w-5">
+        <DropdownMenuTrigger className="w-5 md:hidden">
           <FontAwesomeIcon icon={faEllipsisVertical} size="lg" />
           <span className="sr-only">Abrir Menu de Navegação</span>
         </DropdownMenuTrigger>

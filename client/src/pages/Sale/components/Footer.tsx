@@ -10,8 +10,8 @@ import { faEnvelope } from "@fortawesome/free-regular-svg-icons";
 
 export default function Footer() {
   return (
-    <footer className="bg-muted absolute left-0 mt-20 w-full space-y-10 rounded-t-lg p-8 md:flex">
-      <ul className="flex min-w-100/230 flex-col items-center justify-between gap-6 md:items-start md:justify-start">
+    <footer className="bg-muted absolute left-8 mt-20 w-full space-y-10 rounded-t-lg p-8 max-[69.50rem]:left-0 md:flex md:max-w-[67.75rem] md:p-12">
+      <ul className="flex min-w-100/230 flex-col items-center justify-between gap-6 md:min-w-100/260 md:items-start md:justify-start">
         <li>
           <div className="flex flex-col items-center gap-6 md:flex-row">
             <ContactButton link="instagram.com" icon={faInstagram} />
@@ -34,10 +34,15 @@ export default function Footer() {
 
       <div className="bg-muted-foreground mx-auto h-0.5 w-[10rem] md:h-70 md:w-0.5"></div>
 
-      <div className="md:max-w-100/200">
+      <div className="md:min-w-100/260">
         <div className="flex flex-col items-center gap-4">
-          <Button className="w-full py-5.5 font-bold">Criar minha conta</Button>
-          <Button variant={"outline"} className="w-full py-5.5 font-bold">
+          <Button className="w-full py-5.5 font-bold md:py-7">
+            Criar minha conta
+          </Button>
+          <Button
+            variant={"outline"}
+            className="w-full py-5.5 font-bold md:py-7"
+          >
             Entrar com minha conta
           </Button>
           <p>

@@ -3,7 +3,7 @@ import { Outlet } from "react-router";
 
 export function SaleLayout() {
   return (
-    <div className="overflow-x-hidden px-4 pt-6">
+    <div className="relative mx-auto max-w-6xl px-4 pt-6">
       <Header />
       <Outlet />
     </div>

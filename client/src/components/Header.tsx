@@ -3,24 +3,22 @@ import { NavMenu } from "./NavMenu";
 
 export function Header() {
   return (
-    <header className="bg-accent-foreground text-background relative flex items-center justify-end rounded-sm py-2">
-      <div className="bg-background absolute top-[-1rem] left-[-0.75em] rounded-full p-3">
+    <header className="bg-accent-foreground text-background relative flex items-center justify-end rounded-sm py-3">
+      <div className="bg-background absolute top-[-0.55rem] left-[-0.75em] rounded-full p-3">
         <div className="bg-foreground rounded-full p-2 py-3.5 font-bold">
           logo
         </div>
       </div>
-      <nav className="flex items-center gap-4 px-4">
-        <ul className="hidden">
-          <li>Ínicio</li>
-          <li>Serviços</li>
-          <li>Contato</li>
-        </ul>
-        <Button className="font-bold" variant="secondary">
-          Entrar
-        </Button>
-        <Button className="hover:bg-muted-foreground/30 bg-transparent font-bold">
-          Cadastrar
-        </Button>
+      <nav className="flex w-full items-center gap-4 px-4 pl-20 md:flex-row-reverse md:justify-between lg:pl-30">
+        <div className="flex gap-4">
+          <Button className="font-bold" variant="secondary">
+            Entrar
+          </Button>
+          <Button className="hover:bg-muted-foreground/30 bg-transparent font-bold">
+            Cadastrar
+          </Button>
+        </div>
+
         <NavMenu />
       </nav>
     </header>
