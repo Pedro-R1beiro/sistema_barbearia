@@ -9,6 +9,9 @@ require_once __DIR__ . '/../classes/scheduling.php';
 require_once __DIR__ . '/../classes/vacation.php';
 require_once __DIR__ . '/../email/emailSender.php';
 
+use Firebase\JWT\JWT;
+use Firebase\JWT\Key;
+
 class ClientController
 {
     public $conn;
@@ -37,6 +40,34 @@ class ClientController
         $this->emailSender = new EmailSender;
     }
 
+    public function authenticate()
+    {
+        if (!isset($_COOKIE['auth_token'])) {
+            return [
+                'code' => 401,
+                'body' => [
+                    'status' => 'error',
+                    'message' => 'Não autenticado'
+                ]
+            ];
+        }
+
+        $key = getenv('JWT_SECRET');
+
+        try {
+            $decoded = JWT::decode($_COOKIE['auth_code'], new Key($key, 'HS256'));
+            return (array) $decoded;
+        } catch (Exception $e) {
+            return [
+                'code' => 401,
+                'body' => [
+                    'status' => 'error',
+                    'message' => 'Token inválido'
+                ]
+            ];
+        }
+    }
+
     public function login($data)
     {
         if (empty($data['email']) || empty($data['password'])) {
@@ -63,32 +94,58 @@ class ClientController
         }
 
         $account = $this->client->getByEmail($email);
-        if ($account && count($account) > 0) {
-            if (password_verify($password, $account['password'])) {
-                return [
-                    'code' => 200,
-                    'body' => [
-                        'status' => 'success',
-                        'message' => [
-                            'email' => $account['email'],
-                            'code' => $account['code']
-                        ]
-                    ]
-                ];
-            }
+        if (!$account || count($account) <= 0) {
             return [
-                'code' => 401,
+                'code' => 400,
                 'body' => [
                     'status' => 'error',
                     'message' => 'E-mail ou senha incorretos'
                 ]
             ];
         }
+        if (!password_verify($password, $account['password'])) {
+            return [
+                'code' => 400,
+                'body' => [
+                    'status' => 'error',
+                    'message' => 'E-mail ou senha incorretos'
+                ]
+            ];
+        }
+        if ($account['verified'] == 0) {
+            return [
+                'code' => 401,
+                'body' => [
+                    'status' => 'error',
+                    'message' => 'E-mail não verificado'
+                ]
+            ];
+        }
+
+        $key = getenv('JWT_SECRET');
+        $payload = [
+            'sub' => $account['id'],
+            'email' => $account['email'],
+            'iat' => time(),
+            'exp' => time() + (60 * 60 * 24 * 7)
+        ];
+        $jwt = JWT::encode($payload, $key, 'HS256');
+        setcookie('auth_code', $jwt, [
+            'expires' => time() + (60 * 60 * 24 * 7),
+            'path' => '/',
+            'httponly' => true,
+            'secure' => true,
+            'samesite' => 'Lax'
+        ]);
+
         return [
-            'code' => 401,
+            'code' => 200,
             'body' => [
-                'status' => 'error',
-                'message' => 'E-mail ou senha incorretos'
+                'status' => 'success',
+                'message' => [
+                    'email' => $account['email'],
+                    'code' => $account['code']
+                ]
             ]
         ];
     }
@@ -130,51 +187,50 @@ class ClientController
             ];
         }
 
-
         $account = $this->client->getByEmail($email);
-        if (!$account || count($account) <= 0) {
-            $code = $this->client->post($name, $email, $password, $phone);
-            if ($code) {
-                $subject = "Validar Email";
-                $HTMLbody = "Para validar seu e-mail, clique no link a seguir: <a href='$validationScreen?code=$code'>Validar E-mail</a>";
-                $textBody = "Para validar seu e-mail, acesse o link a seguir: $validationScreen?code=$code";
-                $sendEmail = $this->emailSender->sendEmail($email, $name, $subject, $HTMLbody, $textBody);
-                if ($sendEmail) {
-                    return [
-                        'code' => 201,
-                        'body' => [
-                            'status' => 'success',
-                            'message' => [
-                                'validationEmail' => 'Um e-mail de validação foi enviado para ' . $email,
-                                'email' => $email
-                            ]
-                        ]
-                    ];
-                }
+        if ($account && count($account) > 0) {
+            return [
+                'code' => 409,
+                'body' => [
+                    'status' => 'error',
+                    'message' => 'E-mail já cadastrado'
+                ]
+            ];
+        }
+        $code = $this->client->post($name, $email, $password, $phone);
+        if ($code) {
+            $subject = "Validar Email";
+            $HTMLbody = "Para validar seu e-mail, clique no link a seguir: <a href='$validationScreen?code=$code'>Validar E-mail</a>";
+            $textBody = "Para validar seu e-mail, acesse o link a seguir: $validationScreen?code=$code";
+            $sendEmail = $this->emailSender->sendEmail($email, $name, $subject, $HTMLbody, $textBody);
+            if ($sendEmail) {
                 return [
-                    'code' => 200,
+                    'code' => 201,
                     'body' => [
                         'status' => 'success',
                         'message' => [
-                            'validationEmail' => 'Erro ao enviar e-mail de validação para ' . $email,
+                            'validationEmail' => 'Um e-mail de validação foi enviado para ' . $email,
                             'email' => $email
                         ]
                     ]
                 ];
             }
             return [
-                'code' => 500,
+                'code' => 200,
                 'body' => [
-                    'status' => 'error',
-                    'message' => 'Erro ao registrar no banco de dados'
+                    'status' => 'success',
+                    'message' => [
+                        'validationEmail' => 'Erro ao enviar e-mail de validação para ' . $email,
+                        'email' => $email
+                    ]
                 ]
             ];
         }
         return [
-            'code' => 409,
+            'code' => 500,
             'body' => [
                 'status' => 'error',
-                'message' => 'E-mail já cadastrado'
+                'message' => 'Erro ao registrar no banco de dados'
             ]
         ];
     }
@@ -234,27 +290,14 @@ class ClientController
     }
 
     // Ver forma de como o usuário irá informar o id para deletar ou alterar informações
-    public function delete($data)
+    public function delete()
     {
-        if (empty($data['id'])) {
-            return [
-                'code' => 400,
-                'body' => [
-                    'status' => 'error',
-                    'message' => 'Nenhum id foi informado'
-                ]
-            ];
+        $userData = $this->authenticate();
+        if (isset($userData['body']['status']) && $userData['body']['status'] == 'error') {
+            return $userData;
         }
-        $id = trim($data['id']);
-        if (!is_numeric($id)) {
-            return [
-                'code' => 400,
-                'body' => [
-                    'status' => 'error',
-                    'message' => 'Id informado não é um número'
-                ]
-            ];
-        }
+        $id = $userData['sub'];
+
         $account = $this->client->getById($id);
         if ($account && count($account) > 0) {
             if ($this->client->delete($id)) {
