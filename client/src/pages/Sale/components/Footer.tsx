@@ -34,7 +34,7 @@ export default function Footer() {
 
       <div className="bg-muted-foreground mx-auto h-0.5 w-[10rem] md:h-70 md:w-0.5"></div>
 
-      <div className="md:min-w-100/260">
+      <div className="mb-30 md:min-w-100/260">
         <div className="flex flex-col items-center gap-4">
           <Button className="w-full py-5.5 font-bold md:py-7">
             Criar minha conta

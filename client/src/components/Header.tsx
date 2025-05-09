@@ -9,7 +9,7 @@ export function Header() {
           logo
         </div>
       </div>
-      <nav className="flex w-full items-center gap-4 px-4 pl-20 md:flex-row-reverse md:justify-between lg:pl-30">
+      <nav className="flex w-full items-center justify-end gap-4 pr-2 md:flex-row-reverse md:justify-between md:pl-30">
         <div className="flex gap-4">
           <Button className="font-bold" variant="secondary">
             Entrar

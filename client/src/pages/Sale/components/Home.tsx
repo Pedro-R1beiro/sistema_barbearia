@@ -29,7 +29,11 @@ export function Home() {
         </div>
       </div>
 
-      <img src={manImage} alt="" className="mx-auto mt-8 md:h-115" />
+      <img
+        src={manImage}
+        alt=""
+        className="mx-auto mt-8 md:mt-0 md:ml-auto md:h-115"
+      />
     </section>
   );
 }

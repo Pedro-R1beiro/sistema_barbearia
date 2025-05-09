@@ -29,16 +29,18 @@ export function About() {
           </p>
         </div>
 
-        <Button className="bg-foreground text-md mt-4 w-full p-6 font-bold md:max-w-[26rem]">
-          Agende seu horário
-        </Button>
-        <div className="w-100/168">
-          <LinesWithOr />
-        </div>
+        <div className="flex w-full flex-col items-center justify-center md:max-w-[26rem] md:items-end">
+          <Button className="bg-foreground text-md mt-4 w-full p-6 font-bold">
+            Agende seu horário
+          </Button>
+          <div className="mt-4 flex w-full flex-col items-center">
+            <LinesWithOr />
 
-        <div className="mt-3 flex items-center justify-center gap-3 md:w-100/168">
-          <ContactButton link="instagram.com" icon={faInstagram} />
-          <ContactButton link="whatsapp.api.client" icon={faWhatsapp} />
+            <div className="mt-3 flex items-center justify-center gap-3 md:w-100/168">
+              <ContactButton link="instagram.com" icon={faInstagram} />
+              <ContactButton link="whatsapp.api.client" icon={faWhatsapp} />
+            </div>
+          </div>
         </div>
       </div>
 
