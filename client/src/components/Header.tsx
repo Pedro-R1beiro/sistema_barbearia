@@ -3,8 +3,8 @@ import { NavMenu } from "./NavMenu";
 
 export function Header() {
   return (
-    <header className="bg-accent-foreground text-background relative flex items-center justify-end rounded-sm py-3">
-      <div className="bg-background absolute top-[-0.55rem] left-[-0.75em] rounded-full p-3">
+    <header className="bg-accent-foreground text-background relative flex items-center justify-end rounded-sm py-3 shadow-xs">
+      <div className="bg-background absolute top-[-0.75rem] left-[-1.2rem] rounded-full p-3">
         <div className="bg-foreground rounded-full p-2 py-3.5 font-bold">
           logo
         </div>

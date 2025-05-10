@@ -10,7 +10,10 @@ import { faInstagram, faWhatsapp } from "@fortawesome/free-brands-svg-icons";
 
 export default function Services() {
   return (
-    <section className="mt-20 space-y-4 text-center md:mt-30 md:h-screen md:pt-20 lg:mb-30">
+    <section
+      id="services"
+      className="mt-90 space-y-4 text-center md:mt-30 md:h-screen md:pt-20 lg:mb-30"
+    >
       <h1 className="text-4xl font-bold tracking-tight">BARBER SHOP</h1>
       <p className="text-[1.625rem]">Nossos melhores serviços</p>
 
