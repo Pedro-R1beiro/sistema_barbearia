@@ -94,7 +94,7 @@ class ClientController
         }
 
         $account = $this->client->getByEmail($email);
-        if (!$account || count($account) <= 0) {
+        if (!$account) {
             return [
                 'code' => 400,
                 'body' => [
@@ -125,7 +125,7 @@ class ClientController
         $key = getenv('JWT_SECRET');
         $payload = [
             'sub' => $account['id'],
-            'email' => $account['code'],
+            'code' => $account['code'],
             'iat' => time(),
             'exp' => time() + (60 * 60 * 24 * 7)
         ];
@@ -249,7 +249,7 @@ class ClientController
         $code = trim($data['code']);
         $account = $this->client->getByCode($code);
 
-        if (!$account && count($account) <= 0) {
+        if (!$account) {
             return [
                 'code' => 404,
                 'body' => [
@@ -300,7 +300,7 @@ class ClientController
         $id = $userData['sub'];
 
         $account = $this->client->getById($id);
-        if (!$account || count($account) <= 0) {
+        if (!$account) {
             return [
                 'code' => 404,
                 'body' => [
@@ -342,6 +342,16 @@ class ClientController
             return $userData;
         }
         $id = $userData['sub'];
+        $account = $this->client->getById($id);
+        if (!$account) {
+            return [
+                'code' => 404,
+                'body' => [
+                    'status' => 'error',
+                    'message' => 'Nenhuma conta encontrada com este Id'
+                ]
+            ];
+        }
 
         if (empty($data['name']) && empty($data['email']) && empty($data['phone'])) {
             return [
@@ -392,7 +402,7 @@ class ClientController
         $password = trim($data['password']);
 
         $account = $this->client->getById($id);
-        if (!$account || !isset($account)) {
+        if (!$account) {
             return [
                 'code' => 404,
                 'body' => [
@@ -422,6 +432,151 @@ class ClientController
                 'body' => [
                     'status' => 'success',
                     'message' => 'Dados alterados com sucesso'
+                ]
+            ];
+        }
+        return [
+            'code' => 500,
+            'body' => [
+                'status' => 'error',
+                'message' => 'Erro ao realizar seu pedido, tente novamente mais tarde'
+            ]
+        ];
+    }
+
+    public function changePassword($data)
+    {
+        $userData = $this->authenticate();
+        if (isset($userData['body']['status']) && $userData['body']['status'] == 'error') {
+            return $userData;
+        }
+        $id = $userData['sub'];
+        $account = $this->client->getById($id);
+        if (!$account) {
+            return [
+                'code' => 404,
+                'body' => [
+                    'status' => 'error',
+                    'message' => 'Nenhuma conta encontrada com este Id'
+                ]
+            ];
+        }
+
+        if (empty($data['currentPassword']) || empty($data['newPassword'])) {
+            return [
+                'code' => 400,
+                'body' => [
+                    'status' => 'error',
+                    'message' => 'Informe a nova senha e a senha atual para continuar'
+                ]
+            ];
+        }
+        $currentPass = trim($data['currentPassword']);
+        $newPass = trim($data['newPassword']);
+        if (strlen($currentPass) < 8 || strlen($currentPass) > 30 || strlen($newPass) < 8 || strlen($newPass) > 30) {
+            return [
+                'code' => 400,
+                'body' => [
+                    'status' => 'error',
+                    'message' => 'As senhas devem conter entre 8 e 30 caracteres'
+                ]
+            ];
+        }
+
+        $account = $this->client->getById($id);
+        if (!$account) {
+            return [
+                'code' => 404,
+                'body' => [
+                    'status' => 'error',
+                    'message' => 'Nenhuma conta encontrada com o id informado'
+                ]
+            ];
+        }
+        if (!password_verify($currentPass, $account['password'])) {
+            return [
+                'code' => 400,
+                'body' => [
+                    'status' => 'error',
+                    'message' => 'Senha incorreta'
+                ]
+            ];
+        }
+        $value = [
+            'password' => $newPass
+        ];
+        if ($this->client->patch($id, $value)) {
+            return [
+                'code' => 200,
+                'body' => [
+                    'status' => 'success',
+                    'message' => 'Senha alterada com sucesso'
+                ]
+            ];
+        }
+        return [
+            'code' => 500,
+            'body' => [
+                'status' => 'error',
+                'message' => 'Erro ao realizar seu pedido, tente novamente mais tarde'
+            ]
+        ];
+    }
+
+    public function sendRecoveryEmail($data)
+    {
+        if (!empty($data['email'])) {
+            $email = trim($data['email']);
+            if (!filter_var($email, FILTER_VALIDATE_EMAIL) || strlen($email) > 50) {
+                return [
+                    'code' => 400,
+                    'body' => [
+                        'status' => 'error',
+                        'message' => 'Email inválido ou maior que 50 caracteres'
+                    ]
+                ];
+            }
+        } else {
+            $userData = $this->authenticate();
+            if (isset($userData['body']['status']) && $userData['body']['status'] == 'error') {
+                return [
+                    'code' => 404,
+                    'body' => [
+                        'status' => 'error',
+                        'message' => 'Nenhum e-mail para recuperação foi informado'
+                    ]
+                ];
+            }
+            $id = $userData['sub'];
+            $account = $this->client->getById($id);
+            if (!$account) {
+                return [
+                    'code' => 404,
+                    'body' => [
+                        'status' => 'error',
+                        'message' => 'Nenhuma conta encontrada com este Id'
+                    ]
+                ];
+            }
+            $email = $account['email'];
+            $code = $account['code'];
+            $name = $account['name'];
+        }
+        $recoveryScreen = trim($data['recoveryScreen']);
+
+        $subject = "Recuperar Senha";
+        $HTMLbody = "Um pedido de recuperação de senha foi feito, para completar esta ação, clique no link a seguir e digite sua nova senha: <a href='$recoveryScreen?code=$code'>Recuperar Senha</a><br><br>Caso o pedido não tenha sido feito por você, basta ignorá-lo.";
+        $textBody = "Um pedido de recuperação de senha foi feito, para completar esta ação, acesse o link a seguir e digite sua nova senha: $recoveryScreen?code=$code \n\n Caso o pedido não tenha sido feito por você, basta ignorá-lo.";
+        $sendEmail = $this->emailSender->sendEmail($email, $name, $subject, $HTMLbody, $textBody);
+        if ($sendEmail) {
+            return [
+                'code' => 200,
+                'body' => [
+                    'status' => 'success',
+                    'message' => [
+                        'validationEmail' => 'Um e-mail de validação foi enviado para ' . $email,
+                        'email' => $email
+                    ]
                 ]
             ];
         }

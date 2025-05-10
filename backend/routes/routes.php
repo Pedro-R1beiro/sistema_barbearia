@@ -49,6 +49,18 @@ switch ($httpMethod . $requestUri) {
         sendResponse($response['body'], $response['code']);
         break;
 
+    case 'PATCHclient/changePassword':
+        $controller = new ClientController();
+        $response = $controller->changePassword($data);
+        sendResponse($response['body'], $response['code']);
+        break;
+
+    case 'POSTclient/sendRecoveryEmail':
+        $controller = new ClientController();
+        $response = $controller->sendRecoveryEmail($data);
+        sendResponse($response['body'], $response['code']);
+        break;
+
     default:
         sendResponse(['status' => 'error', 'message' => 'Rota não encontrada'], 404);
         break;
