@@ -15,14 +15,14 @@
 # Client Documentation
 |Conta|
 |--------|
-|- [Login](#login-client)|
-|- [Signup](#signup-client)|
-|- [Validar Email](#validar-email-client)|
-|- [Deletar Conta](#deletar-conta-client)|
-|- [Alterar Informações](#alterar-informações-client)|
-|- [Alterar Senha](#alterar-senha-client)|
-|- [Enviar Email de Recuperação](#enviar-email-de-recuperação-client)|
-|- [Recuperar Senha](#recuperar-senha-client)|
+|[Login](#login-client)|
+|[Signup](#signup-client)|
+|[Validar Email](#validar-email-client)|
+|[Deletar Conta](#deletar-conta-client)|
+|[Alterar Informações](#alterar-informações-client)|
+|[Alterar Senha](#alterar-senha-client)|
+|[Enviar Email de Recuperação](#enviar-email-de-recuperação-client)|
+|[Recuperar Senha](#recuperar-senha-client)|
 
 ## Login (Client)
 
