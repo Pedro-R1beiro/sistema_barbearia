@@ -19,6 +19,8 @@
 - [Deletar Conta](#deletar-conta-client)
 - [Alterar Informações](#alterar-informações-client)
 - [Alterar Senha](#alterar-senha-client)
+- [Enviar Email de Recuperação](#enviar-email-de-recuperação-client)
+- [Recuperar Senha](#recuperar-senha-client)
 
 ## Login (Client)
 
@@ -157,7 +159,49 @@ PATCH /backend/client/chagePassword
 ```
 
 ### Códigos http
-- 204: Dados Alterados
+- 200: Senha alterada com sucesso
 - 400: Valores inválidos ou senha atual incorreta
 - 404: Nenhuma conta encontrada com o Id salvo nos cookies
+- 500: Erro ao alterar no banco de dados
+
+## Enviar Email de Recuperação (Client)
+
+### Caminho
+```http
+POST /backend/client/sendRecoveryEmail
+```
+
+### Formato de dados esperado:
+```json
+{
+  'recoveryScreen': Link da tela para recuperção que será enviado para o email
+  'email': opcional caso o usuário esteja logado, caso não, obrigatório
+}
+```
+
+### Códigos http
+- 200: E-mail enviado
+- 400: E-mail inválido
+- 404: Nenhuma conta econtrada com o Id salvo nos cookies
+- 500: Erro ao enviar o e-mail
+
+## Recuperar Senha (Client)
+
+### Caminho
+```http
+PATCH /backend/client/resetPassword
+```
+
+### Formato de dados esperado:
+```json
+{
+  'code': // Código único do usuário que estará na url que foi enviada para o e-mail do usuário
+  'newPassword': // Nova senha
+}
+```
+
+### Códigos http
+- 200: Senha alterada com sucesso
+- 400: Valores inválidos ou senha atual igual à atual
+- 404: Nenhuma conta encontrada com o código informado
 - 500: Erro ao alterar no banco de dados
