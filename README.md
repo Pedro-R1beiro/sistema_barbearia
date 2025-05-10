@@ -112,7 +112,29 @@ DELETE /backend/client/delete
 ```
 
 ### Códigos http
-- 204: Conta excluída
-- 400: Id inválido
-- 404: Nenhuma conta com este Id
-- 500: Erro ao excluir no banco de dados
+- 204: Conta deletada
+- 404: Nenhuma conta encontrada com o Id salvo nos cookies
+- 500: Erro ao deletar do banco de dados
+  
+## Alterar Informações (Client)
+
+### Caminho
+```http
+PATCH /backend/client/chageInfo
+```
+
+### Formato de dados esperado:
+```json
+{
+  'name':
+  'email':
+  'phone':
+  'senha': // Deve ser a senha atual, para conseguir alterar as outras informações
+}
+```
+
+### Códigos http
+- 204: Dados Alterados
+- 400: Dados inválidos
+- 404: Nenhuma conta encontrada com o Id salvo nos cookies
+- 500: Erro ao alterar no banco de dados
