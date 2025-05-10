@@ -13,7 +13,7 @@
 > Em cada endpoint também terá os códigos http que podem ser retornados e o que cada um deles pode significar.
 
 # Client Documentation
-|###Conta|
+|Conta|
 |--------|
 |- [Login](#login-client)|
 |- [Signup](#signup-client)|
