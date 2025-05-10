@@ -18,6 +18,7 @@
 - [Validar Email](#validar-email-client)
 - [Deletar Conta](#deletar-conta-client)
 - [Alterar Informações](#alterar-informações-client)
+- [Alterar Senha](#alterar-senha-client)
 
 ## Login (Client)
 
@@ -135,7 +136,28 @@ PATCH /backend/client/chageInfo
 ```
 
 ### Códigos http
-- 204: Dados Alterados
+- 200: Dados Alterados
 - 400: Dados inválidos
+- 404: Nenhuma conta encontrada com o Id salvo nos cookies
+- 500: Erro ao alterar no banco de dados
+  
+## Alterar Senha (Client)
+
+### Caminho
+```http
+PATCH /backend/client/chagePassword
+```
+
+### Formato de dados esperado:
+```json
+{
+  'currentPassword': // Senha atual
+  'newPassword': // Nova senha
+}
+```
+
+### Códigos http
+- 204: Dados Alterados
+- 400: Valores inválidos ou senha atual incorreta
 - 404: Nenhuma conta encontrada com o Id salvo nos cookies
 - 500: Erro ao alterar no banco de dados
