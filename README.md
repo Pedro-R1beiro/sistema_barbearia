@@ -13,14 +13,16 @@
 > Em cada endpoint também terá os códigos http que podem ser retornados e o que cada um deles pode significar.
 
 # Client Documentation
-- [Login](#login-client)
-- [Signup](#signup-client)
-- [Validar Email](#validar-email-client)
-- [Deletar Conta](#deletar-conta-client)
-- [Alterar Informações](#alterar-informações-client)
-- [Alterar Senha](#alterar-senha-client)
-- [Enviar Email de Recuperação](#enviar-email-de-recuperação-client)
-- [Recuperar Senha](#recuperar-senha-client)
+|###Conta|
+|--------|
+|- [Login](#login-client)|
+|- [Signup](#signup-client)|
+|- [Validar Email](#validar-email-client)|
+|- [Deletar Conta](#deletar-conta-client)|
+|- [Alterar Informações](#alterar-informações-client)|
+|- [Alterar Senha](#alterar-senha-client)|
+|- [Enviar Email de Recuperação](#enviar-email-de-recuperação-client)|
+|- [Recuperar Senha](#recuperar-senha-client)|
 
 ## Login (Client)
 
