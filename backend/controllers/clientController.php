@@ -125,7 +125,7 @@ class ClientController
         $key = getenv('JWT_SECRET');
         $payload = [
             'sub' => $account['id'],
-            'email' => $account['email'],
+            'email' => $account['code'],
             'iat' => time(),
             'exp' => time() + (60 * 60 * 24 * 7)
         ];
@@ -143,8 +143,7 @@ class ClientController
             'body' => [
                 'status' => 'success',
                 'message' => [
-                    'email' => $account['email'],
-                    'code' => $account['code']
+                    'email' => $account['email']
                 ]
             ]
         ];
@@ -198,39 +197,39 @@ class ClientController
             ];
         }
         $code = $this->client->post($name, $email, $password, $phone);
-        if ($code) {
-            $subject = "Validar Email";
-            $HTMLbody = "Para validar seu e-mail, clique no link a seguir: <a href='$validationScreen?code=$code'>Validar E-mail</a>";
-            $textBody = "Para validar seu e-mail, acesse o link a seguir: $validationScreen?code=$code";
-            $sendEmail = $this->emailSender->sendEmail($email, $name, $subject, $HTMLbody, $textBody);
-            if ($sendEmail) {
-                return [
-                    'code' => 201,
-                    'body' => [
-                        'status' => 'success',
-                        'message' => [
-                            'validationEmail' => 'Um e-mail de validação foi enviado para ' . $email,
-                            'email' => $email
-                        ]
-                    ]
-                ];
-            }
+        if (!$code || empty($code)) {
             return [
-                'code' => 200,
+                'code' => 500,
+                'body' => [
+                    'status' => 'error',
+                    'message' => 'Erro ao realizar seu pedido, tente novamente mais tarde'
+                ]
+            ];
+        }
+        $subject = "Validar Email";
+        $HTMLbody = "Para validar seu e-mail, clique no link a seguir: <a href='$validationScreen?code=$code'>Validar E-mail</a>";
+        $textBody = "Para validar seu e-mail, acesse o link a seguir: $validationScreen?code=$code";
+        $sendEmail = $this->emailSender->sendEmail($email, $name, $subject, $HTMLbody, $textBody);
+        if ($sendEmail) {
+            return [
+                'code' => 201,
                 'body' => [
                     'status' => 'success',
                     'message' => [
-                        'validationEmail' => 'Erro ao enviar e-mail de validação para ' . $email,
+                        'validationEmail' => 'Um e-mail de validação foi enviado para ' . $email,
                         'email' => $email
                     ]
                 ]
             ];
         }
         return [
-            'code' => 500,
+            'code' => 200,
             'body' => [
-                'status' => 'error',
-                'message' => 'Erro ao registrar no banco de dados'
+                'status' => 'success',
+                'message' => [
+                    'validationEmail' => 'Erro ao enviar e-mail de validação para ' . $email,
+                    'email' => $email
+                ]
             ]
         ];
     }
@@ -250,46 +249,48 @@ class ClientController
         $code = trim($data['code']);
         $account = $this->client->getByCode($code);
 
-        if ($account && count($account) > 0) {
-            if ($account['verified'] == 1) {
-                return [
-                    'code' => 200,
-                    'body' => [
-                        'status' => 'success',
-                        'message' => 'Este e-mail já foi verificado'
-                    ]
-                ];
-            }
-
-            $validateEmail = $this->client->update($account['id'], null, null, null, null, 1);
-
-            if ($validateEmail) {
-                return [
-                    'code' => 200,
-                    'body' => [
-                        'status' => 'success',
-                        'message' => 'E-mail validado com sucesso'
-                    ]
-                ];
-            }
+        if (!$account && count($account) <= 0) {
             return [
-                'code' => 500,
+                'code' => 404,
                 'body' => [
                     'status' => 'error',
-                    'message' => 'Erro ao validar o e-mail'
+                    'message' => 'Nenhuma conta encontrada com este código'
+                ]
+            ];
+        }
+        if ($account['verified'] == 1) {
+            return [
+                'code' => 200,
+                'body' => [
+                    'status' => 'success',
+                    'message' => 'Este e-mail já foi verificado'
+                ]
+            ];
+        }
+
+        $value = [
+            'verified' => 1
+        ];
+        $validateEmail = $this->client->patch($account['id'], $value);
+
+        if ($validateEmail) {
+            return [
+                'code' => 200,
+                'body' => [
+                    'status' => 'success',
+                    'message' => 'E-mail validado com sucesso'
                 ]
             ];
         }
         return [
-            'code' => 404,
+            'code' => 500,
             'body' => [
                 'status' => 'error',
-                'message' => 'Nenhuma conta encontrada com este código'
+                'message' => 'Erro ao realizar seu pedido, tente novamente mais tarde'
             ]
         ];
     }
 
-    // Ver forma de como o usuário irá informar o id para deletar ou alterar informações
     public function delete()
     {
         $userData = $this->authenticate();
@@ -299,54 +300,48 @@ class ClientController
         $id = $userData['sub'];
 
         $account = $this->client->getById($id);
-        if ($account && count($account) > 0) {
-            if ($this->client->delete($id)) {
-                return [
-                    'code' => 204,
-                    'body' => [
-                        'status' => 'success',
-                        'message' => 'Conta excluída com sucesso'
-                    ]
-                ];
-            }
+        if (!$account || count($account) <= 0) {
             return [
-                'code' => 500,
+                'code' => 404,
                 'body' => [
                     'status' => 'error',
-                    'message' => 'Erro ao excluir do banco de dados'
+                    'message' => 'Nenhuma conta encontrada com este Id'
+                ]
+            ];
+        }
+        if ($this->client->delete($id)) {
+            setcookie('auth_code', '', [
+                'expires' => time() - 3600, // expira no passado
+                'path' => '/',
+                'httponly' => true,
+                'secure' => true,
+                'samesite' => 'Lax'
+            ]);
+
+            return [
+                'code' => 204,
+                'body' => [
+                    'status' => 'success',
+                    'message' => 'Conta excluída com sucesso'
                 ]
             ];
         }
         return [
-            'code' => 404,
+            'code' => 500,
             'body' => [
                 'status' => 'error',
-                'message' => 'Nenhuma conta encontrada com este Id'
+                'message' => 'Erro ao realizar seu pedido, tente novamente mais tarde'
             ]
         ];
     }
 
     public function changeInfo($data)
     {
-        if (empty($data['id'])) {
-            return [
-                'code' => 400,
-                'body' => [
-                    'status' => 'error',
-                    'message' => 'Nenhum id foi informado'
-                ]
-            ];
+        $userData = $this->authenticate();
+        if (isset($userData['body']['status']) && $userData['body']['status'] == 'error') {
+            return $userData;
         }
-        $id = trim($data['id']);
-        if (!is_numeric($id)) {
-            return [
-                'code' => 400,
-                'body' => [
-                    'status' => 'error',
-                    'message' => 'Id informado não é um número'
-                ]
-            ];
-        }
+        $id = $userData['sub'];
 
         if (empty($data['name']) && empty($data['email']) && empty($data['phone'])) {
             return [
@@ -358,6 +353,33 @@ class ClientController
             ];
         }
 
+        $name = !empty($data['name']) ? trim($data['name']) : null;
+        $email = !empty($data['email']) ? trim($data['email']) : null;
+        $phone = !empty($data['phone']) ? trim($data['phone']) : null;
+
+        if ($name != null) {
+            if (strlen($name) < 3 || strlen($name) > 30) {
+                return [
+                    'code' => 400,
+                    'body' => [
+                        'status' => 'error',
+                        'message' => 'Nome deve conter entre 3 e 30 caracteres'
+                    ]
+                ];
+            }
+        }
+        if ($email != null) {
+            if (!filter_var($email, FILTER_VALIDATE_EMAIL) || strlen($email) > 50) {
+                return [
+                    'code' => 400,
+                    'body' => [
+                        'status' => 'error',
+                        'message' => 'Email inválido ou maior que 50 caracteres'
+                    ]
+                ];
+            }
+        }
+
         if (empty($data['password'])) {
             return [
                 'code' => 400,
@@ -367,12 +389,48 @@ class ClientController
                 ]
             ];
         }
+        $password = trim($data['password']);
+
         $account = $this->client->getById($id);
-        if (!$account || count($account) <= 0) {
+        if (!$account || !isset($account)) {
             return [
                 'code' => 404,
-                'body' => ''
+                'body' => [
+                    'status' => 'error',
+                    'message' => 'Nenhuma conta encontrada com o id informado'
+                ]
             ];
         }
+        if (!password_verify($password, $account['password'])) {
+            return [
+                'code' => 400,
+                'body' => [
+                    'status' => 'error',
+                    'message' => 'Senha incorreta'
+                ]
+            ];
+        }
+
+        $values = [
+            'name' => $name,
+            'email' => $email,
+            'phone' => $phone
+        ];
+        if ($this->client->patch($id, $values)) {
+            return [
+                'code' => 200,
+                'body' => [
+                    'status' => 'success',
+                    'message' => 'Dados alterados com sucesso'
+                ]
+            ];
+        }
+        return [
+            'code' => 500,
+            'body' => [
+                'status' => 'error',
+                'message' => 'Erro ao realizar seu pedido, tente novamente mais tarde'
+            ]
+        ];
     }
 }

@@ -120,35 +120,35 @@ class Client
         return false; // Retorna false se algum campo estiver vazio ou ocorrer um erro
     }
 
-    public function update($id, $name = null, $email = null, $password = null, $phone = null, $verified = null)
+    public function patch($id, $data)
     {
-        if (is_numeric($id)) {
+        if (is_numeric($id) && !empty($data)) {
             $fields = [];
             $params = [':id' => $id];
 
-            if (!empty($name)) {
+            if (!empty($data['name'])) {
                 $fields[] = "name = :name";
-                $params[':name'] = trim($name);
+                $params[':name'] = trim($data['name']);
             }
 
-            if (!empty($email)) {
+            if (!empty($data['email'])) {
                 $fields[] = "email = :email";
-                $params[':email'] = trim($email);
+                $params[':email'] = trim($data['email']);
             }
 
-            if (!empty($password)) {
+            if (!empty($data['password'])) {
                 $fields[] = "password = :password";
-                $params[':password'] = password_hash(trim($password), PASSWORD_DEFAULT); // Criptografa a nova senha
+                $params[':password'] = password_hash(trim($data['password']), PASSWORD_DEFAULT); // Criptografa a nova senha
             }
 
-            if (!empty($phone)) {
+            if (!empty($data['phone'])) {
                 $fields[] = "phone = :phone";
-                $params[':phone'] = trim($phone);
+                $params[':phone'] = trim($data['phone']);
             }
 
-            if (!empty($verified) && ($verified == 1 || $verified == 0)) {
+            if (!empty($data['verified']) && ($data['verified'] == 1 || $data['verified'] == 0)) {
                 $fields[] = "verified = :verified";
-                $params[':verified'] = trim($verified);
+                $params[':verified'] = trim($data['verified']);
             }
 
             // Verifica se algum campo foi fornecido para atualizar

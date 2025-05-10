@@ -36,9 +36,17 @@ switch ($httpMethod . $requestUri) {
         $response = $controller->validateEmail($data);
         sendResponse($response['body'], $response['code']);
         break;
+
     case 'DELETEclient/delete':
         $controller = new ClientController();
-        //$response = $controller->delet
+        $response = $controller->delete();
+        sendResponse($response['body'], $response['code']);
+        break;
+
+    case 'PATCHclient/chageInfo':
+        $controller = new ClientController();
+        $response = $controller->changeInfo($data);
+        sendResponse($response['body'], $response['code']);
         break;
 
     default:
