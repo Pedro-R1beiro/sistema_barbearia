@@ -61,6 +61,12 @@ switch ($httpMethod . $requestUri) {
         sendResponse($response['body'], $response['code']);
         break;
 
+    case 'PATCHclient/resetPassword':
+        $controller = new ClientController();
+        $response = $controller->resetPassword($data);
+        sendResponse($response['body'], $response['code']);
+        break;
+    
     default:
         sendResponse(['status' => 'error', 'message' => 'Rota não encontrada'], 404);
         break;
