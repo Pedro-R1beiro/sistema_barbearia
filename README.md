@@ -17,6 +17,7 @@
 - [Signup](#signup-client)
 - [Validar Email](#validar-email-client)
 - [Deletar Conta](#deletar-conta-client)
+- [Alterar Informações](#alterar-informações-client)
 
 ## Login (Client)
 
