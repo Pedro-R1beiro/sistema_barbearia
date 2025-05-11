@@ -2,6 +2,8 @@ import { ContactButton } from "@/components/ContactButton";
 import { Button } from "@/components/ui/button";
 
 import manImage from "../../../assets/man.svg";
+import moustacheIcon from "../../../assets/moustache-icon.svg";
+
 import { faInstagram, faWhatsapp } from "@fortawesome/free-brands-svg-icons";
 import { SeparationArrow } from "@/components/SeparationArrow";
 
@@ -13,9 +15,13 @@ export function Home() {
         className="mt-12 h-screen md:mt-0 md:flex md:items-center md:gap-12 md:pb-0"
       >
         <div className="space-y-4 text-center md:text-left">
-          <h1 className="text-4xl font-bold tracking-tight">BARBER SHOP</h1>
-          <p className="my-6 text-[1.625rem] font-light">
-            Cabelo, barba e tudo que te deixa <br /> em dia.
+          <h1 className="mx-auto flex w-fit items-center gap-3 text-4xl font-bold tracking-tight md:mx-0">
+            BARBER SHOP{" "}
+            <img src={moustacheIcon} alt="Ícone de bigode pontudo" />
+          </h1>
+          <p className="my-6 text-[1.75rem] font-light">
+            Cabelo, barba e tudo que te deixa{" "}
+            <br className="hidden md:inline" /> em dia.
           </p>
 
           <Button className="bg-foreground text-background text-md mt-2 w-full p-6 font-bold md:max-w-114">

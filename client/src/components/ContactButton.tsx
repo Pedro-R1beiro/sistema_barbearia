@@ -7,7 +7,7 @@ const contactButtonStyles = cva(
   {
     variants: {
       variant: {
-        primary: "bg-muted-foreground/100",
+        primary: "bg-muted-foreground/100 text-background",
         secondary:
           "border-background border-1 text-muted/70 hover:text-foreground hover:bg-background duration-200",
       },
@@ -43,11 +43,7 @@ export function ContactButton({
       href={link}
       className={contactButtonStyles({ variant, size, className })}
     >
-      <FontAwesomeIcon
-        size={size === "lg" ? "2x" : "sm"}
-        icon={icon}
-        className={variant === "primary" ? "text-background" : ""}
-      />
+      <FontAwesomeIcon size={size === "lg" ? "2x" : "sm"} icon={icon} />
     </a>
   );
 }

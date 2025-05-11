@@ -2,20 +2,25 @@ import CardServices from "./CardServices";
 
 import manCuttingHair from "@/assets/man-cutting-hair.svg";
 import manCuttingBeard from "@/assets/man-cutting-beard.png";
+import moustacheIcon from "@/assets/moustache-icon.svg";
+
 import { Card, CardContent, CardFooter, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { LinesWithOr } from "@/components/LinesWithOr";
 import { ContactButton } from "@/components/ContactButton";
+
 import { faInstagram, faWhatsapp } from "@fortawesome/free-brands-svg-icons";
 
 export default function Services() {
   return (
     <section
       id="services"
-      className="mt-90 space-y-4 text-center md:mt-30 md:h-screen md:pt-20 lg:mb-30"
+      className="mt-110 space-y-4 text-center md:mt-30 md:h-screen md:pt-20 lg:mb-30"
     >
-      <h1 className="text-4xl font-bold tracking-tight">BARBER SHOP</h1>
-      <p className="text-[1.625rem]">Nossos melhores serviços</p>
+      <h1 className="mx-auto mb-6 flex w-fit items-center gap-3 text-4xl font-bold tracking-tight">
+        BARBER SHOP <img src={moustacheIcon} alt="Ícone de bigode pontudo" />
+      </h1>
+      <p className="text-[1.75rem]">Nossos melhores serviços</p>
 
       <div className="mt-6 space-y-12 md:flex md:gap-6">
         <CardServices image={manCuttingHair}>
@@ -29,7 +34,7 @@ export default function Services() {
           manutenção da barba inclui aparar regularmente, lavar e hidratar com
           produtos específicos, e estilizar conforme a preferência.
         </CardServices>
-        <Card className="bg-foreground/90 text-background mx-auto h-112 w-[20rem] rounded-md pt-7">
+        <Card className="bg-foreground/90 text-background mx-auto h-112 w-[20rem] rounded-md pt-7 duration-200 hover:scale-110">
           <CardTitle className="leading-tight">
             Faça seu agendamento e veja a diferença.
           </CardTitle>
