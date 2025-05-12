@@ -3,6 +3,8 @@ import { Sale } from "./pages/Sale";
 import { SaleLayout } from "./pages/_layouts/SaleLayout";
 import { SignInLayout } from "./pages/_layouts/SignInLayout";
 import SingIn from "./pages/auth/SigIn";
+import { RegisterLayout } from "./pages/_layouts/RegisterLayout";
+import Register from "./pages/auth/Register";
 
 export const router = createBrowserRouter([
   {
@@ -13,6 +15,11 @@ export const router = createBrowserRouter([
   {
     path: "/",
     element: <SignInLayout />,
-    children: [{ path: "/Sign-in", element: <SingIn /> }],
+    children: [{ path: "/sign-in", element: <SingIn /> }],
+  },
+  {
+    path: "/",
+    element: <RegisterLayout />,
+    children: [{ path: "/register", element: <Register /> }],
   },
 ]);
