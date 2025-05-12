@@ -52,7 +52,7 @@ class ClientController
             ];
         }
 
-        $key = getenv('JWT_SECRET');
+        $key = 'qwe1!rty2@uiop3asd4$fgh5%jklç6';
 
         try {
             $decoded = JWT::decode($_COOKIE['auth_code'], new Key($key, 'HS256'));
@@ -122,7 +122,7 @@ class ClientController
             ];
         }
 
-        $key = getenv('JWT_SECRET');
+        $key = 'qwe1!rty2@uiop3asd4$fgh5%jklç6';
         $payload = [
             'sub' => $account['id'],
             'code' => $account['code'],
@@ -130,7 +130,7 @@ class ClientController
             'exp' => time() + (60 * 60 * 24 * 7)
         ];
         $jwt = JWT::encode($payload, $key, 'HS256');
-        setcookie('auth_code', $jwt, [
+        setcookie('auth_token', $jwt, [
             'expires' => time() + (60 * 60 * 24 * 7),
             'path' => '/',
             'httponly' => true,
@@ -641,6 +641,44 @@ class ClientController
             'body' => [
                 'status' => 'error',
                 'message' => 'Erro ao realizar seu pedido, tente novamente mais tarde'
+            ]
+        ];
+    }
+
+    public function getScheduling($data = null)
+    {
+        $userData = $this->authenticate();
+        if (isset($userData['body']['status']) && $userData['body']['status'] == 'error') {
+            return $userData;
+        }
+        $id = $userData['sub'];
+
+        $filter = !empty($data['filter']) ? trim($data['filter']) : 'all';
+        if (!in_array($filter, ['today', 'nearby', 'history', 'next', 'last', 'all'])) {
+            return [
+                'code' => 400,
+                'body' => [
+                    'status' => 'error',
+                    'message' => 'Filtro inválido'
+                ]
+            ];
+        }
+
+        $scheduling = $this->sche->get($filter, null, $id);
+        if ($scheduling) {
+            return [
+                'code' => 200,
+                'body' => [
+                    'status' => 'success',
+                    'message' => $scheduling
+                ]
+            ];
+        }
+        return [
+            'code' => 404,
+            'body' => [
+                'status' => 'error',
+                'message' => 'Nenhum agendamento foi encontrado'
             ]
         ];
     }

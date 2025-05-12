@@ -36,13 +36,14 @@ class Scheduling
     public function get($filter = null, $idProfessional = null, $idClient = null)
     {
         $today = date('Y-m-d');
+        $now = date('H:i:s');
 
         $sql = "SELECT
+        sc.id,
         sc.date,
-        sc.idProfessional,
-        p.name AS professionalName,
         sc.startTime,
         sc.endTime,
+        p.name AS professionalName,
         c.name AS clientName,
         s.name AS serviceName,
         s.price AS servicePrice
@@ -71,14 +72,26 @@ class Scheduling
                     $params[':today'] = $today;
                     break;
 
-                case 'next':
+                case 'nearby':
                     $conditions[] = "sc.date > :today";
                     $params[':today'] = $today;
                     break;
 
-                case 'prev':
+                case 'history':
                     $conditions[] = "sc.date < :today";
                     $params[':today'] = $today;
+                    break;
+
+                case 'next':
+                    $conditions[] = "sc.date > :today OR (sc.date = :today AND sc.startTime > :now)";
+                    $params[':today'] = $today;
+                    $params[':now'] = $now;
+                    break;
+
+                case 'last':
+                    $conditions[] = "sc.date < :today OR (sc.date = :today AND sc.endTime < :now)";
+                    $params[':today'] = $today;
+                    $params[':now'] = $now;
                     break;
 
                 case 'all':
@@ -91,7 +104,13 @@ class Scheduling
             $sql .= " WHERE " . implode(' AND ', $conditions);
         }
 
-        $sql .= " ORDER BY sc.date, sc.startTime";
+        if ($filter == 'next') {
+            $sql .= " ORDER BY sc.date ASC, sc.startTime ASC LIMIT 1";
+        } else if ($filter == 'last') {
+            $sql .= " ORDER BY sc.date DESC, sc.startTime DESC LIMIT 1";
+        } else {
+            $sql .= " ORDER BY sc.date, sc.startTime";
+        }
 
         $stmt = $this->conn->prepare($sql);
 

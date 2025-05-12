@@ -58,7 +58,7 @@ CREATE TABLE vacation (
     idProfessional INT NOT NULL,
     startDate DATE NOT NULL,
     endDate DATE NOT NULL,
-    FOREIGN KEY (idProfessional) REFERENCES professional(id) ON DELETE CASCADE
+    FOREIGN KEY (idProfessional) REFERENCES professionals(id) ON DELETE CASCADE
 );
 
 Tabela Services

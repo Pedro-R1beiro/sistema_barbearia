@@ -66,6 +66,12 @@ switch ($httpMethod . $requestUri) {
         $response = $controller->resetPassword($data);
         sendResponse($response['body'], $response['code']);
         break;
+
+    case 'GETclient/getScheduling':
+        $controller = new ClientController();
+        $response = $controller->getScheduling($data);
+        sendResponse($response['body'], $response['code']);
+        break;
     
     default:
         sendResponse(['status' => 'error', 'message' => 'Rota não encontrada'], 404);
