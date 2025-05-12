@@ -13,9 +13,9 @@
 > Em cada endpoint também terá os códigos http que podem ser retornados e o que cada um deles pode significar.
 
 # Client Documentation
-|Conta|
-|--------|
-|[Login](#login-client)|
+|Conta|Agendar Horário|
+|--------|-------------|
+|[Login](#login-client)|[Listar Agendamentos](#listar-agendamentos-client)|
 |[Signup](#signup-client)|
 |[Validar Email](#validar-email-client)|
 |[Deletar Conta](#deletar-conta-client)|
