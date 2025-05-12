@@ -72,7 +72,7 @@ POST /backend/client/signup
 ### Mensagem em caso de sucesso:
 ```json
 'message': {
-    'validationEmail' = 'Mensagem informando se o e-mail de validação foi enviado ou não'
+    'validationEmail': 'Mensagem informando se o e-mail de validação foi enviado ou não',
     'email': 'user@gmail.com
 }
 ```
@@ -132,9 +132,9 @@ PATCH /backend/client/chageInfo
 ### Formato de dados esperado:
 ```json
 {
-  'name':
-  'email':
-  'phone':
+  'name': ,
+  'email': ,
+  'phone': ,
   'senha': // Deve ser a senha atual, para conseguir alterar as outras informações
 }
 ```
@@ -155,7 +155,7 @@ PATCH /backend/client/chagePassword
 ### Formato de dados esperado:
 ```json
 {
-  'currentPassword': // Senha atual
+  'currentPassword': ,// Senha atual
   'newPassword': // Nova senha
 }
 ```
@@ -176,8 +176,8 @@ POST /backend/client/sendRecoveryEmail
 ### Formato de dados esperado:
 ```json
 {
-  'recoveryScreen': Link da tela para recuperção que será enviado para o email
-  'email': opcional caso o usuário esteja logado, caso não, obrigatório
+  'recoveryScreen': , // Link da tela para recuperção que será enviado para o email
+  'email': // opcional caso o usuário esteja logado, caso não, obrigatório
 }
 ```
 
@@ -197,7 +197,7 @@ PATCH /backend/client/resetPassword
 ### Formato de dados esperado:
 ```json
 {
-  'code': // Código único do usuário que estará na url que foi enviada para o e-mail do usuário
+  'code': , // Código único do usuário que estará na url que foi enviada para o e-mail do usuário
   'newPassword': // Nova senha
 }
 ```
@@ -207,3 +207,39 @@ PATCH /backend/client/resetPassword
 - 400: Valores inválidos ou senha atual igual à atual
 - 404: Nenhuma conta encontrada com o código informado
 - 500: Erro ao alterar no banco de dados
+
+## Listar Agendamentos (Client)
+
+### Caminho
+```http
+GET /backend/client/getScheduling
+```
+
+### Formato de dados esperado:
+```http
+/backend/client/getScheduling?filter=
+```
+### Filtros:
+- today: Todos agendamentos para hoje
+- nearby: Todos depois de hoje
+- history: Todos antes de hoje
+- next: Próximo agendamento
+- last: Último agendamento
+
+### Mensagem em caso de sucesso:
+```json
+'message': {
+    'id': 1,
+    'date': '2025-05-11',
+    'startTime': '08:00:00',
+    'endTime': '08:30:00',
+    'professionalName': 'Nome do Barbeiro',
+    'clientName': 'Nome do Cliente',
+    'serviceName': 'Nome do Serviço',
+    'servicePrice': '15.00'
+}
+```
+### Códigos http
+- 200: Sucesso
+- 400: Filtro Inválido
+- 409: Nenhum agendamento encontrado
