@@ -67,9 +67,9 @@ switch ($httpMethod . $requestUri) {
         sendResponse($response['body'], $response['code']);
         break;
 
-    case 'GETclient/getScheduling':
+    case 'GETclient/getAppointment':
         $controller = new ClientController();
-        $response = $controller->getScheduling($data);
+        $response = $controller->getAppointment($data);
         sendResponse($response['body'], $response['code']);
         break;
     

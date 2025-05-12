@@ -1,6 +1,6 @@
 <?php
 
-class Scheduling
+class Appointment
 {
     private $conn;
 
@@ -9,10 +9,10 @@ class Scheduling
         $this->conn = $conn;
     }
 
-    public function isOnScheduling($date, $idProfessional, $startTime, $endTime)
+    public function isOnAppointment($date, $idProfessional, $startTime, $endTime)
     {
         if (is_numeric($idProfessional) && !empty($date) && !empty($startTime) && !empty($endTime)) {
-            $sql = "SELECT * FROM schedulings
+            $sql = "SELECT * FROM appointments
                     WHERE date = :date
                     AND idProfessional = :idProfessional
                     AND ((:startTime >= startTime
@@ -27,10 +27,10 @@ class Scheduling
             $stmt->bindParam(':startTime', $startTime);
             $stmt->bindParam(':endTime', $endTime);
             if ($stmt->execute()) {
-                return $stmt->fetchAll(PDO::FETCH_ASSOC); // Retorna agendamentos conflitantes
+                return $stmt->fetchAll(PDO::FETCH_ASSOC); // Retorna compromissos conflitantes
             }
         }
-        return false; // Retorna false se os dados forem inválidos
+        return false;
     }
 
     public function get($filter = null, $idProfessional = null, $idClient = null)
@@ -39,57 +39,57 @@ class Scheduling
         $now = date('H:i:s');
 
         $sql = "SELECT
-        sc.id,
-        sc.date,
-        sc.startTime,
-        sc.endTime,
+        ap.id,
+        ap.date,
+        ap.startTime,
+        ap.endTime,
         p.name AS professionalName,
         c.name AS clientName,
         s.name AS serviceName,
         s.price AS servicePrice
-        FROM schedulings sc
-        INNER JOIN professionals p ON sc.idProfessional = p.id
-        INNER JOIN services s ON sc.idService = s.id
-        INNER JOIN clients c ON sc.idClient = c.id";
+        FROM appointments ap
+        INNER JOIN professionals p ON ap.idProfessional = p.id
+        INNER JOIN services s ON ap.idService = s.id
+        INNER JOIN clients c ON ap.idClient = c.id";
 
         $conditions = [];
         $params = [];
 
         if (!empty($idProfessional) && is_numeric($idProfessional)) {
-            $conditions[] = "sc.idProfessional = :idProfessional";
+            $conditions[] = "ap.idProfessional = :idProfessional";
             $params[':idProfessional'] = $idProfessional;
         }
 
         if (!empty($idClient) && is_numeric($idClient)) {
-            $conditions[] = "sc.idClient = :idClient";
+            $conditions[] = "ap.idClient = :idClient";
             $params[':idClient'] = $idClient;
         }
 
         if (!empty($filter)) {
             switch ($filter) {
                 case 'today':
-                    $conditions[] = "sc.date = :today";
+                    $conditions[] = "ap.date = :today";
                     $params[':today'] = $today;
                     break;
 
                 case 'nearby':
-                    $conditions[] = "sc.date > :today";
+                    $conditions[] = "ap.date > :today";
                     $params[':today'] = $today;
                     break;
 
                 case 'history':
-                    $conditions[] = "sc.date < :today";
+                    $conditions[] = "ap.date < :today";
                     $params[':today'] = $today;
                     break;
 
                 case 'next':
-                    $conditions[] = "sc.date > :today OR (sc.date = :today AND sc.startTime > :now)";
+                    $conditions[] = "ap.date > :today OR (ap.date = :today AND ap.startTime > :now)";
                     $params[':today'] = $today;
                     $params[':now'] = $now;
                     break;
 
                 case 'last':
-                    $conditions[] = "sc.date < :today OR (sc.date = :today AND sc.endTime < :now)";
+                    $conditions[] = "ap.date < :today OR (ap.date = :today AND ap.endTime < :now)";
                     $params[':today'] = $today;
                     $params[':now'] = $now;
                     break;
@@ -105,11 +105,11 @@ class Scheduling
         }
 
         if ($filter == 'next') {
-            $sql .= " ORDER BY sc.date ASC, sc.startTime ASC LIMIT 1";
+            $sql .= " ORDER BY ap.date ASC, ap.startTime ASC LIMIT 1";
         } else if ($filter == 'last') {
-            $sql .= " ORDER BY sc.date DESC, sc.startTime DESC LIMIT 1";
+            $sql .= " ORDER BY ap.date DESC, ap.startTime DESC LIMIT 1";
         } else {
-            $sql .= " ORDER BY sc.date, sc.startTime";
+            $sql .= " ORDER BY ap.date, ap.startTime";
         }
 
         $stmt = $this->conn->prepare($sql);
@@ -119,116 +119,114 @@ class Scheduling
         }
 
         if ($stmt->execute()) {
-            return $stmt->fetchAll(PDO::FETCH_ASSOC); // Retorna os agendamentos filtrados
+            return $stmt->fetchAll(PDO::FETCH_ASSOC); // Retorna os compromissos filtrados
         }
 
-        return false; // Retorna false em caso de erro
+        return false;
     }
 
     public function getById($id)
     {
         if (!empty($id) && is_numeric($id)) {
             $sql = "SELECT
-                        sc.date,
-                        sc.startTime,
-                        sc.endTime,
+                        ap.date,
+                        ap.startTime,
+                        ap.endTime,
                         s.name AS serviceName,
                         p.name AS professionalName,
                         c.name AS clientName
-                    FROM schedulings sc
-                    INNER JOIN services s ON sc.idService = s.id
-                    INNER JOIN professionals p ON sc.idProfessional = p.id
-                    INNER JOIN clients c ON sc.idClient = c.id
-                    WHERE sc.id = :id";
+                    FROM appointments ap
+                    INNER JOIN services s ON ap.idService = s.id
+                    INNER JOIN professionals p ON ap.idProfessional = p.id
+                    INNER JOIN clients c ON ap.idClient = c.id
+                    WHERE ap.id = :id";
             $stmt = $this->conn->prepare($sql);
             $stmt->bindParam(':id', $id);
 
             if ($stmt->execute()) {
-                return $stmt->fetch(PDO::FETCH_ASSOC); // Retorna o agendamento pelo ID
+                return $stmt->fetch(PDO::FETCH_ASSOC); // Retorna o compromisso pelo ID
             }
         }
-        return false; // Retorna false se o ID não for válido
+        return false;
     }
-
 
     public function getByService($idService)
     {
         if (!empty($idService) && is_numeric($idService)) {
             $sql = "SELECT
-                        sc.date,
-                        sc.startTime,
-                        sc.endTime,
+                        ap.date,
+                        ap.startTime,
+                        ap.endTime,
                         s.name AS serviceName,
                         p.name AS professionalName,
                         c.name AS clientName
-                    FROM schedulings sc
-                    INNER JOIN services s ON sc.idService = s.id
-                    INNER JOIN professionals p ON sc.idProfessional = p.id
-                    INNER JOIN clients c ON sc.idClient = c.id
-                    WHERE sc.idService = :idService
-                    ORDER BY sc.date, sc.startTime";
+                    FROM appointments ap
+                    INNER JOIN services s ON ap.idService = s.id
+                    INNER JOIN professionals p ON ap.idProfessional = p.id
+                    INNER JOIN clients c ON ap.idClient = c.id
+                    WHERE ap.idService = :idService
+                    ORDER BY ap.date, ap.startTime";
             $stmt = $this->conn->prepare($sql);
             $stmt->bindParam(':idService', $idService);
 
             if ($stmt->execute()) {
-                return $stmt->fetchAll(PDO::FETCH_ASSOC); // Retorna agendamentos para um serviço
+                return $stmt->fetchAll(PDO::FETCH_ASSOC); // Retorna compromissos para um serviço
             }
         }
-        return false; // Retorna false se o ID do serviço não for válido
+        return false;
     }
 
     public function getByProfessional($idProfessional)
     {
         if (!empty($idProfessional) && is_numeric($idProfessional)) {
             $sql = "SELECT
-                        sc.date,
-                        sc.startTime,
-                        sc.endTime,
+                        ap.date,
+                        ap.startTime,
+                        ap.endTime,
                         s.name AS serviceName,
                         p.name AS professionalName,
                         c.name AS clientName
-                    FROM schedulings sc
-                    INNER JOIN services s ON sc.idService = s.id
-                    INNER JOIN professionals p ON sc.idProfessional = p.id
-                    INNER JOIN clients c ON sc.idClient = c.id
-                    WHERE sc.idProfessional = :idProfessional
-                    ORDER BY sc.date, sc.startTime";
+                    FROM appointments ap
+                    INNER JOIN services s ON ap.idService = s.id
+                    INNER JOIN professionals p ON ap.idProfessional = p.id
+                    INNER JOIN clients c ON ap.idClient = c.id
+                    WHERE ap.idProfessional = :idProfessional
+                    ORDER BY ap.date, ap.startTime";
             $stmt = $this->conn->prepare($sql);
             $stmt->bindParam(':idProfessional', $idProfessional);
 
             if ($stmt->execute()) {
-                return $stmt->fetchAll(PDO::FETCH_ASSOC); // Retorna agendamentos de um profissional
+                return $stmt->fetchAll(PDO::FETCH_ASSOC); // Retorna compromissos de um profissional
             }
         }
-        return false; // Retorna false se o ID do profissional não for válido
+        return false;
     }
 
     public function getByClient($idClient)
     {
         if (!empty($idClient) && is_numeric($idClient)) {
             $sql = "SELECT
-                        sc.date,
-                        sc.startTime,
-                        sc.endTime,
+                        ap.date,
+                        ap.startTime,
+                        ap.endTime,
                         s.name AS serviceName,
                         p.name AS professionalName,
                         c.name AS clientName
-                    FROM schedulings sc
-                    INNER JOIN services s ON sc.idService = s.id
-                    INNER JOIN professionals p ON sc.idProfessional = p.id
-                    INNER JOIN clients c ON sc.idClient = c.id
-                    WHERE sc.idClient = :idClient
-                    ORDER BY sc.date, sc.startTime";
+                    FROM appointments ap
+                    INNER JOIN services s ON ap.idService = s.id
+                    INNER JOIN professionals p ON ap.idProfessional = p.id
+                    INNER JOIN clients c ON ap.idClient = c.id
+                    WHERE ap.idClient = :idClient
+                    ORDER BY ap.date, ap.startTime";
             $stmt = $this->conn->prepare($sql);
             $stmt->bindParam(':idClient', $idClient);
 
             if ($stmt->execute()) {
-                return $stmt->fetchAll(PDO::FETCH_ASSOC); // Retorna agendamentos de um cliente
+                return $stmt->fetchAll(PDO::FETCH_ASSOC); // Retorna compromissos de um cliente
             }
         }
-        return false; // Retorna false se o ID do cliente não for válido
+        return false;
     }
-
 
     public function post($date, $startTime, $endTime, $idService, $idProfessional, $idClient)
     {
@@ -237,7 +235,7 @@ class Scheduling
             $startTime = trim($startTime);
             $endTime  = trim($endTime);
 
-            $sql = "INSERT INTO schedulings (date, startTime, endTime, idClient, idService, idProfessional) VALUE (:date, :startTime, :endTime, :idClient, :idService, :idProfessional)";
+            $sql = "INSERT INTO appointments (date, startTime, endTime, idClient, idService, idProfessional) VALUE (:date, :startTime, :endTime, :idClient, :idService, :idProfessional)";
 
             $stmt = $this->conn->prepare($sql);
             $stmt->bindParam(':date', $date);
@@ -248,23 +246,23 @@ class Scheduling
             $stmt->bindParam(':idProfessional', $idProfessional);
 
             if ($stmt->execute()) {
-                return true; // Retorna true em caso de sucesso
+                return true;
             }
         }
-        return false; // Retorna false se os dados forem inválidos
+        return false;
     }
 
     public function delete($id)
     {
         if (is_numeric($id)) {
-            $sql = "DELETE FROM schedulings WHERE id = :id";
+            $sql = "DELETE FROM appointments WHERE id = :id";
             $stmt = $this->conn->prepare($sql);
             $stmt->bindParam(':id', $id);
 
             if ($stmt->execute()) {
-                return true; // Retorna true em caso de sucesso
+                return true;
             }
         }
-        return false; // Retorna false se o ID não for numérico
+        return false;
     }
 }

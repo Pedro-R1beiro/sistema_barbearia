@@ -1,6 +1,6 @@
 <?php
 
-require_once __DIR__ . '/scheduling.php';
+require_once __DIR__ . '/appointment.php';
 
 class Client
 {
@@ -10,7 +10,7 @@ class Client
     public function __construct($conn)
     {
         $this->conn = $conn;
-        $this->sche = new Scheduling($conn); // Instancia a classe de agendamento
+        $this->sche = new Appointment($conn); // Instancia a classe de agendamento
     }
 
     public function getData()
@@ -23,23 +23,23 @@ class Client
             -- Último agendamento ANTES da data atual
             (
                 SELECT MAX(date)
-                FROM scheduling s2
+                FROM appointments s2
                 WHERE s2.idClient = c.id AND s2.date < '$hoje'
-            ) AS prev_scheduling,
+            ) AS prev_appointments,
 
             -- Próximo agendamento DEPOIS da data atual
             (
                 SELECT MIN(date)
-                FROM scheduling s3
+                FROM appointments s3
                 WHERE s3.idClient = c.id AND s3.date > '$hoje'
-            ) AS next_scheduling,
+            ) AS next_appointments,
 
             -- Total de agendamentos do cliente
             (
                 SELECT COUNT(*)
-                FROM scheduling s4
+                FROM appointments s4
                 WHERE s4.idClient = c.id
-            ) AS total_scheduling
+            ) AS total_appointments
 
         FROM
             clients c

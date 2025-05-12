@@ -5,7 +5,7 @@ require_once __DIR__ . '/../classes/availability.php';
 require_once __DIR__ . '/../classes/client.php';
 require_once __DIR__ . '/../classes/dayOff.php';
 require_once __DIR__ . '/../classes/professional.php';
-require_once __DIR__ . '/../classes/scheduling.php';
+require_once __DIR__ . '/../classes/appointment.php';
 require_once __DIR__ . '/../classes/vacation.php';
 require_once __DIR__ . '/../email/emailSender.php';
 
@@ -21,7 +21,7 @@ class ClientController
     public $avai;
     public $dayOff;
     public $vac;
-    public $sche;
+    public $appo;
 
     public $emailSender;
 
@@ -35,7 +35,7 @@ class ClientController
         $this->avai = new Availability($this->conn);
         $this->dayOff = new DayOff($this->conn);
         $this->vac = new Vacation($this->conn);
-        $this->sche = new Scheduling($this->conn);
+        $this->appo = new Appointment($this->conn);
 
         $this->emailSender = new EmailSender;
     }
@@ -645,7 +645,7 @@ class ClientController
         ];
     }
 
-    public function getScheduling($data = null)
+    public function getAppointment($data = null)
     {
         $userData = $this->authenticate();
         if (isset($userData['body']['status']) && $userData['body']['status'] == 'error') {
@@ -664,13 +664,13 @@ class ClientController
             ];
         }
 
-        $scheduling = $this->sche->get($filter, null, $id);
-        if ($scheduling) {
+        $appointment = $this->appo->get($filter, null, $id);
+        if ($appointment) {
             return [
                 'code' => 200,
                 'body' => [
                     'status' => 'success',
-                    'message' => $scheduling
+                    'message' => $appointment
                 ]
             ];
         }
