@@ -50,24 +50,24 @@ export function NavMenu() {
           <FontAwesomeIcon icon={faEllipsisVertical} size="lg" />
           <span className="sr-only">Abrir Menu de Navegação</span>
         </DropdownMenuTrigger>
-        <DropdownMenuContent className="mr-6 w-60">
+        <DropdownMenuContent className="z-1000 mr-6 w-60">
           <DropdownMenuLabel>Navegação</DropdownMenuLabel>
           <DropdownMenuSeparator />
           <DropdownMenuItem>
             <FontAwesomeIcon icon={faHouse} />
-            Ínicio
+            <span>Ínicio</span>
           </DropdownMenuItem>
           <DropdownMenuItem>
             <FontAwesomeIcon icon={faBuilding} />
-            Sobre
+            <span>Sobre</span>
           </DropdownMenuItem>
           <DropdownMenuItem>
             <FontAwesomeIcon icon={faScissors} />
-            Serviços
+            <span>Serviços</span>
           </DropdownMenuItem>
           <DropdownMenuItem>
             <FontAwesomeIcon icon={faPhone} />
-            Contato
+            <span>Contato</span>
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>

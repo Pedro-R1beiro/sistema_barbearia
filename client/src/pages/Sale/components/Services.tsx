@@ -17,8 +17,13 @@ export default function Services() {
       id="services"
       className="mt-110 space-y-4 text-center md:mt-30 md:h-screen md:pt-20 lg:mb-30"
     >
-      <h1 className="mx-auto mb-6 flex w-fit items-center gap-3 text-4xl font-bold tracking-tight">
-        BARBER SHOP <img src={moustacheIcon} alt="Ícone de bigode pontudo" />
+      <h1 className="mx-auto mb-6 flex w-fit gap-3 text-center text-4xl font-bold tracking-tight">
+        BARBER SHOP{" "}
+        <img
+          src={moustacheIcon}
+          alt="Ícone de bigode pontudo"
+          className="bg-foreground w-10 rounded-full p-2"
+        />
       </h1>
       <p className="text-[1.75rem]">Nossos melhores serviços</p>
 

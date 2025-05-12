@@ -16,14 +16,17 @@ export function About() {
         className="mt-90 h-screen md:mt-10 md:flex md:flex-row-reverse md:items-center md:gap-12"
       >
         <div className="space-y-4 text-center md:flex md:flex-col md:items-end">
-          <h1 className="mx-auto flex w-fit items-center gap-3 text-4xl font-bold tracking-tight md:mx-0">
-            <img src={moustacheIcon} alt="Ícone de bigode pontudo" />
+          <h1 className="mx-auto mb-6 flex w-fit gap-3 text-center text-4xl font-bold tracking-tight">
             BARBER SHOP{" "}
+            <img
+              src={moustacheIcon}
+              alt="Ícone de bigode pontudo"
+              className="bg-foreground w-10 rounded-full p-2"
+            />
           </h1>
           <p className="text-[1.75rem] md:text-right">
             Agende na barbearia que transforma você
           </p>
-
           <div className="mt-8 space-y-10 text-justify md:mt-4 md:text-right">
             <p>
               Bem-vindo à nossa barbearia, onde tradição se encontra com
@@ -36,7 +39,6 @@ export function About() {
               sistema de agendamento simples e rápido:{" "}
             </p>
           </div>
-
           <div className="flex w-full flex-col items-center justify-center md:max-w-[26rem] md:items-end">
             <Button className="bg-foreground text-md mt-4 w-full p-6 font-bold">
               Agende seu horário

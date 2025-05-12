@@ -54,7 +54,7 @@
   --secondary: oklch(0.967 0.001 286.375);
   --secondary-foreground: oklch(0.21 0.006 285.885);
   --muted: oklch(0.967 0.001 286.375);
-  --muted-foreground: oklch(0.552 0.016 285.938);
+  --muted-foreground: oklch(83.59% 0 0);
   --accent: oklch(0.967 0.001 286.375);
   --accent-foreground: oklch(0.21 0.006 285.885);
   --destructive: oklch(0.577 0.245 27.325);
@@ -117,5 +117,7 @@
   body {
     @apply bg-background text-foreground;
     font-family: "Poppins", sans-serif;
+    max-width: 100vw;
+    overflow-x: hidden;
   }
 }

@@ -1,57 +1,52 @@
 import { ContactButton } from "@/components/ContactButton";
 import { Button } from "@/components/ui/button";
 
-import manImage from "../../../assets/man.svg";
-import moustacheIcon from "../../../assets/moustache-icon.svg";
+import moustacheIcon from "@/assets/moustache-icon.svg";
 
 import { faInstagram, faWhatsapp } from "@fortawesome/free-brands-svg-icons";
 import { SeparationArrow } from "@/components/SeparationArrow";
 
+import bg from "@/assets/sale-bg.svg";
+
 export function Home() {
   return (
-    <>
-      <section
-        id="home"
-        className="mt-12 h-screen md:mt-0 md:flex md:items-center md:gap-12 md:pb-0"
-      >
-        <div className="space-y-4 text-center md:text-left">
-          <h1 className="mx-auto flex w-fit items-center gap-3 text-4xl font-bold tracking-tight md:mx-0">
-            BARBER SHOP{" "}
-            <img src={moustacheIcon} alt="Ícone de bigode pontudo" />
-          </h1>
-          <p className="my-6 text-[1.75rem] font-light">
-            Cabelo, barba e tudo que te deixa{" "}
-            <br className="hidden md:inline" /> em dia.
-          </p>
+    <section
+      style={{ backgroundImage: `url(${bg})` }}
+      id="home"
+      className="bg-foreground/40 flex h-screen flex-col items-center bg-cover bg-center bg-no-repeat px-4 pt-40 md:mt-0 md:gap-12 md:pb-0"
+    >
+      <div className="mx-auto space-y-4 text-center">
+        <h1 className="mx-auto mb-6 flex w-fit gap-3 text-center text-4xl font-bold tracking-tight">
+          BARBER SHOP{" "}
+          <img
+            src={moustacheIcon}
+            alt="Ícone de bigode pontudo"
+            className="bg-foreground w-10 rounded-full p-2"
+          />
+        </h1>
+        <p className="mb-6 text-[1.75rem] font-light">
+          Cabelo, barba e tudo que te deixa <br className="hidden md:inline" />{" "}
+          em dia.
+        </p>
 
-          <Button className="bg-foreground text-background text-md mt-2 w-full p-6 font-bold md:max-w-114">
-            Agende seu horário
-          </Button>
-          <Button
-            variant="secondary"
-            className="text-md mt-2 w-full p-6 font-bold md:max-w-114 dark:bg-[#303030] dark:hover:bg-[#404040]"
-          >
-            Já tem horários marcados?
-          </Button>
+        <Button className="bg-foreground text-background text-md mt-2 w-full p-6 font-bold md:max-w-114">
+          Agende seu horário
+        </Button>
+        <Button
+          variant="secondary"
+          className="text-md mt-2 w-full p-6 font-bold md:max-w-114 dark:bg-[#303030] dark:hover:bg-[#404040]"
+        >
+          Já tem horários marcados?
+        </Button>
 
-          <div className="mt-6 flex items-center justify-center gap-3">
-            <ContactButton link="instagram.com" icon={faInstagram} />
-            <ContactButton link="whatsapp.api.client" icon={faWhatsapp} />
-          </div>
+        <div className="mt-6 flex items-center justify-center gap-3">
+          <ContactButton link="instagram.com" icon={faInstagram} />
+          <ContactButton link="whatsapp.api.client" icon={faWhatsapp} />
         </div>
-
-        <img
-          src={manImage}
-          alt=""
-          className="mx-auto mt-8 h-130 md:mt-0 md:ml-auto md:h-145"
-        />
-        <span className="block md:hidden">
-          <SeparationArrow />
-        </span>
-      </section>
-      <span className="hidden md:block">
+      </div>
+      <div className="mt-20 w-full max-w-6xl">
         <SeparationArrow />
-      </span>
-    </>
+      </div>
+    </section>
   );
 }
