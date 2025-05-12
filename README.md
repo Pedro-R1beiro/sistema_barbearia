@@ -212,12 +212,12 @@ PATCH /backend/client/resetPassword
 
 ### Caminho
 ```http
-GET /backend/client/getScheduling
+GET /backend/client/getAppointment
 ```
 
 ### Formato de dados esperado:
 ```http
-/backend/client/getScheduling?filter=
+/backend/client/getAppointment?filter=
 ```
 ### Filtros:
 - today: Todos agendamentos para hoje
