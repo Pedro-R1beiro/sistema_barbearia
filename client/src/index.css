@@ -117,7 +117,21 @@
   body {
     @apply bg-background text-foreground;
     font-family: "Poppins", sans-serif;
+
     max-width: 100vw;
     overflow-x: hidden;
+
+    &::-webkit-scrollbar {
+      width: 0.25rem;
+    }
+
+    &::-webkit-scrollbar-track {
+      background: var(--foreground);
+    }
+
+    &::-webkit-scrollbar-thumb {
+      border-radius: 20px;
+      border: 3px solid var(--muted);
+    }
   }
 }

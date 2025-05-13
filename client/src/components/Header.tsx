@@ -19,7 +19,7 @@ const navLinks: NavLinkInterface[] = [
 export function Header() {
   return (
     <header className="bg-accent-foreground/70 text-background relative flex w-full max-w-full items-center justify-end rounded-md py-3 shadow-xs backdrop-blur-sm">
-      <div className="bg-background absolute top-[em] left-[-0.25rem] rounded-r-full p-3">
+      <div className="bg-background absolute left-[-0.25rem] rounded-r-full p-3">
         <div className="bg-foreground rounded-full p-2 py-[0.8rem] font-bold">
           logo
         </div>
@@ -29,7 +29,7 @@ export function Header() {
           <Button className="px-6 py-5.5 font-bold" variant="secondary">
             <Link to="/sign-in">Entrar</Link>
           </Button>
-          <Button className="dark:text-background text-foreground bg-transparent py-5.5 font-bold md:px-6">
+          <Button className="dark:text-background text-foreground hover:text-background bg-transparent py-5.5 font-bold md:px-6">
             <Link to="/register">Cadastrar</Link>
           </Button>
         </div>

@@ -19,7 +19,7 @@ export function NavMenu({ navLinks }: NavMenuProps) {
     <>
       <ul className="hidden gap-7 font-bold md:flex">
         {navLinks.map((link) => (
-          <li>
+          <li key={link.text} >
             <NavLink
               key={link.link}
               link={link.link}

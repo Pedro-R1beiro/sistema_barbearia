@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { useNavigate } from "react-router";
+import { Link, useNavigate } from "react-router";
 
 import { z } from "zod";
 
@@ -44,12 +44,12 @@ export default function Register() {
       >
         Já tem uma conta?
       </Button>
-      <div className="border-foreground/80 dark:border-background/80 absolute mt-50 rounded-full border-2 p-10 px-45 lg:mt-15">
+      <div className="border-foreground/80 dark:border-background/80 absolute mt-50 rounded-full border-2 p-10 px-46 lg:mt-15">
         <form
           onSubmit={handleSubmit(onSubmit)}
           className="dark:text-background relative mx-auto flex max-w-50 flex-col gap-1 text-center font-bold"
         >
-          <div className="border-r-muted-foreground pointer-events-none absolute top-[-3.5rem] left-1/2 h-150 w-150 translate-x-[-50%] animate-[spin_1s_ease-in-out_infinite] rounded-full border-r-2"></div>
+          <div className="border-r-muted-foreground pointer-events-none absolute top-[-3.5rem] left-1/2 h-155 w-155 translate-x-[-50%] animate-[spin_1s_ease-in-out_infinite] rounded-full border-r-2"></div>
           <label htmlFor="name">Seu nome</label>
           <input
             id="name"
@@ -119,7 +119,7 @@ export default function Register() {
           >
             Entrar
           </Button>
-          <p className="text-sm font-medium underline">Esqueci minha senha</p>
+          <p className="text-sm font-medium">Ao cadastrar, concordo com os <Link to="/" className="font-bold hover:underline">termos</Link>.</p>
         </form>
       </div>
     </>
