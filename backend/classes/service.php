@@ -1,16 +1,16 @@
 <?php
 
-require_once __DIR__ . '/scheduling.php'; // Inclui a classe de agendamento
+require_once __DIR__ . '/appointment.php'; // Inclui a classe de agendamento
 
 class Service
 {
     private $conn;
-    private $sche;
+    private $appo;
 
     public function __construct($conn)
     {
         $this->conn = $conn;
-        $this->sche = new Scheduling($conn); // Instancia a classe de agendamento
+        $this->appo = new Appointment($conn); // Instancia a classe de agendamento
     }
 
     public function get()
@@ -89,9 +89,9 @@ class Service
     public function delete($id)
     {
         if (is_numeric($id)) {
-            $schedulingEntries = $this->sche->getByService($id); // Verifica se há agendamentos para este serviço
+            $appointmentEntries = $this->appo->getByService($id); // Verifica se há agendamentos para este serviço
 
-            if ($schedulingEntries && count($schedulingEntries) > 0) {
+            if ($appointmentEntries && count($appointmentEntries) > 0) {
                 # Inativa o serviço se houver agendamentos relacionados
                 $sql = "UPDATE services SET active = 0 WHERE id = :id";
                 $stmt = $this->conn->prepare($sql);
