@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { Link } from "react-router";
+import { useNavigate } from "react-router";
 
 import { z } from "zod";
 
@@ -25,6 +25,8 @@ function onSubmit(data: RegisterData) {
 }
 
 export default function Register() {
+  const navigate = useNavigate();
+
   const {
     register,
     handleSubmit,
@@ -32,13 +34,15 @@ export default function Register() {
   } = useForm({
     resolver: zodResolver(registerSchema),
   });
+
   return (
     <>
       <Button
+        onClick={() => navigate("/sign-in")}
         className="dark:text-background dark:border-background/20 dark:bg-foreground dark:hover:bg-background/5 absolute top-5 left-5"
         variant="outline"
       >
-        <Link to="/sign-in">Já tem uma conta?</Link>
+        Já tem uma conta?
       </Button>
       <div className="border-foreground/80 dark:border-background/80 absolute mt-50 rounded-full border-2 p-10 px-45 lg:mt-15">
         <form

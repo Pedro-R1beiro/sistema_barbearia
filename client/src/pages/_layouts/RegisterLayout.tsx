@@ -6,9 +6,11 @@ import {
   faLinkedin,
   faWhatsapp,
 } from "@fortawesome/free-brands-svg-icons";
-import { Link, Outlet } from "react-router";
+import { Outlet, useNavigate } from "react-router";
 
 export function RegisterLayout() {
+  const navigate = useNavigate();
+
   return (
     <>
       <div className="grid min-h-screen w-full lg:grid-cols-2">
@@ -35,8 +37,11 @@ export function RegisterLayout() {
 
           <div className="border-muted-foreground dark:border-muted-background mx-auto my-10 w-50 border-t lg:my-25 lg:w-75" />
 
-          <Button className="mx-auto mb-12 w-full max-w-50 lg:max-w-65">
-            <Link to="/sign-in">Já tenho uma conta</Link>
+          <Button
+            onClick={() => navigate("/sign-in")}
+            className="mx-auto mb-12 w-full max-w-50 lg:max-w-65"
+          >
+            Já tenho uma conta
           </Button>
           <span className="mt-auto flex items-center gap-2 text-sm">
             © Desenvolvido por Pedro Ribeiro

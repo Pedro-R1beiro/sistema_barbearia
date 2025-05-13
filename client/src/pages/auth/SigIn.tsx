@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { Link } from "react-router";
+import { useNavigate } from "react-router";
 
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -13,6 +13,8 @@ const signInSchema = z.object({
 type SignInData = z.infer<typeof signInSchema>;
 
 export default function SigIn() {
+  const navigate = useNavigate();
+
   const {
     register,
     handleSubmit,
@@ -28,10 +30,11 @@ export default function SigIn() {
   return (
     <>
       <Button
+        onClick={() => navigate("/register")}
         className="dark:text-background dark:border-background/20 dark:bg-foreground dark:hover:bg-background/5 absolute top-5 left-5"
         variant="outline"
       >
-        <Link to="/register">Não tem uma conta?</Link>
+        Não tem uma conta?
       </Button>
       <div className="border-foreground/80 dark:border-background/80 absolute mt-20 rounded-full border-2 p-15 px-26">
         <form
@@ -65,6 +68,11 @@ export default function SigIn() {
             placeholder="********"
             className="bg-muted dark:bg-muted-foreground/20 rounded-md p-2.5 placeholder:text-[0.75rem]"
           />
+          {errors.password && (
+            <span className="absolute top-40 left-12 text-sm text-rose-500">
+              {errors.password.message}
+            </span>
+          )}
 
           <Button
             disabled={isSubmitting}

@@ -1,10 +1,3 @@
-import {
-  faBuilding,
-  faEllipsisVertical,
-  faHouse,
-  faPhone,
-  faScissors,
-} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   DropdownMenu,
@@ -14,61 +7,48 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
+import { NavLink, type NavLinkInterface } from "./NavLink";
+import { faEllipsisVertical } from "@fortawesome/free-solid-svg-icons";
 
-export function NavMenu() {
+interface NavMenuProps {
+  navLinks: NavLinkInterface[];
+}
+
+export function NavMenu({ navLinks }: NavMenuProps) {
   return (
     <>
       <ul className="hidden gap-7 font-bold md:flex">
-        <li>
-          <a href="#" className="space-x-2">
-            <FontAwesomeIcon icon={faHouse} />
-            <span>Ínicio</span>
-          </a>
-        </li>
-        <li>
-          <a href="#about" className="space-x-2">
-            <FontAwesomeIcon icon={faBuilding} />
-            <span>Sobre</span>
-          </a>
-        </li>
-        <li>
-          <a href="#services" className="space-x-2">
-            <FontAwesomeIcon icon={faScissors} />
-            <span>Serviços</span>
-          </a>
-        </li>
-        <li>
-          <a href="#contact" className="space-x-2">
-            <FontAwesomeIcon icon={faPhone} />
-            <span>Contato</span>
-          </a>
-        </li>
+        {navLinks.map((link) => (
+          <li>
+            <NavLink
+              key={link.link}
+              link={link.link}
+              text={link.text}
+              icon={link.icon}
+              type={link.type}
+            />
+          </li>
+        ))}
       </ul>
 
       <DropdownMenu>
         <DropdownMenuTrigger className="w-5 md:hidden">
-          <FontAwesomeIcon icon={faEllipsisVertical} size="lg" />
+          <FontAwesomeIcon icon={faEllipsisVertical} size="2x" />
           <span className="sr-only">Abrir Menu de Navegação</span>
         </DropdownMenuTrigger>
-        <DropdownMenuContent className="z-1000 mr-6 w-60">
+        <DropdownMenuContent className="z-1000 mr-6 w-60 md:hidden">
           <DropdownMenuLabel>Navegação</DropdownMenuLabel>
           <DropdownMenuSeparator />
-          <DropdownMenuItem>
-            <FontAwesomeIcon icon={faHouse} />
-            <span>Ínicio</span>
-          </DropdownMenuItem>
-          <DropdownMenuItem>
-            <FontAwesomeIcon icon={faBuilding} />
-            <span>Sobre</span>
-          </DropdownMenuItem>
-          <DropdownMenuItem>
-            <FontAwesomeIcon icon={faScissors} />
-            <span>Serviços</span>
-          </DropdownMenuItem>
-          <DropdownMenuItem>
-            <FontAwesomeIcon icon={faPhone} />
-            <span>Contato</span>
-          </DropdownMenuItem>
+          {navLinks.map((link) => (
+            <DropdownMenuItem key={link.link}>
+              <NavLink
+                link={link.link}
+                text={link.text}
+                icon={link.icon}
+                type={link.type}
+              />
+            </DropdownMenuItem>
+          ))}
         </DropdownMenuContent>
       </DropdownMenu>
     </>

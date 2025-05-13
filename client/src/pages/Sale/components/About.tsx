@@ -1,10 +1,9 @@
 import { faInstagram, faWhatsapp } from "@fortawesome/free-brands-svg-icons";
 
-import moustacheIcon from "@/assets/moustache-icon.svg";
 import barberShopImage from "@/assets/barber-shop.png";
+
 import { ContactButton } from "@/components/ContactButton";
 import { LinesWithOr } from "@/components/LinesWithOr";
-
 import { Button } from "@/components/ui/button";
 import { SeparationArrow } from "@/components/SeparationArrow";
 
@@ -16,13 +15,8 @@ export function About() {
         className="mt-90 h-screen md:mt-10 md:flex md:flex-row-reverse md:items-center md:gap-12"
       >
         <div className="space-y-4 text-center md:flex md:flex-col md:items-end">
-          <h1 className="mx-auto mb-6 flex w-fit gap-3 text-center text-4xl font-bold tracking-tight">
-            BARBER SHOP{" "}
-            <img
-              src={moustacheIcon}
-              alt="Ícone de bigode pontudo"
-              className="bg-foreground w-10 rounded-full p-2"
-            />
+          <h1 className="text-center text-4xl font-bold tracking-tight md:text-right">
+            BARBER SHOP
           </h1>
           <p className="text-[1.75rem] md:text-right">
             Agende na barbearia que transforma você

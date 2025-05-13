@@ -1,5 +1,20 @@
 import { Button } from "./ui/button";
 import { NavMenu } from "./NavMenu";
+import { Link } from "react-router";
+import {
+  faBuilding,
+  faHouse,
+  faPhone,
+  faScissors,
+} from "@fortawesome/free-solid-svg-icons";
+import type { NavLinkInterface } from "./NavLink";
+
+const navLinks: NavLinkInterface[] = [
+  { link: "/", text: "Ínicio", icon: faHouse, type: "anchorLink" },
+  { link: "#about", text: "Sobre", icon: faBuilding, type: "anchorLink" },
+  { link: "#services", text: "Serviços", icon: faScissors, type: "anchorLink" },
+  { link: "#contact", text: "Contato", icon: faPhone, type: "anchorLink" },
+];
 
 export function Header() {
   return (
@@ -12,14 +27,14 @@ export function Header() {
       <nav className="flex w-full items-center justify-end gap-4 pr-4 md:flex-row-reverse md:justify-between md:pl-30">
         <div className="flex gap-4">
           <Button className="px-6 py-5.5 font-bold" variant="secondary">
-            Entrar
+            <Link to="/sign-in">Entrar</Link>
           </Button>
-          <Button className="dark:text-foreground bg-transparent py-5.5 font-bold md:px-6">
-            Cadastrar
+          <Button className="dark:text-background text-foreground bg-transparent py-5.5 font-bold md:px-6">
+            <Link to="/register">Cadastrar</Link>
           </Button>
         </div>
 
-        <NavMenu />
+        <NavMenu navLinks={navLinks} />
       </nav>
     </header>
   );

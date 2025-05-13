@@ -22,7 +22,7 @@ export default function Services() {
         <img
           src={moustacheIcon}
           alt="Ícone de bigode pontudo"
-          className="bg-foreground w-10 rounded-full p-2"
+          className="dark:bg-background bg-foreground w-10 rounded-full p-2"
         />
       </h1>
       <p className="text-[1.75rem]">Nossos melhores serviços</p>

@@ -13,7 +13,7 @@ export function Home() {
     <section
       style={{ backgroundImage: `url(${bg})` }}
       id="home"
-      className="bg-foreground/40 flex h-screen flex-col items-center bg-cover bg-center bg-no-repeat px-4 pt-40 md:mt-0 md:gap-12 md:pb-0"
+      className="bg-foreground/40 dark:bg-background/0 flex h-screen flex-col items-center bg-cover bg-center bg-no-repeat px-4 pt-40 md:mt-0 md:gap-12 md:pb-0"
     >
       <div className="mx-auto space-y-4 text-center">
         <h1 className="mx-auto mb-6 flex w-fit gap-3 text-center text-4xl font-bold tracking-tight">
@@ -21,7 +21,7 @@ export function Home() {
           <img
             src={moustacheIcon}
             alt="Ícone de bigode pontudo"
-            className="bg-foreground w-10 rounded-full p-2"
+            className="dark:bg-background bg-foreground w-10 rounded-full p-2"
           />
         </h1>
         <p className="mb-6 text-[1.75rem] font-light">
@@ -39,7 +39,7 @@ export function Home() {
           Já tem horários marcados?
         </Button>
 
-        <div className="mt-6 flex items-center justify-center gap-3">
+        <div className="mx-auto mt-6 flex w-fit items-center justify-center gap-3">
           <ContactButton link="instagram.com" icon={faInstagram} />
           <ContactButton link="whatsapp.api.client" icon={faWhatsapp} />
         </div>
