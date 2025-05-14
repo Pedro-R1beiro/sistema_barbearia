@@ -44,7 +44,7 @@ export function Home() {
           <ContactButton link="whatsapp.api.client" icon={faWhatsapp} />
         </div>
       </div>
-      <div className="mt-20 w-full max-w-6xl">
+      <div className="mt-auto w-full max-w-6xl">
         <SeparationArrow />
       </div>
     </section>

@@ -15,7 +15,7 @@ export default function Services() {
   return (
     <section
       id="services"
-      className="mt-110 space-y-4 text-center md:mt-30 md:h-screen md:pt-20 lg:mb-30"
+      className="mt-130 space-y-4 text-center md:mt-30 md:h-screen md:pt-20 lg:mb-30"
     >
       <h1 className="mx-auto mb-6 flex w-fit gap-3 text-center text-4xl font-bold tracking-tight">
         BARBER SHOP{" "}

@@ -31,18 +31,18 @@ export default function SigIn() {
     <>
       <Button
         onClick={() => navigate("/register")}
-        className="dark:text-background dark:border-background/20 dark:bg-foreground dark:hover:bg-background/5 absolute top-5 left-5"
+        className="dark:text-background dark:border-background/20 dark:bg-foreground dark:hover:bg-background/5 absolute top-5 left-5 z-1000"
         variant="outline"
       >
         Não tem uma conta?
       </Button>
-      <div className="border-foreground/80 dark:border-background/80 absolute mt-20 rounded-full border-2 p-15 px-26">
+      <div className="border-foreground/80 dark:border-background/80 absolute mt-20 rounded-full border-2 p-15 px-26 lg:mt-50">
         <form
           onSubmit={handleSubmit(onSubmit)}
           className="dark:text-background relative mx-auto flex max-w-50 flex-col gap-1 text-center font-bold"
           noValidate
         >
-          <div className="border-r-muted-foreground pointer-events-none absolute top-[-4.5rem] left-1/2 h-110 w-110 translate-x-[-50%] animate-[spin_1s_ease-in-out_infinite] rounded-full border-r-2"></div>
+          <div className="border-r-muted-foreground pointer-events-none absolute top-[-4.75rem] left-1/2 h-110 w-110 translate-x-[-50%] animate-[spin_1s_ease-in-out_infinite] rounded-full border-r-2"></div>
 
           <label htmlFor="email">Seu e-mail</label>
           <input

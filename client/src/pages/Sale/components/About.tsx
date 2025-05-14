@@ -12,7 +12,7 @@ export function About() {
     <>
       <section
         id="about"
-        className="mt-90 h-screen md:mt-10 md:flex md:flex-row-reverse md:items-center md:gap-12"
+        className="mt-10 h-screen md:flex md:flex-row-reverse md:items-center md:gap-12"
       >
         <div className="space-y-4 text-center md:flex md:flex-col md:items-end">
           <h1 className="text-center text-4xl font-bold tracking-tight md:text-right">

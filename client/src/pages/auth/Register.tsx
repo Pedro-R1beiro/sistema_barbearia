@@ -39,12 +39,12 @@ export default function Register() {
     <>
       <Button
         onClick={() => navigate("/sign-in")}
-        className="dark:text-background dark:border-background/20 dark:bg-foreground dark:hover:bg-background/5 absolute top-5 left-5"
+        className="dark:text-background dark:border-background/20 dark:bg-foreground dark:hover:bg-background/5 absolute top-5 left-5 z-1000"
         variant="outline"
       >
         Já tem uma conta?
       </Button>
-      <div className="border-foreground/80 dark:border-background/80 absolute mt-50 rounded-full border-2 p-10 px-46 lg:mt-15">
+      <div className="border-foreground/80 dark:border-background/80 absolute mt-50 rounded-full border-2 p-10 px-48.5 lg:mt-50">
         <form
           onSubmit={handleSubmit(onSubmit)}
           className="dark:text-background relative mx-auto flex max-w-50 flex-col gap-1 text-center font-bold"
@@ -119,7 +119,13 @@ export default function Register() {
           >
             Entrar
           </Button>
-          <p className="text-sm font-medium">Ao cadastrar, concordo com os <Link to="/" className="font-bold hover:underline">termos</Link>.</p>
+          <p className="text-sm font-medium">
+            Ao cadastrar, concordo com os{" "}
+            <Link to="/" className="font-bold hover:underline">
+              termos
+            </Link>
+            .
+          </p>
         </form>
       </div>
     </>

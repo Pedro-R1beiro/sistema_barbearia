@@ -6,7 +6,7 @@ import SingIn from "./pages/auth/SigIn";
 import { RegisterLayout } from "./pages/_layouts/RegisterLayout";
 import Register from "./pages/auth/Register";
 import { UserLayout } from "./pages/_layouts/UserLayout";
-import UserDashboard from "./pages/user/UserDashboard";
+import UserDashboard from "./pages/app/user/UserDashboard";
 
 export const router = createBrowserRouter([
   {
@@ -26,7 +26,7 @@ export const router = createBrowserRouter([
   },
   {
     path: "/",
-    element: <UserLayout/>,
-    children: [{path: "/dashboard", element:<UserDashboard/>}]
-  }
+    element: <UserLayout />,
+    children: [{ path: "/dashboard", element: <UserDashboard /> }],
+  },
 ]);
