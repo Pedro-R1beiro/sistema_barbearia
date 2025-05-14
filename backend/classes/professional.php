@@ -1,16 +1,16 @@
 <?php
 
-require_once __DIR__ . '/scheduling.php';
+require_once __DIR__ . '/appointment.php';
 
 class Professional
 {
     private $conn;
-    private $sche;
+    private $appo;
 
     public function __construct($conn)
     {
         $this->conn = $conn;
-        $this->sche = new Scheduling($conn); // Instancia a classe de agendamento
+        $this->appo = new Appointment($conn); // Instancia a classe de agendamento
     }
 
     public function getById($id)
@@ -123,26 +123,26 @@ class Professional
     public function delete($id)
     {
         if (is_numeric($id)) {
-            $schePrev = $this->sche->get('prev', null, $id); // Busca agendamentos anteriores
-            $scheToday = $this->sche->get('today', null, $id); // Busca agendamentos para hoje
-            $scheNext = $this->sche->get('next', null, $id);   // Busca agendamentos futuros
+            $appoPrev = $this->appo->get('prev', null, $id); // Busca agendamentos anteriores
+            $appoToday = $this->appo->get('today', null, $id); // Busca agendamentos para hoje
+            $appoNext = $this->appo->get('next', null, $id);   // Busca agendamentos futuros
 
             // Exclui agendamentos para hoje
-            if ($scheToday && count($scheToday) > 0) {
-                foreach ($scheToday as $val) {
-                    $this->sche->delete($val['id']);
+            if ($appoToday && count($appoToday) > 0) {
+                foreach ($appoToday as $val) {
+                    $this->appo->delete($val['id']);
                 }
             }
 
             // Exclui agendamentos futuros
-            if ($scheNext && count($scheNext) > 0) {
-                foreach ($scheNext as $val) {
-                    $this->sche->delete($val['id']);
+            if ($appoNext && count($appoNext) > 0) {
+                foreach ($appoNext as $val) {
+                    $this->appo->delete($val['id']);
                 }
             }
 
             // Se houver agendamentos anteriores, inativa o profissional, senão, exclui completamente
-            if ($schePrev && count($schePrev) > 0) {
+            if ($appoPrev && count($appoPrev) > 0) {
                 $sql = "UPDATE professionals SET name = 'ghost', email = null, password = null, phone = null, code = null, active = 0 WHERE id = :id";
                 $stmt = $this->conn->prepare($sql);
                 $stmt->bindParam(':id', $id);

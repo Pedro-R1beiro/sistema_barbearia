@@ -35,6 +35,7 @@ class Appointment
 
     public function get($filter = null, $idProfessional = null, $idClient = null)
     {
+        date_default_timezone_set('America/Sao_Paulo');
         $today = date('Y-m-d');
         $now = date('H:i:s');
 
@@ -128,18 +129,7 @@ class Appointment
     public function getById($id)
     {
         if (!empty($id) && is_numeric($id)) {
-            $sql = "SELECT
-                        ap.date,
-                        ap.startTime,
-                        ap.endTime,
-                        s.name AS serviceName,
-                        p.name AS professionalName,
-                        c.name AS clientName
-                    FROM appointments ap
-                    INNER JOIN services s ON ap.idService = s.id
-                    INNER JOIN professionals p ON ap.idProfessional = p.id
-                    INNER JOIN clients c ON ap.idClient = c.id
-                    WHERE ap.id = :id";
+            $sql = "SELECT * FROM appointments WHERE id = :id";
             $stmt = $this->conn->prepare($sql);
             $stmt->bindParam(':id', $id);
 
