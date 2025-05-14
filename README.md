@@ -16,7 +16,7 @@
 |Conta|Agendar Horário|
 |--------|-------------|
 |[Login](#login-client)|[Listar Agendamentos](#listar-agendamentos-client)|
-|[Signup](#signup-client)|
+|[Signup](#signup-client)|[Cancelar Agendamento](#cancelar-agendamento)|
 |[Validar Email](#validar-email-client)|
 |[Deletar Conta](#deletar-conta-client)|
 |[Alterar Informações](#alterar-informações-client)|
@@ -108,13 +108,6 @@ PATCH /backend/client/validateEmail
 ### Caminho
 ```http
 DELETE /backend/client/delete
-```
-
-### Formato de dados esperado:
-```json
-{
-  'id': 1
-}
 ```
 
 ### Códigos http
@@ -243,3 +236,23 @@ GET /backend/client/getAppointment
 - 200: Sucesso
 - 400: Filtro Inválido
 - 409: Nenhum agendamento encontrado
+
+## Deletar Conta (Client)
+
+### Caminho
+```http
+DELETE /backend/client/delete
+```
+
+### Formato de dados esperado:
+```http
+/backend/client/delete?id=
+```
+
+### Códigos http
+- 204: Agendamento deletado
+- 400: Id não informado ou inválido
+- 403: Tentativa de excluir agendamento de outra pessoa
+- 404: Nenhum agendamento com este Id
+- 422: Agendamento já começou ou está no passado, não pode ser excluído
+- 500: Erro ao deletar do banco de dados
