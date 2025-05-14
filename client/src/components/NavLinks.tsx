@@ -10,16 +10,16 @@ import {
 import { NavLink, type NavLinkInterface } from "./NavLink";
 import { faEllipsisVertical } from "@fortawesome/free-solid-svg-icons";
 
-interface NavMenuProps {
+interface NavLinksProps {
   navLinks: NavLinkInterface[];
 }
 
-export function NavMenu({ navLinks }: NavMenuProps) {
+export function NavLinks({ navLinks }: NavLinksProps) {
   return (
     <>
-      <ul className="hidden gap-7 font-bold md:flex">
+      <ul className="hidden gap-7 py-3 font-bold md:flex">
         {navLinks.map((link) => (
-          <li key={link.text} >
+          <li key={link.text}>
             <NavLink
               key={link.link}
               link={link.link}

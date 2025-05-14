@@ -4,6 +4,7 @@ import { useNavigate } from "react-router";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+import { SeparationArrow } from "@/components/SeparationArrow";
 
 const signInSchema = z.object({
   email: z.string().email("E-mail inválido"),
