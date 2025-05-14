@@ -72,7 +72,16 @@ switch ($httpMethod . $requestUri) {
         $response = $controller->getAppointment($data);
         sendResponse($response['body'], $response['code']);
         break;
-    
+
+    case 'DELETEclient/deleteAppointment':
+        $controller = new ClientController();
+        if (!isset($data['id']) && isset($_GET['id'])) {
+            $data['id'] = $_GET['id'];
+        }
+        $response = $controller->deleteAppointment($data);
+        sendResponse($response['body'], $response['code']);
+        break;
+
     default:
         sendResponse(['status' => 'error', 'message' => 'Rota não encontrada'], 404);
         break;

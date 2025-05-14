@@ -55,7 +55,7 @@ class ClientController
         $key = 'qwe1!rty2@uiop3asd4$fgh5%jklç6';
 
         try {
-            $decoded = JWT::decode($_COOKIE['auth_code'], new Key($key, 'HS256'));
+            $decoded = JWT::decode($_COOKIE['auth_token'], new Key($key, 'HS256'));
             return (array) $decoded;
         } catch (Exception $e) {
             return [
@@ -310,7 +310,7 @@ class ClientController
             ];
         }
         if ($this->client->delete($id)) {
-            setcookie('auth_code', '', [
+            setcookie('auth_token', '', [
                 'expires' => time() - 3600, // expira no passado
                 'path' => '/',
                 'httponly' => true,
@@ -679,6 +679,78 @@ class ClientController
             'body' => [
                 'status' => 'error',
                 'message' => 'Nenhum agendamento foi encontrado'
+            ]
+        ];
+    }
+
+    public function deleteAppointment($data)
+    {
+        $userData = $this->authenticate();
+        if (isset($userData['body']['status']) && $userData['body']['status'] == 'error') {
+            return $userData;
+        }
+        $idClient = $userData['sub'];
+
+        if (empty($data['id']) || !is_numeric(trim($data['id']))) {
+            return [
+                'code' => 400,
+                'body' => [
+                    'status' => 'error',
+                    'message' => 'Id do agendamento não foi informado ou não é um número'
+                ]
+            ];
+        }
+
+        $id = trim($data['id']);
+        $appointment = $this->appo->getById($id);
+        if (!$appointment) {
+            return [
+                'code' => 404,
+                'body' => [
+                    'status' => 'error',
+                    'message' => 'Nenhum agendamento com este Id'
+                ]
+            ];
+        }
+
+        if ($appointment['idClient'] != $idClient) {
+            return [
+                'code' => 403,
+                'body' => [
+                    'status' => 'error',
+                    'message' => 'Você não tem permissão para excluir este agendamento'
+                ]
+            ];
+        }
+
+        date_default_timezone_set('America/Sao_Paulo');
+        $today = date('Y-m-d');
+        $now = date('H:i:s');
+
+        if ($appointment['date'] < $today || ($appointment['date'] == $today && $appointment['startTime'] <= $now)) {
+            return [
+                'code' => 422,
+                'body' => [
+                    'status' => 'error',
+                    'message' => 'Este agendamento já começou ou está no passado e não pode ser excluído'
+                ]
+            ];
+        }
+
+        if ($this->appo->delete($id)) {
+            return [
+                'code' => 204,
+                'body' => [
+                    'status' => 'success',
+                    'message' => 'Agendamento excluído'
+                ]
+            ];
+        }
+        return [
+            'code' => 500,
+            'body' => [
+                'status' => 'error',
+                'message' => 'Erro ao realizar seu pedido, tente novamente mais tarde'
             ]
         ];
     }
