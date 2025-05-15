@@ -5,6 +5,7 @@ import { faWhatsapp } from "@fortawesome/free-brands-svg-icons";
 import { faCalendarDays, faScissors } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { NextAppointment } from "./components/NextAppointment";
+import { AppointmentsTable } from "./components/AppointmentsTable";
 
 export default function UserDashboard() {
   return (
@@ -47,6 +48,9 @@ export default function UserDashboard() {
       </div>
       <div className="mt-8">
         <NextAppointment />
+      </div>
+      <div className="bg-foreground text-background mt-8 rounded-md p-4">
+        <AppointmentsTable />
       </div>
     </>
   );
