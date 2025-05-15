@@ -9,7 +9,7 @@ export function Header({ children, className }: HeaderProps) {
   return (
     <header
       className={twMerge(
-        "bg-accent-foreground/70 text-background relative flex w-full max-w-full items-center justify-end rounded-md py-3 shadow-xs backdrop-blur-sm",
+        "bg-accent-foreground/70 text-background relative flex w-full max-w-full items-center justify-end rounded-md px-4 py-3 shadow-xs backdrop-blur-sm",
         className,
       )}
     >
@@ -17,7 +17,7 @@ export function Header({ children, className }: HeaderProps) {
         href="#"
         className="bg-background absolute top-[em] left-[-0.25rem] rounded-r-full p-3"
       >
-        <div className="bg-foreground rounded-full p-2 py-[0.8rem] font-bold">
+        <div className="bg-foreground rounded-full p-2 py-[0.9rem] font-bold">
           logo
         </div>
       </a>

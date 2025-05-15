@@ -13,7 +13,7 @@ export function UserLayout() {
   return (
     <>
       <div className="fixed top-5 left-1/2 z-100 w-full max-w-6xl translate-x-[-50%] px-4">
-        <Header>
+        <Header className="bg-foreground">
           <NavLinks navLinks={navLinks} />
         </Header>
       </div>
