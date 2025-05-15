@@ -45,7 +45,8 @@ if ($requestType === 'client') {
         switch ($httpMethod) {
             case 'GET':
                 $routesMap = [
-                    'getAppointment' => 'getAppointment'
+                    'getAppointment' => 'getAppointment',
+                    'getServices' => 'getServices'
                 ];
                 $controller = new ClientGet();
                 $response = resolveRoute($controller, $methodType, $routesMap);
