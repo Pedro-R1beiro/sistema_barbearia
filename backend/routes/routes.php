@@ -1,11 +1,18 @@
 <?php
 
 require_once __DIR__ . '/../controllers/professionalController.php';
-require_once __DIR__ . '/../controllers/ClientController.php';
+
+require_once __DIR__ . '/../controllers/clientController/clientGet.php';
+require_once __DIR__ . '/../controllers/clientController/clientPost.php';
+require_once __DIR__ . '/../controllers/clientController/clientPatch.php';
+require_once __DIR__ . '/../controllers/clientController/clientDelete.php';
 
 $basePath = '/sistema_barbearia_2.0/backend/';
 $requestUri = str_replace($basePath, '', $_SERVER['REQUEST_URI']);
 $requestUri = trim(parse_url($requestUri, PHP_URL_PATH), '/');
+
+[$requestType, $methodType] = explode('/', $requestUri) + [null, null];
+
 $httpMethod = $_SERVER['REQUEST_METHOD'];
 $data = in_array($httpMethod, ['POST', 'PUT', 'PATCH', 'DELETE']) ? json_decode(file_get_contents("php://input"), true) : $_GET;
 
@@ -18,71 +25,80 @@ function sendResponse($data, $statusCode = 200)
     exit;
 }
 
-switch ($httpMethod . $requestUri) {
-    case 'POSTclient/signup':
-        $controller = new ClientController();
-        $response = $controller->signup($data);
-        sendResponse($response['body'], $response['code']);
-        break;
+function resolveRoute($controller, $methodType, $routesMap)
+{
+    global $data;
 
-    case 'POSTclient/login':
-        $controller = new ClientController();
-        $response = $controller->login($data);
-        sendResponse($response['body'], $response['code']);
-        break;
+    if (!isset($routesMap[$methodType])) {
+        return [
+            'code' => 404,
+            'body' => ['status' => 'error', 'message' => 'Rota não encontrada']
+        ];
+    }
 
-    case 'PATCHclient/validateEmail':
-        $controller = new ClientController();
-        $response = $controller->validateEmail($data);
-        sendResponse($response['body'], $response['code']);
-        break;
+    $method = $routesMap[$methodType];
+    return $controller->$method($data);
+}
 
-    case 'DELETEclient/delete':
-        $controller = new ClientController();
-        $response = $controller->delete();
-        sendResponse($response['body'], $response['code']);
-        break;
+if ($requestType === 'client') {
+    try {
+        switch ($httpMethod) {
+            case 'GET':
+                $routesMap = [
+                    'getAppointment' => 'getAppointment'
+                ];
+                $controller = new ClientGet();
+                $response = resolveRoute($controller, $methodType, $routesMap);
+                break;
 
-    case 'PATCHclient/chageInfo':
-        $controller = new ClientController();
-        $response = $controller->changeInfo($data);
-        sendResponse($response['body'], $response['code']);
-        break;
+            case 'POST':
+                $routesMap = [
+                    'signup' => 'signup',
+                    'login' => 'login',
+                    'sendRecoveryEmail' => 'sendRecoveryEmail'
+                ];
+                $controller = new ClientPost();
+                $response = resolveRoute($controller, $methodType, $routesMap);
+                break;
 
-    case 'PATCHclient/changePassword':
-        $controller = new ClientController();
-        $response = $controller->changePassword($data);
-        sendResponse($response['body'], $response['code']);
-        break;
+            case 'PATCH':
+                $routesMap = [
+                    'validateEmail' => 'validateEmail',
+                    'changeInfo' => 'changeInfo',
+                    'changePassword' => 'changePassword',
+                    'resetPassword' => 'resetPassword'
+                ];
+                $controller = new ClientPatch();
+                $response = resolveRoute($controller, $methodType, $routesMap);
+                break;
 
-    case 'POSTclient/sendRecoveryEmail':
-        $controller = new ClientController();
-        $response = $controller->sendRecoveryEmail($data);
-        sendResponse($response['body'], $response['code']);
-        break;
+            case 'DELETE':
+                $routesMap = [
+                    'delete' => 'delete',
+                    'deleteAppointment' => 'deleteAppointment'
+                ];
+                $controller = new ClientDelete();
 
-    case 'PATCHclient/resetPassword':
-        $controller = new ClientController();
-        $response = $controller->resetPassword($data);
-        sendResponse($response['body'], $response['code']);
-        break;
+                // Ajuste extra no caso de deleteAppointment
+                if ($methodType === 'deleteAppointment') {
+                    if (!isset($data['id']) && isset($_GET['id'])) {
+                        $data['id'] = $_GET['id'];
+                    }
+                }
 
-    case 'GETclient/getAppointment':
-        $controller = new ClientController();
-        $response = $controller->getAppointment($data);
-        sendResponse($response['body'], $response['code']);
-        break;
+                $response = resolveRoute($controller, $methodType, $routesMap);
+                break;
 
-    case 'DELETEclient/deleteAppointment':
-        $controller = new ClientController();
-        if (!isset($data['id']) && isset($_GET['id'])) {
-            $data['id'] = $_GET['id'];
+            default:
+                sendResponse(['status' => 'error', 'message' => 'Método HTTP não suportado'], 405);
         }
-        $response = $controller->deleteAppointment($data);
-        sendResponse($response['body'], $response['code']);
-        break;
 
-    default:
-        sendResponse(['status' => 'error', 'message' => 'Rota não encontrada'], 404);
-        break;
+        sendResponse($response['body'], $response['code']);
+    } catch (Exception $e) {
+        sendResponse([
+            'status' => 'error',
+            'message' => 'Erro interno do servidor',
+            'error' => $e->getMessage()
+        ], 500);
+    }
 }
