@@ -15,7 +15,7 @@ export function Header({ children, className }: HeaderProps) {
     >
       <a
         href="#"
-        className="bg-background absolute top-[em] left-[-0.25rem] rounded-r-full p-3"
+        className="bg-background absolute left-[-0.25rem] rounded-r-full p-3"
       >
         <div className="bg-foreground rounded-full p-2 py-[0.9rem] font-bold">
           logo
