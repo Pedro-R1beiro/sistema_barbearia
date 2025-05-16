@@ -9,9 +9,9 @@ import { AppointmentsTable } from "./components/AppointmentsTable";
 
 export default function UserDashboard() {
   return (
-    <>
-      <div className="space-y-10">
-        <Card className="bg-custom-foreground text-background">
+    <div className="gap-x-14 lg:mt-6 lg:grid lg:grid-cols-[1fr_auto] lg:grid-rows-[180px_1fr]">
+      <div className="col-1 row-1 space-y-10 md:flex md:items-center md:gap-8 md:space-y-0">
+        <Card className="bg-custom-foreground text-background lg:w-72">
           <CardContent>
             <div className="flex items-start justify-between pr-2">
               <span className="text-2xl font-bold">22 dias</span>
@@ -26,7 +26,7 @@ export default function UserDashboard() {
             </div>
           </CardContent>
         </Card>
-        <Card className="bg-custom-foreground text-background">
+        <Card className="bg-custom-foreground text-background md:flex-1">
           <CardContent className="px-3">
             <div className="flex items-start justify-between pr-2">
               <CardTitle className="text-2xl font-bold">
@@ -46,12 +46,11 @@ export default function UserDashboard() {
           </CardContent>
         </Card>
       </div>
-      <div className="mt-8">
+      <div className="mt-8 lg:mt-2">
         <NextAppointment />
       </div>
-      <div className="bg-foreground text-background mt-8 rounded-md p-4">
-        <AppointmentsTable />
-      </div>
-    </>
+
+      <AppointmentsTable />
+    </div>
   );
 }
