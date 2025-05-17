@@ -16,11 +16,16 @@ class ClientDelete
 
     public function __construct()
     {
-        $bd = new Database;
-        $this->conn = $bd->connect();
+        try {
+            $bd = new Database;
+            $this->conn = $bd->connect();
 
-        $this->client = new Client($this->conn);
-        $this->appo = new Appointment($this->conn);
+            $this->client = new Client($this->conn);
+            $this->appo = new Appointment($this->conn);
+        } catch (Exception $e) {
+            // Se falhar na conexão ou instanciamento, pode-se logar o erro se quiser
+            $this->conn = null;
+        }
     }
 
     public function authenticate()
@@ -53,118 +58,141 @@ class ClientDelete
 
     public function delete()
     {
-        $userData = $this->authenticate();
-        if (isset($userData['body']['status']) && $userData['body']['status'] == 'error') {
-            return $userData;
-        }
-        $id = $userData['sub'];
+        try {
+            $userData = $this->authenticate();
+            if (isset($userData['body']['status']) && $userData['body']['status'] == 'error') {
+                return $userData;
+            }
+            $id = $userData['sub'];
 
-        $account = $this->client->getById($id);
-        if (!$account) {
+            $account = $this->client->getById($id);
+            if (!$account) {
+                return [
+                    'code' => 404,
+                    'body' => [
+                        'status' => 'error',
+                        'message' => 'Conta não encontrada'
+                    ]
+                ];
+            }
+
+            if ($this->client->delete($id)) {
+                setcookie('auth_token', '', [
+                    'expires' => time() - 3600,
+                    'path' => '/',
+                    'httponly' => true,
+                    'secure' => true,
+                    'samesite' => 'Lax'
+                ]);
+
+                return [
+                    'code' => 204,
+                    'body' => [
+                        'status' => 'success',
+                        'message' => 'Conta excluída com sucesso'
+                    ]
+                ];
+            }
+
             return [
-                'code' => 404,
+                'code' => 500,
                 'body' => [
                     'status' => 'error',
-                    'message' => 'Nenhuma conta encontrada com este Id'
+                    'message' => 'Erro ao realizar seu pedido, tente novamente mais tarde'
                 ]
             ];
-        }
-        if ($this->client->delete($id)) {
-            setcookie('auth_token', '', [
-                'expires' => time() - 3600, // expira no passado
-                'path' => '/',
-                'httponly' => true,
-                'secure' => true,
-                'samesite' => 'Lax'
-            ]);
-
+        } catch (Exception $e) {
             return [
-                'code' => 204,
+                'code' => 500,
                 'body' => [
-                    'status' => 'success',
-                    'message' => 'Conta excluída com sucesso'
+                    'status' => 'error',
+                    'message' => 'Erro inesperado, tente novamente mais tarde'
                 ]
             ];
         }
-        return [
-            'code' => 500,
-            'body' => [
-                'status' => 'error',
-                'message' => 'Erro ao realizar seu pedido, tente novamente mais tarde'
-            ]
-        ];
     }
 
     public function deleteAppointment($data)
     {
-        $userData = $this->authenticate();
-        if (isset($userData['body']['status']) && $userData['body']['status'] == 'error') {
-            return $userData;
-        }
-        $idClient = $userData['sub'];
+        try {
+            $userData = $this->authenticate();
+            if (isset($userData['body']['status']) && $userData['body']['status'] == 'error') {
+                return $userData;
+            }
+            $idClient = $userData['sub'];
 
-        if (empty($data['id']) || !is_numeric(trim($data['id']))) {
+            if (empty($data['id']) || !is_numeric(trim($data['id']))) {
+                return [
+                    'code' => 400,
+                    'body' => [
+                        'status' => 'error',
+                        'message' => 'Id do agendamento inválido'
+                    ]
+                ];
+            }
+
+            $id = trim($data['id']);
+            $appointment = $this->appo->getById($id);
+            if (!$appointment) {
+                return [
+                    'code' => 404,
+                    'body' => [
+                        'status' => 'error',
+                        'message' => 'Agendamento não encontrado'
+                    ]
+                ];
+            }
+
+            if ($appointment['idClient'] != $idClient) {
+                return [
+                    'code' => 403,
+                    'body' => [
+                        'status' => 'error',
+                        'message' => 'Você não tem permissão para excluir este agendamento'
+                    ]
+                ];
+            }
+
+            date_default_timezone_set('America/Sao_Paulo');
+            $today = date('Y-m-d');
+            $now = date('H:i:s');
+
+            if ($appointment['date'] < $today || ($appointment['date'] == $today && $appointment['startTime'] <= $now)) {
+                return [
+                    'code' => 422,
+                    'body' => [
+                        'status' => 'error',
+                        'message' => 'Este agendamento já começou ou está no passado e não pode ser excluído'
+                    ]
+                ];
+            }
+
+            if ($this->appo->delete($id)) {
+                return [
+                    'code' => 204,
+                    'body' => [
+                        'status' => 'success',
+                        'message' => 'Agendamento excluído'
+                    ]
+                ];
+            }
+
             return [
-                'code' => 400,
+                'code' => 500,
                 'body' => [
                     'status' => 'error',
-                    'message' => 'Id do agendamento não foi informado ou não é um número'
+                    'message' => 'Erro ao realizar seu pedido, tente novamente mais tarde'
                 ]
             ];
-        }
-
-        $id = trim($data['id']);
-        $appointment = $this->appo->getById($id);
-        if (!$appointment) {
+        } catch (Exception $e) {
             return [
-                'code' => 404,
+                'code' => 500,
                 'body' => [
                     'status' => 'error',
-                    'message' => 'Nenhum agendamento com este Id'
+                    'message' => 'Erro inesperado, tente novamente mais tarde'
                 ]
             ];
         }
-
-        if ($appointment['idClient'] != $idClient) {
-            return [
-                'code' => 403,
-                'body' => [
-                    'status' => 'error',
-                    'message' => 'Você não tem permissão para excluir este agendamento'
-                ]
-            ];
-        }
-
-        date_default_timezone_set('America/Sao_Paulo');
-        $today = date('Y-m-d');
-        $now = date('H:i:s');
-
-        if ($appointment['date'] < $today || ($appointment['date'] == $today && $appointment['startTime'] <= $now)) {
-            return [
-                'code' => 422,
-                'body' => [
-                    'status' => 'error',
-                    'message' => 'Este agendamento já começou ou está no passado e não pode ser excluído'
-                ]
-            ];
-        }
-
-        if ($this->appo->delete($id)) {
-            return [
-                'code' => 204,
-                'body' => [
-                    'status' => 'success',
-                    'message' => 'Agendamento excluído'
-                ]
-            ];
-        }
-        return [
-            'code' => 500,
-            'body' => [
-                'status' => 'error',
-                'message' => 'Erro ao realizar seu pedido, tente novamente mais tarde'
-            ]
-        ];
     }
 }
 

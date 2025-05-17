@@ -134,65 +134,156 @@ class ClientGet
 
     public function availableTimeSlots($data)
     {
-        $userData = $this->authenticate();
-        if (isset($userData['body']['status']) && $userData['body']['status'] == 'error') {
-            return $userData;
-        }
-        $id = $userData['sub'];
+        try {
+            $userData = $this->authenticate();
+            if (isset($userData['body']['status']) && $userData['body']['status'] == 'error') {
+                return $userData;
+            }
+            $id = $userData['sub'];
 
-        if (empty($data['date']) || empty($data['service'])) {
-            return [
-                'code' => 400,
-                'body' => [
-                    'status' => 'error',
-                    'message' => 'Data e/ou serviço(s) não especificado(s)'
-                ]
-            ];
-        }
-
-        if (!DateTime::createFromFormat('Y-m-d', trim($data['date']))) {
-            return [
-                'code' => 400,
-                'body' => [
-                    'status' => 'error',
-                    'message' => 'Formato de data inválido'
-                ]
-            ];
-        }
-
-        $duration = 0;
-
-        // Normalizar para array
-        if (is_array($data['service'])) {
-            $services = $data['service'];
-        } elseif (is_string($data['service'])) {
-            $services = explode(',', $data['service']);
-        } else {
-            $services = [$data['service']];
-        }
-
-        // Remover duplicatas e espaços
-        $services = array_unique(array_map('trim', $services));
-
-        // Verificar e somar duração
-        foreach ($services as $idService) {
-            if (!is_numeric($idService)) {
+            if (empty($data['date']) || empty($data['service'])) {
                 return [
                     'code' => 400,
                     'body' => [
                         'status' => 'error',
-                        'message' => 'ID de serviço inválido: deve ser numérico'
+                        'message' => 'Data e/ou serviço(s) não especificado(s)'
                     ]
                 ];
             }
 
-            $_service = $this->service->getById($idService);
-            if ($_service && isset($_service['duration'])) {
-                $duration += $_service['duration'];
+            if (!DateTime::createFromFormat('Y-m-d', trim($data['date']))) {
+                return [
+                    'code' => 400,
+                    'body' => [
+                        'status' => 'error',
+                        'message' => 'Formato de data inválido'
+                    ]
+                ];
             }
-        }
 
-        if ($duration === 0) {
+            $duration = 0;
+
+            if (is_array($data['service'])) {
+                $services = $data['service'];
+            } elseif (is_string($data['service'])) {
+                $services = explode(',', $data['service']);
+            } else {
+                $services = [$data['service']];
+            }
+
+            $services = array_unique(array_map('trim', $services));
+
+            foreach ($services as $idService) {
+                if (!is_numeric($idService)) {
+                    return [
+                        'code' => 400,
+                        'body' => [
+                            'status' => 'error',
+                            'message' => 'ID de serviço inválido: deve ser numérico'
+                        ]
+                    ];
+                }
+
+                $_service = $this->service->getById($idService);
+                if ($_service && isset($_service['duration'])) {
+                    $duration += $_service['duration'];
+                }
+            }
+
+            if ($duration === 0) {
+                return [
+                    'code' => 500,
+                    'body' => [
+                        'status' => 'error',
+                        'message' => 'Erro ao realizar seu pedido, tente novamente mais tarde'
+                    ]
+                ];
+            }
+
+            $professionals = $this->prof->get();
+            if (!$professionals || count($professionals) <= 0) {
+                return [
+                    'code' => 500,
+                    'body' => [
+                        'status' => 'error',
+                        'message' => 'Nenhum profissional encontrado no banco de dados'
+                    ]
+                ];
+            }
+
+            $date = trim($data['date']);
+            $dayWeek = date('w', strtotime($date));
+
+            $timeSlots = [];
+
+            foreach ($professionals as $indice => $row) {
+                $_isOnVacation = $this->vacat->isOnVacation($row['id'], $date);
+                $_isOnDayOff = $this->dayOff->isOnDayOff($row['id'], $date);
+                $_availabilities = $this->avail->getByProfessional($row['id'], $dayWeek);
+
+                $timeSlots[$indice] = [
+                    'name' => $row['name'],
+                    'email' => $row['email'],
+                    'phone' => $row['phone'],
+                    'timeSlot' => []
+                ];
+
+                if ($_isOnVacation || $_isOnDayOff || !$_availabilities || count($_availabilities) <= 0) {
+                    continue;
+                }
+
+                $defaultRange = new DateInterval('PT30M');
+
+                foreach ($_availabilities as $_availability) {
+                    if (!isset($_availability['startTime'], $_availability['endTime'])) {
+                        continue;
+                    }
+
+                    $startTime = new DateTime($_availability['startTime']);
+                    $endTime = new DateTime($_availability['endTime']);
+                    $now = clone $startTime;
+
+                    $startBreak = null;
+                    $endBreak = null;
+
+                    if ($_availability['break'] == 1 && !empty($_availability['startBreak']) && !empty($_availability['endBreak'])) {
+                        $startBreak = new DateTime($_availability['startBreak']);
+                        $endBreak = new DateTime($_availability['endBreak']);
+                    }
+
+                    while ($now < $endTime) {
+                        $isOnBreak = false;
+                        if ($startBreak && $endBreak) {
+                            $isOnBreak = ($now >= $startBreak && $now < $endBreak);
+                        }
+
+                        if (!$isOnBreak) {
+                            $periodEnd = clone $now;
+                            $periodEnd->add(new DateInterval('PT' . $duration . 'M'));
+
+                            if ($periodEnd > $endTime) {
+                                break;
+                            }
+
+                            $isAppointment = $this->appo->isOnAppointment($date, $row['id'], $now->format('H:i:s'), $periodEnd->format('H:i:s'));
+                            if (!$isAppointment || count($isAppointment) === 0) {
+                                $timeSlots[$indice]['timeSlot'][] = $now->format('H:i');
+                            }
+                        }
+
+                        $now->add($defaultRange);
+                    }
+                }
+            }
+
+            return [
+                'code' => 200,
+                'body' => [
+                    'status' => 'success',
+                    'message' => $timeSlots
+                ]
+            ];
+        } catch (Exception $e) {
             return [
                 'code' => 500,
                 'body' => [
@@ -201,89 +292,5 @@ class ClientGet
                 ]
             ];
         }
-
-        $professionals = $this->prof->get();
-        if (!$professionals || count($professionals) <= 0) {
-            return [
-                'code' => 500,
-                'body' => [
-                    'status' => 'error',
-                    'message' => 'Nenhum profissional encontrado no banco de dados'
-                ]
-            ];
-        }
-
-        $date = trim($data['date']);
-        $dayWeek = date('w', strtotime($date));
-
-        $timeSlots = [];
-
-        foreach ($professionals as $indice => $row) {
-            $_isOnVacation = $this->vacat->isOnVacation($row['id'], $date);
-            $_isOnDayOff = $this->dayOff->isOnDayOff($row['id'], $date);
-            $_availabilities = $this->avail->getByProfessional($row['id'], $dayWeek);
-
-            $timeSlots[$indice] = [
-                'name' => $row['name'],
-                'email' => $row['email'],
-                'phone' => $row['phone'],
-                'timeSlot' => []
-            ];
-
-            if ($_isOnVacation || $_isOnDayOff || !$_availabilities || count($_availabilities) <= 0) {
-                continue;
-            }
-
-            $defaultRange = new DateInterval('PT30M');
-
-            foreach ($_availabilities as $_availability) {
-                if (!isset($_availability['startTime'], $_availability['endTime'])) {
-                    continue;
-                }
-
-                $startTime = new DateTime($_availability['startTime']);
-                $endTime = new DateTime($_availability['endTime']);
-                $now = clone $startTime;
-
-                $startBreak = null;
-                $endBreak = null;
-
-                if ($_availability['break'] == 1 && !empty($_availability['startBreak']) && !empty($_availability['endBreak'])) {
-                    $startBreak = new DateTime($_availability['startBreak']);
-                    $endBreak = new DateTime($_availability['endBreak']);
-                }
-
-                while ($now < $endTime) {
-                    $isOnBreak = false;
-                    if ($startBreak && $endBreak) {
-                        $isOnBreak = ($now >= $startBreak && $now < $endBreak);
-                    }
-
-                    if (!$isOnBreak) {
-                        $periodEnd = clone $now;
-                        $periodEnd->add(new DateInterval('PT' . $duration . 'M'));
-
-                        if ($periodEnd > $endTime) {
-                            break; // não ultrapassar o fim da disponibilidade
-                        }
-
-                        $isAppointment = $this->appo->isOnAppointment($date, $row['id'], $now->format('H:i:s'), $periodEnd->format('H:i:s'));
-                        if (!$isAppointment || count($isAppointment) === 0) {
-                            $timeSlots[$indice]['timeSlot'][] = $now->format('H:i');
-                        }
-                    }
-
-                    $now->add($defaultRange);
-                }
-            }
-        }
-
-        return [
-            'code' => 200,
-            'body' => [
-                'status' => 'success',
-                'message' => $timeSlots
-            ]
-        ];
     }
 }

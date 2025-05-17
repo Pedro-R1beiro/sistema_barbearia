@@ -10,18 +10,14 @@ use Firebase\JWT\Key;
 class ClientPatch
 {
     public $conn;
-
     public $client;
-
     public $emailSender;
 
     public function __construct()
     {
         $bd = new Database;
         $this->conn = $bd->connect();
-
         $this->client = new Client($this->conn);
-
         $this->emailSender = new EmailSender;
     }
 
@@ -55,95 +51,106 @@ class ClientPatch
 
     public function validateEmail($data)
     {
-        if (empty($data['code'])) {
+        try {
+            if (empty($data['code'])) {
+                return [
+                    'code' => 400,
+                    'body' => [
+                        'status' => 'error',
+                        'message' => 'Sem código para verificar'
+                    ]
+                ];
+            }
+
+            $code = trim($data['code']);
+            $account = $this->client->getByCode($code);
+
+            if (!$account) {
+                return [
+                    'code' => 404,
+                    'body' => [
+                        'status' => 'error',
+                        'message' => 'Nenhuma conta encontrada com este código'
+                    ]
+                ];
+            }
+
+            if ($account['verified'] == 1) {
+                return [
+                    'code' => 200,
+                    'body' => [
+                        'status' => 'success',
+                        'message' => 'Este e-mail já foi verificado'
+                    ]
+                ];
+            }
+
+            $value = ['verified' => 1];
+            $validateEmail = $this->client->patch($account['id'], $value);
+
+            if ($validateEmail) {
+                return [
+                    'code' => 200,
+                    'body' => [
+                        'status' => 'success',
+                        'message' => 'E-mail validado com sucesso'
+                    ]
+                ];
+            }
+
             return [
-                'code' => 400,
+                'code' => 500,
                 'body' => [
                     'status' => 'error',
-                    'message' => 'Sem código para verificar'
+                    'message' => 'Erro ao realizar seu pedido, tente novamente mais tarde'
                 ]
             ];
-        }
-
-        $code = trim($data['code']);
-        $account = $this->client->getByCode($code);
-
-        if (!$account) {
+        } catch (Exception $e) {
             return [
-                'code' => 404,
+                'code' => 500,
                 'body' => [
                     'status' => 'error',
-                    'message' => 'Nenhuma conta encontrada com este código'
+                    'message' => 'Erro ao realizar seu pedido, tente novamente mais tarde'
                 ]
             ];
         }
-        if ($account['verified'] == 1) {
-            return [
-                'code' => 200,
-                'body' => [
-                    'status' => 'success',
-                    'message' => 'Este e-mail já foi verificado'
-                ]
-            ];
-        }
-
-        $value = [
-            'verified' => 1
-        ];
-        $validateEmail = $this->client->patch($account['id'], $value);
-
-        if ($validateEmail) {
-            return [
-                'code' => 200,
-                'body' => [
-                    'status' => 'success',
-                    'message' => 'E-mail validado com sucesso'
-                ]
-            ];
-        }
-        return [
-            'code' => 500,
-            'body' => [
-                'status' => 'error',
-                'message' => 'Erro ao realizar seu pedido, tente novamente mais tarde'
-            ]
-        ];
     }
 
     public function changeInfo($data)
     {
-        $userData = $this->authenticate();
-        if (isset($userData['body']['status']) && $userData['body']['status'] == 'error') {
-            return $userData;
-        }
-        $id = $userData['sub'];
-        $account = $this->client->getById($id);
-        if (!$account) {
-            return [
-                'code' => 404,
-                'body' => [
-                    'status' => 'error',
-                    'message' => 'Nenhuma conta encontrada com este Id'
-                ]
-            ];
-        }
+        try {
+            $userData = $this->authenticate();
+            if (isset($userData['body']['status']) && $userData['body']['status'] == 'error') {
+                return $userData;
+            }
 
-        if (empty($data['name']) && empty($data['email']) && empty($data['phone'])) {
-            return [
-                'code' => 400,
-                'body' => [
-                    'status' => 'error',
-                    'message' => 'Nenhum dado novo foi informado'
-                ]
-            ];
-        }
+            $id = $userData['sub'];
+            $account = $this->client->getById($id);
+            if (!$account) {
+                return [
+                    'code' => 404,
+                    'body' => [
+                        'status' => 'error',
+                        'message' => 'Nenhuma conta encontrada com este Id'
+                    ]
+                ];
+            }
 
-        $name = !empty($data['name']) ? trim($data['name']) : null;
-        $email = !empty($data['email']) ? trim($data['email']) : null;
-        $phone = !empty($data['phone']) ? trim($data['phone']) : null;
+            if (empty($data['name']) && empty($data['email']) && empty($data['phone'])) {
+                return [
+                    'code' => 400,
+                    'body' => [
+                        'status' => 'error',
+                        'message' => 'Nenhum dado novo foi informado'
+                    ]
+                ];
+            }
 
-        if ($name != null) {
-            if (strlen($name) < 3 || strlen($name) > 30) {
+            $name = !empty($data['name']) ? trim($data['name']) : null;
+            $email = !empty($data['email']) ? trim($data['email']) : null;
+            $phone = !empty($data['phone']) ? trim($data['phone']) : null;
+
+            if ($name !== null && (strlen($name) < 3 || strlen($name) > 30)) {
                 return [
                     'code' => 400,
                     'body' => [
@@ -152,9 +159,8 @@ class ClientPatch
                     ]
                 ];
             }
-        }
-        if ($email != null) {
-            if (!filter_var($email, FILTER_VALIDATE_EMAIL) || strlen($email) > 50) {
+
+            if ($email !== null && (!filter_var($email, FILTER_VALIDATE_EMAIL) || strlen($email) > 50)) {
                 return [
                     'code' => 400,
                     'body' => [
@@ -163,195 +169,210 @@ class ClientPatch
                     ]
                 ];
             }
-        }
 
-        if (empty($data['password'])) {
+            if (empty($data['password'])) {
+                return [
+                    'code' => 400,
+                    'body' => [
+                        'status' => 'error',
+                        'message' => 'Senha atual não foi informada'
+                    ]
+                ];
+            }
+
+            $password = trim($data['password']);
+            if (!password_verify($password, $account['password'])) {
+                return [
+                    'code' => 400,
+                    'body' => [
+                        'status' => 'error',
+                        'message' => 'Senha incorreta'
+                    ]
+                ];
+            }
+
+            $values = [
+                'name' => $name,
+                'email' => $email,
+                'phone' => $phone
+            ];
+
+            if ($this->client->patch($id, $values)) {
+                return [
+                    'code' => 200,
+                    'body' => [
+                        'status' => 'success',
+                        'message' => 'Dados alterados com sucesso'
+                    ]
+                ];
+            }
+
             return [
-                'code' => 400,
+                'code' => 500,
                 'body' => [
                     'status' => 'error',
-                    'message' => 'Senha atual não foi informada'
+                    'message' => 'Erro ao realizar seu pedido, tente novamente mais tarde'
                 ]
             ];
-        }
-        $password = trim($data['password']);
-
-        $account = $this->client->getById($id);
-        if (!$account) {
+        } catch (Exception $e) {
             return [
-                'code' => 404,
+                'code' => 500,
                 'body' => [
                     'status' => 'error',
-                    'message' => 'Nenhuma conta encontrada com o id informado'
+                    'message' => 'Erro ao realizar seu pedido, tente novamente mais tarde'
                 ]
             ];
         }
-        if (!password_verify($password, $account['password'])) {
-            return [
-                'code' => 400,
-                'body' => [
-                    'status' => 'error',
-                    'message' => 'Senha incorreta'
-                ]
-            ];
-        }
-
-        $values = [
-            'name' => $name,
-            'email' => $email,
-            'phone' => $phone
-        ];
-        if ($this->client->patch($id, $values)) {
-            return [
-                'code' => 200,
-                'body' => [
-                    'status' => 'success',
-                    'message' => 'Dados alterados com sucesso'
-                ]
-            ];
-        }
-        return [
-            'code' => 500,
-            'body' => [
-                'status' => 'error',
-                'message' => 'Erro ao realizar seu pedido, tente novamente mais tarde'
-            ]
-        ];
     }
 
     public function changePassword($data)
     {
-        $userData = $this->authenticate();
-        if (isset($userData['body']['status']) && $userData['body']['status'] == 'error') {
-            return $userData;
-        }
-        $id = $userData['sub'];
-        $account = $this->client->getById($id);
-        if (!$account) {
-            return [
-                'code' => 404,
-                'body' => [
-                    'status' => 'error',
-                    'message' => 'Nenhuma conta encontrada com este Id'
-                ]
-            ];
-        }
+        try {
+            $userData = $this->authenticate();
+            if (isset($userData['body']['status']) && $userData['body']['status'] == 'error') {
+                return $userData;
+            }
 
-        if (empty($data['currentPassword']) || empty($data['newPassword'])) {
-            return [
-                'code' => 400,
-                'body' => [
-                    'status' => 'error',
-                    'message' => 'Informe a nova senha e a senha atual para continuar'
-                ]
-            ];
-        }
-        $currentPass = trim($data['currentPassword']);
-        $newPass = trim($data['newPassword']);
-        if (strlen($currentPass) < 8 || strlen($currentPass) > 30 || strlen($newPass) < 8 || strlen($newPass) > 30) {
-            return [
-                'code' => 400,
-                'body' => [
-                    'status' => 'error',
-                    'message' => 'As senhas devem conter entre 8 e 30 caracteres'
-                ]
-            ];
-        }
+            $id = $userData['sub'];
+            $account = $this->client->getById($id);
+            if (!$account) {
+                return [
+                    'code' => 404,
+                    'body' => [
+                        'status' => 'error',
+                        'message' => 'Nenhuma conta encontrada com este Id'
+                    ]
+                ];
+            }
 
-        $account = $this->client->getById($id);
-        if (!$account) {
+            if (empty($data['currentPassword']) || empty($data['newPassword'])) {
+                return [
+                    'code' => 400,
+                    'body' => [
+                        'status' => 'error',
+                        'message' => 'Informe a nova senha e a senha atual para continuar'
+                    ]
+                ];
+            }
+
+            $currentPass = trim($data['currentPassword']);
+            $newPass = trim($data['newPassword']);
+
+            if (strlen($currentPass) < 8 || strlen($currentPass) > 30 || strlen($newPass) < 8 || strlen($newPass) > 30) {
+                return [
+                    'code' => 400,
+                    'body' => [
+                        'status' => 'error',
+                        'message' => 'As senhas devem conter entre 8 e 30 caracteres'
+                    ]
+                ];
+            }
+
+            if (!password_verify($currentPass, $account['password'])) {
+                return [
+                    'code' => 400,
+                    'body' => [
+                        'status' => 'error',
+                        'message' => 'Senha incorreta'
+                    ]
+                ];
+            }
+
+            $value = ['password' => $newPass];
+
+            if ($this->client->patch($id, $value)) {
+                return [
+                    'code' => 200,
+                    'body' => [
+                        'status' => 'success',
+                        'message' => 'Senha alterada com sucesso'
+                    ]
+                ];
+            }
+
             return [
-                'code' => 404,
+                'code' => 500,
                 'body' => [
                     'status' => 'error',
-                    'message' => 'Nenhuma conta encontrada com o id informado'
+                    'message' => 'Erro ao realizar seu pedido, tente novamente mais tarde'
                 ]
             ];
-        }
-        if (!password_verify($currentPass, $account['password'])) {
+        } catch (Exception $e) {
             return [
-                'code' => 400,
+                'code' => 500,
                 'body' => [
                     'status' => 'error',
-                    'message' => 'Senha incorreta'
+                    'message' => 'Erro ao realizar seu pedido, tente novamente mais tarde'
                 ]
             ];
         }
-        $value = [
-            'password' => $newPass
-        ];
-        if ($this->client->patch($id, $value)) {
-            return [
-                'code' => 200,
-                'body' => [
-                    'status' => 'success',
-                    'message' => 'Senha alterada com sucesso'
-                ]
-            ];
-        }
-        return [
-            'code' => 500,
-            'body' => [
-                'status' => 'error',
-                'message' => 'Erro ao realizar seu pedido, tente novamente mais tarde'
-            ]
-        ];
     }
 
     public function resetPassword($data)
     {
-        if (empty($data['code']) || empty($data['newPassword'])) {
+        try {
+            if (empty($data['code']) || empty($data['newPassword'])) {
+                return [
+                    'code' => 400,
+                    'body' => [
+                        'status' => 'error',
+                        'message' => 'Dados necessários não foram informados'
+                    ]
+                ];
+            }
+
+            $code = trim($data['code']);
+            $newPass = trim($data['newPassword']);
+
+            $account = $this->client->getByCode($code);
+            if (!$account) {
+                return [
+                    'code' => 404,
+                    'body' => [
+                        'status' => 'error',
+                        'message' => 'Nenhuma conta encontrada com este código'
+                    ]
+                ];
+            }
+
+            if (password_verify($newPass, $account['password'])) {
+                return [
+                    'code' => 400,
+                    'body' => [
+                        'status' => 'error',
+                        'message' => 'A nova senha não pode ser igual à atual'
+                    ]
+                ];
+            }
+
+            $value = ['password' => $newPass];
+
+            if ($this->client->patch($account['id'], $value)) {
+                return [
+                    'code' => 200,
+                    'body' => [
+                        'status' => 'success',
+                        'message' => 'Senha alterada com sucesso'
+                    ]
+                ];
+            }
+
             return [
-                'code' => 400,
+                'code' => 500,
                 'body' => [
                     'status' => 'error',
-                    'message' => 'Dados necessários não foram informados'
+                    'message' => 'Erro ao realizar seu pedido, tente novamente mais tarde'
                 ]
             ];
-        }
-        $code = trim($data['code']);
-        $newPass = trim($data['newPassword']);
-
-        $account = $this->client->getByCode($code);
-        if (!$account) {
+        } catch (Exception $e) {
             return [
-                'code' => 404,
+                'code' => 500,
                 'body' => [
                     'status' => 'error',
-                    'message' => 'Nenhuma conta encontrada com este código'
+                    'message' => 'Erro ao realizar seu pedido, tente novamente mais tarde'
                 ]
             ];
         }
-
-        if (password_verify($newPass, $account['password'])) {
-            return [
-                'code' => 400,
-                'body' => [
-                    'status' => 'error',
-                    'message' => 'A nova senha não pode ser igual à atual'
-                ]
-            ];
-        }
-
-        $value = [
-            'password' => $newPass
-        ];
-        if ($this->client->patch($account['id'], $value)) {
-            return [
-                'code' => 200,
-                'body' => [
-                    'status' => 'success',
-                    'message' => 'Senha alterada com sucesso'
-                ]
-            ];
-        }
-        return [
-            'code' => 500,
-            'body' => [
-                'status' => 'error',
-                'message' => 'Erro ao realizar seu pedido, tente novamente mais tarde'
-            ]
-        ];
     }
 }
 
