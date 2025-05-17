@@ -8,6 +8,7 @@ import { Register } from "./pages/auth/Register";
 import { UserLayout } from "./pages/_layouts/UserLayout";
 import { UserDashboard } from "./pages/app/user/UserDashboard";
 import { UserProfile } from "./pages/app/user/UserProfile";
+import { UserSchedule } from "./pages/app/user/UserSchedule";
 
 export const router = createBrowserRouter([
   {
@@ -31,6 +32,7 @@ export const router = createBrowserRouter([
     children: [
       { path: "/dashboard", element: <UserDashboard /> },
       { path: "/profile", element: <UserProfile /> },
+      { path: "/to-schedule", element: <UserSchedule /> },
     ],
   },
 ]);

@@ -13,12 +13,18 @@ type NavLinkProps = NavLinkInterface;
 
 export function NavLink({ link, text, icon, type }: NavLinkProps) {
   return type === "reactLink" ? (
-    <Link to={link} className="space-x-2">
+    <Link
+      to={link}
+      className="hover:bg-muted-foreground/50 w-full space-x-2 rounded-md p-2 whitespace-nowrap duration-200"
+    >
       <FontAwesomeIcon icon={icon} />
-      {text}
+      <span>{text}</span>
     </Link>
   ) : (
-    <a href={link} className="space-x-2">
+    <a
+      href={link}
+      className="hover:bg-muted-foreground/50 w-full space-x-6 rounded-md p-2 whitespace-nowrap duration-200"
+    >
       <FontAwesomeIcon icon={icon} />
       <span>{text}</span>
     </a>

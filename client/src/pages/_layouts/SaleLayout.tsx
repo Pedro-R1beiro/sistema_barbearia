@@ -1,5 +1,5 @@
 import { Header } from "@/components/Header";
-import { Link, Outlet, useNavigate } from "react-router";
+import { Outlet, useNavigate } from "react-router";
 import { Home } from "../Sale/components/Home";
 import {
   faBuilding,
@@ -38,7 +38,7 @@ export function SaleLayout() {
                 onClick={() => navigate("/register")}
                 className="dark:text-background dark:hover:bg-foreground py-5.5 font-bold md:px-6"
               >
-                <Link to="/register">Cadastrar</Link>
+                Cadastrar
               </Button>
             </div>
 
