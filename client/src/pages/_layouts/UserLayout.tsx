@@ -6,8 +6,18 @@ import { faBook, faCalendarDays } from "@fortawesome/free-solid-svg-icons";
 import { Outlet } from "react-router";
 
 const navLinks: NavLinkInterface[] = [
-  { icon: faBook, link: "/", text: "Agendamentos", type: "anchorLink" },
-  { icon: faCalendarDays, link: "/", text: "Agendar", type: "anchorLink" },
+  {
+    icon: faBook,
+    link: "/dashboard",
+    text: "Agendamentos",
+    type: "anchorLink",
+  },
+  {
+    icon: faCalendarDays,
+    link: "/to-schedule",
+    text: "Agendar",
+    type: "anchorLink",
+  },
 ];
 
 export function UserLayout() {

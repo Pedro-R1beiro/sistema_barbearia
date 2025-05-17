@@ -2,11 +2,11 @@ import { createBrowserRouter } from "react-router";
 import { Sale } from "./pages/Sale";
 import { SaleLayout } from "./pages/_layouts/SaleLayout";
 import { SignInLayout } from "./pages/_layouts/SignInLayout";
-import SingIn from "./pages/auth/SigIn";
+import { SignIn } from "./pages/auth/SignIn";
 import { RegisterLayout } from "./pages/_layouts/RegisterLayout";
-import Register from "./pages/auth/Register";
+import { Register } from "./pages/auth/Register";
 import { UserLayout } from "./pages/_layouts/UserLayout";
-import UserDashboard from "./pages/app/user/UserDashboard";
+import { UserDashboard } from "./pages/app/user/UserDashboard";
 import { UserProfile } from "./pages/app/user/UserProfile";
 
 export const router = createBrowserRouter([
@@ -18,7 +18,7 @@ export const router = createBrowserRouter([
   {
     path: "/",
     element: <SignInLayout />,
-    children: [{ path: "/sign-in", element: <SingIn /> }],
+    children: [{ path: "/sign-in", element: <SignIn /> }],
   },
   {
     path: "/",

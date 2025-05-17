@@ -4,7 +4,6 @@ import { useNavigate } from "react-router";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { SeparationArrow } from "@/components/SeparationArrow";
 
 const signInSchema = z.object({
   email: z.string().email("E-mail inválido"),
@@ -13,7 +12,7 @@ const signInSchema = z.object({
 
 type SignInData = z.infer<typeof signInSchema>;
 
-export default function SigIn() {
+export function SignIn() {
   const navigate = useNavigate();
 
   const {
@@ -60,7 +59,7 @@ export default function SigIn() {
           )}
 
           <label htmlFor="password" className="mt-6">
-            Seu e-mail
+            Sua senha
           </label>
           <input
             id="password"

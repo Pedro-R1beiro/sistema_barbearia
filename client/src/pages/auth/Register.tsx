@@ -24,7 +24,7 @@ function onSubmit(data: RegisterData) {
   console.log(data);
 }
 
-export default function Register() {
+export function Register() {
   const navigate = useNavigate();
 
   const {
