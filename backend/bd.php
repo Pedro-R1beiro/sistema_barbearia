@@ -2,7 +2,7 @@
 class Database 
 {
     private $host = "localhost";
-    private $dbname = "barbershop-system";
+    private $dbname = "barbershop_system";
     private $username = "root";
     private $password = "";
     public $conn;

@@ -1,29 +1,108 @@
 <?php
 
-require_once __DIR__ . '/../controllers/professionalController.php';
-require_once __DIR__ . '/../controllers/ClientController.php';
+// require_once __DIR__ . '/../controllers/professionalController.php';
+
+require_once __DIR__ . '/../controllers/clientController/clientGet.php';
+require_once __DIR__ . '/../controllers/clientController/clientPost.php';
+require_once __DIR__ . '/../controllers/clientController/clientPatch.php';
+require_once __DIR__ . '/../controllers/clientController/clientDelete.php';
 
 $basePath = '/sistema_barbearia_2.0/backend/';
 $requestUri = str_replace($basePath, '', $_SERVER['REQUEST_URI']);
 $requestUri = trim(parse_url($requestUri, PHP_URL_PATH), '/');
+
+[$requestType, $methodType] = explode('/', $requestUri) + [null, null];
+
 $httpMethod = $_SERVER['REQUEST_METHOD'];
-$data = $httpMethod === 'POST' ? json_decode(file_get_contents('php://input'), true) ?? [] : $_GET;
+$data = in_array($httpMethod, ['POST', 'PUT', 'PATCH', 'DELETE']) ? json_decode(file_get_contents("php://input"), true) : $_GET;
 
 header('Content-Type: application/json');
 
-switch ($requestUri) {
-    case 'client/signup':
-        $controller = new ClientController();
-        echo json_encode($controller->signup($data));
-        break;
+function sendResponse($data, $statusCode = 200)
+{
+    http_response_code($statusCode);
+    echo json_encode($data);
+    exit;
+}
 
-    case 'client/login':
-        $controller = new ClientController();
-        echo json_encode($controller->login($data));
-        break;
+function resolveRoute($controller, $methodType, $routesMap)
+{
+    global $data;
 
-    default:
-        http_response_code(404);
-        echo json_encode(['status' => 'error', 'message' => 'Rota não encontrada']);
-        break;
+    if (!isset($routesMap[$methodType])) {
+        return [
+            'code' => 404,
+            'body' => ['status' => 'error', 'message' => 'Rota não encontrada']
+        ];
+    }
+
+    $method = $routesMap[$methodType];
+    return $controller->$method($data);
+}
+
+if ($requestType === 'client') {
+    try {
+        switch ($httpMethod) {
+            case 'GET':
+                $routesMap = [
+                    'getAppointment' => 'getAppointment',
+                    'getServices' => 'getServices',
+                    'availableTimeSlots' => 'availableTimeSlots'
+                ];
+                $controller = new ClientGet();
+                $response = resolveRoute($controller, $methodType, $routesMap);
+                break;
+
+            case 'POST':
+                $routesMap = [
+                    'signup' => 'signup',
+                    'login' => 'login',
+                    'sendRecoveryEmail' => 'sendRecoveryEmail',
+                    'registerAppointment' => 'registerAppointment',
+                    'logout' => 'logout'
+                ];
+                $controller = new ClientPost();
+                $response = resolveRoute($controller, $methodType, $routesMap);
+                break;
+
+            case 'PATCH':
+                $routesMap = [
+                    'validateEmail' => 'validateEmail',
+                    'changeInfo' => 'changeInfo',
+                    'changePassword' => 'changePassword',
+                    'resetPassword' => 'resetPassword'
+                ];
+                $controller = new ClientPatch();
+                $response = resolveRoute($controller, $methodType, $routesMap);
+                break;
+
+            case 'DELETE':
+                $routesMap = [
+                    'delete' => 'delete',
+                    'deleteAppointment' => 'deleteAppointment'
+                ];
+                $controller = new ClientDelete();
+
+                // Ajuste extra no caso de deleteAppointment
+                if ($methodType === 'deleteAppointment') {
+                    if (!isset($data['id']) && isset($_GET['id'])) {
+                        $data['id'] = $_GET['id'];
+                    }
+                }
+
+                $response = resolveRoute($controller, $methodType, $routesMap);
+                break;
+
+            default:
+                sendResponse(['status' => 'error', 'message' => 'Método HTTP não suportado'], 405);
+        }
+
+        sendResponse($response['body'], $response['code']);
+    } catch (Exception $e) {
+        sendResponse([
+            'status' => 'error',
+            'message' => 'Erro interno do servidor',
+            'error' => $e->getMessage()
+        ], 500);
+    }
 }

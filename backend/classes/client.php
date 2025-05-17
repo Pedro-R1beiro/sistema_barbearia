@@ -1,16 +1,16 @@
 <?php
 
-require_once __DIR__ . '/scheduling.php';
+require_once __DIR__ . '/appointment.php';
 
 class Client
 {
     public $conn;
-    public $sche;
+    public $appo;
 
     public function __construct($conn)
     {
         $this->conn = $conn;
-        $this->sche = new Scheduling($conn); // Instancia a classe de agendamento
+        $this->appo = new Appointment($conn); // Instancia a classe de agendamento
     }
 
     public function getData()
@@ -23,23 +23,23 @@ class Client
             -- Último agendamento ANTES da data atual
             (
                 SELECT MAX(date)
-                FROM scheduling s2
+                FROM appointments s2
                 WHERE s2.idClient = c.id AND s2.date < '$hoje'
-            ) AS prev_scheduling,
+            ) AS prev_appointments,
 
             -- Próximo agendamento DEPOIS da data atual
             (
                 SELECT MIN(date)
-                FROM scheduling s3
+                FROM appointments s3
                 WHERE s3.idClient = c.id AND s3.date > '$hoje'
-            ) AS next_scheduling,
+            ) AS next_appointments,
 
             -- Total de agendamentos do cliente
             (
                 SELECT COUNT(*)
-                FROM scheduling s4
+                FROM appointments s4
                 WHERE s4.idClient = c.id
-            ) AS total_scheduling
+            ) AS total_appointments
 
         FROM
             clients c
@@ -120,35 +120,35 @@ class Client
         return false; // Retorna false se algum campo estiver vazio ou ocorrer um erro
     }
 
-    public function update($id, $name = null, $email = null, $password = null, $phone = null, $verified = null)
+    public function patch($id, $data)
     {
-        if (is_numeric($id)) {
+        if (is_numeric($id) && !empty($data)) {
             $fields = [];
             $params = [':id' => $id];
 
-            if (!empty($name)) {
+            if (!empty($data['name'])) {
                 $fields[] = "name = :name";
-                $params[':name'] = trim($name);
+                $params[':name'] = trim($data['name']);
             }
 
-            if (!empty($email)) {
+            if (!empty($data['email'])) {
                 $fields[] = "email = :email";
-                $params[':email'] = trim($email);
+                $params[':email'] = trim($data['email']);
             }
 
-            if (!empty($password)) {
+            if (!empty($data['password'])) {
                 $fields[] = "password = :password";
-                $params[':password'] = password_hash(trim($password), PASSWORD_DEFAULT); // Criptografa a nova senha
+                $params[':password'] = password_hash(trim($data['password']), PASSWORD_DEFAULT); // Criptografa a nova senha
             }
 
-            if (!empty($phone)) {
+            if (!empty($data['phone'])) {
                 $fields[] = "phone = :phone";
-                $params[':phone'] = trim($phone);
+                $params[':phone'] = trim($data['phone']);
             }
 
-            if (!empty($verified) && ($verified == 1 || $verified == 0)) {
+            if (!empty($data['verified']) && ($data['verified'] == 1 || $data['verified'] == 0)) {
                 $fields[] = "verified = :verified";
-                $params[':verified'] = trim($verified);
+                $params[':verified'] = trim($data['verified']);
             }
 
             // Verifica se algum campo foi fornecido para atualizar
@@ -172,26 +172,26 @@ class Client
     public function delete($id)
     {
         if (is_numeric($id)) {
-            $schePrev = $this->sche->get('prev', null, $id); // Busca agendamentos anteriores
-            $scheToday = $this->sche->get('today', null, $id); // Busca agendamentos para hoje
-            $scheNext = $this->sche->get('next', null, $id);   // Busca agendamentos futuros
+            $appoPrev = $this->appo->get('prev', null, $id); // Busca agendamentos anteriores
+            $appoToday = $this->appo->get('today', null, $id); // Busca agendamentos para hoje
+            $appoNext = $this->appo->get('next', null, $id);   // Busca agendamentos futuros
 
             // Exclui agendamentos para hoje
-            if ($scheToday && count($scheToday) > 0) {
-                foreach ($scheToday as $val) {
-                    $this->sche->delete($val['id']);
+            if ($appoToday && count($appoToday) > 0) {
+                foreach ($appoToday as $val) {
+                    $this->appo->delete($val['id']);
                 }
             }
 
             // Exclui agendamentos futuros
-            if ($scheNext && count($scheNext) > 0) {
-                foreach ($scheNext as $val) {
-                    $this->sche->delete($val['id']);
+            if ($appoNext && count($appoNext) > 0) {
+                foreach ($appoNext as $val) {
+                    $this->appo->delete($val['id']);
                 }
             }
 
             // Se houver agendamentos anteriores, inativa o cliente, senão, exclui completamente
-            if ($schePrev && count($schePrev) > 0) {
+            if ($appoPrev && count($appoPrev) > 0) {
                 $sql = "UPDATE clients SET name = 'ghost', email = null, password = null, phone = null, code = null, active = 0 WHERE id = :id";
                 $stmt = $this->conn->prepare($sql);
                 $stmt->bindParam(':id', $id);
