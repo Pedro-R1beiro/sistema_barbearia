@@ -1,3 +1,5 @@
+
+-- Criação do banco de dados
 CREATE DATABASE IF NOT EXISTS barbershop_system
 CHARACTER SET utf8mb4
 COLLATE utf8mb4_unicode_ci;
