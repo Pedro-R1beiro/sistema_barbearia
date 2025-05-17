@@ -185,9 +185,16 @@ class ClientGet
                 }
 
                 $_service = $this->service->getById($idService);
-                if ($_service && isset($_service['duration'])) {
-                    $duration += $_service['duration'];
+                if (!$_service || !isset($_service['duration'])) {
+                    return [
+                        'code' => 400,
+                        'body' => [
+                            'status' => 'error',
+                            'message' => 'Um id de serviço informado não existe'
+                        ]
+                    ];
                 }
+                $duration += $_service['duration'];
             }
 
             if ($duration === 0) {

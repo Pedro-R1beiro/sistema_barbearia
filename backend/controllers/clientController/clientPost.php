@@ -2,6 +2,12 @@
 
 require_once __DIR__ . '/../../bd.php';
 require_once __DIR__ . '/../../classes/client.php';
+require_once __DIR__ . '/../../classes/service.php';
+require_once __DIR__ . '/../../classes/appointment.php';
+require_once __DIR__ . '/../../classes/professional.php';
+require_once __DIR__ . '/../../classes/vacation.php';
+require_once __DIR__ . '/../../classes/dayOff.php';
+require_once __DIR__ . '/../../classes/availability.php';
 require_once __DIR__ . '/../../email/emailSender.php';
 
 use Firebase\JWT\JWT;
@@ -11,6 +17,12 @@ class ClientPost
 {
     public $conn;
     public $client;
+    public $service;
+    public $appo;
+    public $prof;
+    public $vacat;
+    public $dayOff;
+    public $avail;
     public $emailSender;
 
     public function __construct()
@@ -18,6 +30,12 @@ class ClientPost
         $bd = new Database;
         $this->conn = $bd->connect();
         $this->client = new Client($this->conn);
+        $this->service = new Service($this->conn);
+        $this->appo = new Appointment($this->conn);
+        $this->prof = new Professional($this->conn);
+        $this->vacat = new Vacation($this->conn);
+        $this->dayOff = new DayOff($this->conn);
+        $this->avail = new Availability($this->conn);
         $this->emailSender = new EmailSender;
     }
 
@@ -119,6 +137,34 @@ class ClientPost
                     'message' => [
                         'email' => $account['email']
                     ]
+                ]
+            ];
+        } catch (Exception $e) {
+            return [
+                'code' => 500,
+                'body' => [
+                    'status' => 'error',
+                    'message' => 'Erro ao realizar seu pedido, tente novamente mais tarde'
+                ]
+            ];
+        }
+    }
+
+    public function logout()
+    {
+        try {
+            setcookie('auth_token', '', [
+                'expires' => time() - 3600,
+                'path' => '/',
+                'httponly' => true,
+                'secure' => true,
+                'samesite' => 'Lax'
+            ]);
+            return [
+                'code' => 204,
+                'body' => [
+                    'status' => 'success',
+                    'message' => 'Deslogado com sucesso'
                 ]
             ];
         } catch (Exception $e) {
@@ -301,7 +347,169 @@ class ClientPost
 
     public function registerAppointment($data)
     {
-        
+        try {
+            $userData = $this->authenticate();
+            if (isset($userData['body']['status']) && $userData['body']['status'] == 'error') {
+                return $userData;
+            }
+            $id = $userData['sub']; {
+                if (empty($data['date']) || empty($data['service'] || empty($data['idProfessional']) || empty($data['startTime']))) {
+                    return [
+                        'code' => 400,
+                        'body' => [
+                            'status' => 'error',
+                            'message' => 'Dados insunficientes'
+                        ]
+                    ];
+                }
+
+                if (!DateTime::createFromFormat('H:i', trim($data['startTime']))) {
+                    return [
+                        'code' => 400,
+                        'body' => [
+                            'status' => 'error',
+                            'message' => 'Formato de horário inválido'
+                        ]
+                    ];
+                }
+
+                if (!DateTime::createFromFormat('Y-m-d', trim($data['date']))) {
+                    return [
+                        'code' => 400,
+                        'body' => [
+                            'status' => 'error',
+                            'message' => 'Formato de data inválido'
+                        ]
+                    ];
+                }
+
+                if (!is_numeric($data['idProfessional'])) {
+                    return [
+                        'code' => 400,
+                        'body' => [
+                            'status' => 'error',
+                            'message' => 'Id do professional deve ser um número'
+                        ]
+                    ];
+                }
+
+                $duration = 0;
+
+                if (is_array($data['service'])) {
+                    $services = $data['service'];
+                } elseif (is_string($data['service'])) {
+                    $services = explode(',', $data['service']);
+                } else {
+                    $services = [$data['service']];
+                }
+
+                $services = array_unique(array_map('trim', $services));
+
+                foreach ($services as $idService) {
+                    if (!is_numeric($idService)) {
+                        return [
+                            'code' => 400,
+                            'body' => [
+                                'status' => 'error',
+                                'message' => 'ID de serviço inválido: deve ser numérico'
+                            ]
+                        ];
+                    }
+
+                    $_service = $this->service->getById($idService);
+                    if (!$_service || !isset($_service['duration'])) {
+                        return [
+                            'code' => 400,
+                            'body' => [
+                                'status' => 'error',
+                                'message' => 'Um id de serviço informado não existe'
+                            ]
+                        ];
+                    }
+                    $duration += $_service['duration'];
+                }
+
+                if ($duration === 0) {
+                    return [
+                        'code' => 500,
+                        'body' => [
+                            'status' => 'error',
+                            'message' => 'Erro ao realizar seu pedido, tente novamente mais tarde'
+                        ]
+                    ];
+                }
+
+                $professionals = $this->prof->getById($data['idProfessional']);
+                if (!$professionals || count($professionals) <= 0) {
+                    return [
+                        'code' => 500,
+                        'body' => [
+                            'status' => 'error',
+                            'message' => 'Nenhum profissional encontrado no banco de dados'
+                        ]
+                    ];
+                }
+            }
+            $date = trim($data['date']);
+            $dayWeek = date('w', strtotime($date));
+            $idProfessional = trim($data['idProfessional']);
+            $startTime = new DateTime(trim($data['startTime']));
+            $endTime = clone $startTime;
+            $endTime->add(new DateInterval('PT' . $duration . 'M'));
+
+            $isOnVacation = $this->vacat->isOnVacation($idProfessional, $date);
+            $isOnDayOff = $this->dayOff->isOnDayOff($idProfessional, $date);
+            $availabilities = $this->avail->getByProfessional($idProfessional, $dayWeek);
+            $isAppointment = $this->appo->isOnAppointment($date, $idProfessional, $startTime->format('H:i:s'), $endTime->format('H:i:s'));
+            if (($isAppointment && count($isAppointment) > 0) || $isOnDayOff || $isOnVacation || (!$availabilities || count($availabilities) <= 0)) {
+                return [
+                    'code' => 400,
+                    'body' => [
+                        'status' => 'error',
+                        'message' => 'Horário não disponível'
+                    ]
+                ];
+            }
+            $appointmentIds = []; // Array para armazenar os IDs dos agendamentos
+
+            foreach ($services as $_idService) {
+                $result = $this->appo->post($date, $startTime->format('H:i:s'), $endTime->format('H:i:s'), $_idService, $idProfessional, $id);
+
+                if ($result === false) {
+                    // Algo deu errado. Cancela todos os agendamentos anteriores.
+                    foreach ($appointmentIds as $appointmentId) {
+                        $this->appo->delete($appointmentId); // Supondo que você tenha um método de cancelamento
+                    }
+                    return [
+                        'code' => 500, // Código de erro interno do servidor
+                        'body' => [
+                            'status' => 'error',
+                            'message' => 'Erro ao agendar um dos serviços. Todos os agendamentos foram cancelados.'
+                        ]
+                    ];
+                }
+
+                $appointmentIds[] = $result['id'];
+
+                $rowService = $this->service->getById($_idService);
+                $startTime = $endTime;
+                $endTime->add(new DateInterval('PT' . $rowService['duration'] . 'M'));
+            }
+            return [
+                'code' => '201',
+                'body' => [
+                    'status' => 'success',
+                    'message' => 'Agendamento criado com sucesso'
+                ]
+            ];
+        } catch (Exception $e) {
+            return [
+                'code' => 500,
+                'body' => [
+                    'status' => 'error',
+                    'message' => 'Erro ao realizar seu pedido, tente novamente mais tarde'
+                ]
+            ];
+        }
     }
 }
-?>

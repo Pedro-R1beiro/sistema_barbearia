@@ -1,6 +1,6 @@
 <?php
 
-require_once __DIR__ . '/../controllers/professionalController.php';
+// require_once __DIR__ . '/../controllers/professionalController.php';
 
 require_once __DIR__ . '/../controllers/clientController/clientGet.php';
 require_once __DIR__ . '/../controllers/clientController/clientPost.php';
@@ -57,7 +57,9 @@ if ($requestType === 'client') {
                 $routesMap = [
                     'signup' => 'signup',
                     'login' => 'login',
-                    'sendRecoveryEmail' => 'sendRecoveryEmail'
+                    'sendRecoveryEmail' => 'sendRecoveryEmail',
+                    'registerAppointment' => 'registerAppointment',
+                    'logout' => 'logout'
                 ];
                 $controller = new ClientPost();
                 $response = resolveRoute($controller, $methodType, $routesMap);

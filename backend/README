@@ -71,9 +71,9 @@ CREATE TABLE services (
     active TINYINT(1) NOT NULL DEFAULT 1
 );
 
-Tabela Scheduling
+Tabela Appointments
 
-CREATE TABLE schedulings (
+CREATE TABLE appointments (
     id INT AUTO_INCREMENT PRIMARY KEY,
     date DATE NOT NULL,
     startTime TIME NOT NULL,
@@ -84,4 +84,5 @@ CREATE TABLE schedulings (
     FOREIGN KEY (idClient) REFERENCES clients(id),
     FOREIGN KEY (idService) REFERENCES services(id),
     FOREIGN KEY (idProfessional) REFERENCES professionals(id)
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
