@@ -15,10 +15,10 @@
 # Client Documentation
 |Conta|Agendar Horário|
 |--------|-------------|
-|[Login](#login-client)|[Horários Disponíveis](#horários-disponíveis)|
+|[Login](#login-client)|[Horários Disponíveis](#horários-disponíveis-client)|
 |[Logout](#logout-client)|[Registrar Agendamento](#registrar-agendamento)|
 |[Signup](#signup-client)|[Listar Agendamentos](#listar-agendamentos-client)|
-|[Validar Email](#validar-email-client)|[Cancelar Agendamento](#cancelar-agendamento)|
+|[Validar Email](#validar-email-client)|[Cancelar Agendamento](#cancelar-agendamento-client)|
 |[Deletar Conta](#deletar-conta-client)|
 |[Alterar Informações](#alterar-informações-client)|
 |[Alterar Senha](#alterar-senha-client)|
@@ -238,7 +238,7 @@ GET /backend/client/getAppointment
 - 400: Filtro Inválido
 - 409: Nenhum agendamento encontrado
 
-## Deletar Conta (Client)
+## Cancelar Agendamento (Client)
 
 ### Caminho
 ```http
@@ -258,7 +258,7 @@ DELETE /backend/client/delete
 - 422: Agendamento já começou ou está no passado, não pode ser excluído
 - 500: Erro ao deletar do banco de dados
 
-## Horários Disponíveis
+## Horários Disponíveis (Client)
 
 ### Caminho
 ```http
