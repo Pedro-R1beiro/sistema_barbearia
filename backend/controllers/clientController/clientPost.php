@@ -496,7 +496,7 @@ class ClientPost
                 $endTime->add(new DateInterval('PT' . $rowService['duration'] . 'M'));
             }
             return [
-                'code' => '201',
+                'code' => 201,
                 'body' => [
                     'status' => 'success',
                     'message' => 'Agendamento criado com sucesso'

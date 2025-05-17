@@ -229,6 +229,7 @@ class ClientGet
                 $_availabilities = $this->avail->getByProfessional($row['id'], $dayWeek);
 
                 $timeSlots[$indice] = [
+                    'id' => $row['id'],
                     'name' => $row['name'],
                     'email' => $row['email'],
                     'phone' => $row['phone'],
