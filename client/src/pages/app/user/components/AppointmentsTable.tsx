@@ -19,7 +19,7 @@ const appointments = Array.from({ length: 22 }, (_, index) => ({
 
 export function AppointmentsTable() {
   return (
-    <div className="bg-custom-foreground text-background row-2 mt-8 max-h-[360px] overflow-y-auto rounded-md p-4">
+    <div className="bg-custom-foreground/90 text-background row-2 mt-8 max-h-[360px] overflow-y-auto rounded-md p-4">
       <Table className="border-separate border-spacing-x-0 border-spacing-y-2">
         <TableHeader>
           <TableRow>
@@ -28,9 +28,8 @@ export function AppointmentsTable() {
             </TableHead>
             <TableHead className="bg-background text-lg">Data</TableHead>
             <TableHead className="bg-background text-lg">Situação</TableHead>
-            <TableHead className="bg-background text-lg"></TableHead>
-            <TableHead className="bg-background text-lg"></TableHead>
-            <TableHead className="bg-background rounded-r-md text-right text-lg"></TableHead>
+            <TableHead className="bg-background w-[90px] text-lg"></TableHead>
+            <TableHead className="bg-background w-[70px] rounded-r-md text-right text-lg"></TableHead>
           </TableRow>
         </TableHeader>
         <TableBody className="bg-foreground">
@@ -48,11 +47,10 @@ export function AppointmentsTable() {
                 Marcado
               </TableCell>
               <TableCell className="bg-background">
-                <Button className="bg-foreground">VER</Button>
+                <Button className="bg-foreground w-full">VER</Button>
               </TableCell>
-              <TableCell className="bg-background"></TableCell>
               <TableCell className="bg-background rounded-r-md text-right">
-                <Button variant="destructive">
+                <Button variant="destructive" className="w-full">
                   <FontAwesomeIcon icon={faTrash} />
                 </Button>
               </TableCell>

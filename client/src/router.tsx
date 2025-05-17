@@ -7,6 +7,7 @@ import { RegisterLayout } from "./pages/_layouts/RegisterLayout";
 import Register from "./pages/auth/Register";
 import { UserLayout } from "./pages/_layouts/UserLayout";
 import UserDashboard from "./pages/app/user/UserDashboard";
+import { UserProfile } from "./pages/app/user/UserProfile";
 
 export const router = createBrowserRouter([
   {
@@ -27,6 +28,9 @@ export const router = createBrowserRouter([
   {
     path: "/",
     element: <UserLayout />,
-    children: [{ path: "/dashboard", element: <UserDashboard /> }],
+    children: [
+      { path: "/dashboard", element: <UserDashboard /> },
+      { path: "/profile", element: <UserProfile /> },
+    ],
   },
 ]);
