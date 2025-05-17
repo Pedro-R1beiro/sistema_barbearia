@@ -15,9 +15,10 @@
 # Client Documentation
 |Conta|Agendar Horário|
 |--------|-------------|
-|[Login](#login-client)|[Listar Agendamentos](#listar-agendamentos-client)|
-|[Signup](#signup-client)|[Cancelar Agendamento](#cancelar-agendamento)|
-|[Validar Email](#validar-email-client)|
+|[Login](#login-client)|[Horários Disponíveis](#horários-disponíveis-client)|
+|[Logout](#logout-client)|[Registrar Agendamento](#registrar-agendamento)|
+|[Signup](#signup-client)|[Listar Agendamentos](#listar-agendamentos-client)|
+|[Validar Email](#validar-email-client)|[Cancelar Agendamento](#cancelar-agendamento-client)|
 |[Deletar Conta](#deletar-conta-client)|
 |[Alterar Informações](#alterar-informações-client)|
 |[Alterar Senha](#alterar-senha-client)|
@@ -237,7 +238,7 @@ GET /backend/client/getAppointment
 - 400: Filtro Inválido
 - 409: Nenhum agendamento encontrado
 
-## Deletar Conta (Client)
+## Cancelar Agendamento (Client)
 
 ### Caminho
 ```http
@@ -256,3 +257,88 @@ DELETE /backend/client/delete
 - 404: Nenhum agendamento com este Id
 - 422: Agendamento já começou ou está no passado, não pode ser excluído
 - 500: Erro ao deletar do banco de dados
+
+## Horários Disponíveis (Client)
+
+### Caminho
+```http
+GET /backend/client/availableTimeSlots
+```
+
+### Formato de dados esperado:
+```http
+/backend/client/getAppointment?date=&service=
+```
+<sub>Date no formato Y-m-d (Ex.: 2025-05-21). Service deve ser um número, caso tenha mais de um id, separe-os por vírgula (Ex.: 1 ou 1,4,2)</sub>
+
+### Mensagem em caso de sucesso:
+```json
+"message": [
+        {
+            "id" => 1,
+            "name": "Nome do Professional",
+            "email": "professiona@gmail.com",
+            "phone": "00111114444",
+            "timeSlot": [
+                "08:00",
+                "08:30",
+                "09:00",
+                "09:30",
+                "10:00",
+                "11:30",
+                "13:00",
+                "13:30",
+                "14:00",
+                "14:30",
+                "15:00",
+                "15:30",
+                "16:00"
+            ]
+        },
+        {
+            "id" => 2,
+            "name": "Nome do Professional 2",
+            "email": "professiona2@gmail.com",
+            "phone": "00111115555",
+            "timeSlot": []
+        }
+    ]
+```
+### Códigos http
+- 200: Sucesso
+- 400: Valores Inválidos
+- 409: Erro Interno
+
+## Registrar Agendamento
+
+### Caminho
+```http
+POST /backend/client/registerAppointment
+```
+
+### Formato de dados esperado:
+```json
+{
+    "startTime": "11:30",
+    "date": "2025-05-19",
+    "idProfessional": "1",
+    "service": "1,2,3,4,5"
+}
+```
+<sub>StarTime deve ser no formato H:i (Ex.: 11:30). Date no formato Y-m-d (Ex.: 2025-05-19). Service deve ser um número, caso tenha mais de um id, separe-os por vírgula (Ex.: 1 ou 1,4,2)</sub>
+
+### Códigos http
+- 201: Agendamento registrado com sucesso
+- 400: Dados Inválidos
+- 500: Erro interno
+
+## Logout (Client)
+
+### Caminho
+```http
+POST /backend/client/logout
+```
+
+### Códigos http
+- 204: Logout bem sucedido
+- 500: Erro interno
