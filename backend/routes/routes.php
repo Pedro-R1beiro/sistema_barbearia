@@ -105,4 +105,6 @@ if ($requestType === 'client') {
             'error' => $e->getMessage()
         ], 500);
     }
+} else {
+    sendResponse(['status' => 'error', 'message' => 'Rota não encontrada'], 404);
 }
