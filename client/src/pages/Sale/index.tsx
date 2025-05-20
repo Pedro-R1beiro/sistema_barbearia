@@ -6,9 +6,10 @@ import Services from "./components/Services";
 export function Sale() {
   return (
     <>
-      {[<About />, <Services />, <Footer />].map((component, index) => (
+      {[<About />, <Services />].map((component, index) => (
         <RevealOnScroll key={index}>{component}</RevealOnScroll>
       ))}
+      <Footer />
     </>
   );
 }
