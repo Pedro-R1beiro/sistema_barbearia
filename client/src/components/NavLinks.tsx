@@ -17,7 +17,7 @@ interface NavLinksProps {
 export function NavLinks({ navLinks }: NavLinksProps) {
   return (
     <>
-      <ul className="hidden gap-7 py-3 font-bold md:flex">
+      <ul className="hidden gap-7 py-3 font-bold min-[900px]:flex">
         {navLinks.map((link) => (
           <li key={link.text} className="w-full">
             <NavLink
@@ -32,7 +32,7 @@ export function NavLinks({ navLinks }: NavLinksProps) {
       </ul>
 
       <DropdownMenu>
-        <DropdownMenuTrigger className="w-8 md:hidden">
+        <DropdownMenuTrigger className="w-8 min-[900px]:hidden">
           <FontAwesomeIcon icon={faEllipsisVertical} size="2x" />
           <span className="sr-only">Abrir Menu de Navegação</span>
         </DropdownMenuTrigger>

@@ -10,13 +10,13 @@ const navLinks: NavLinkInterface[] = [
     icon: faBook,
     link: "/dashboard",
     text: "Agendamentos",
-    type: "anchorLink",
+    type: "reactLink",
   },
   {
     icon: faCalendarDays,
     link: "/to-schedule",
     text: "Agendar",
-    type: "anchorLink",
+    type: "reactLink",
   },
 ];
 

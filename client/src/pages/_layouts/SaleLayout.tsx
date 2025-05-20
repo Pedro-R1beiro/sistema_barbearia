@@ -12,7 +12,7 @@ import { Button } from "@/components/ui/button";
 import { NavLinks } from "@/components/NavLinks";
 
 const navLinks: NavLinkInterface[] = [
-  { link: "/", text: "Ínicio", icon: faHouse, type: "anchorLink" },
+  { link: "#", text: "Ínicio", icon: faHouse, type: "anchorLink" },
   { link: "#about", text: "Sobre", icon: faBuilding, type: "anchorLink" },
   { link: "#services", text: "Serviços", icon: faScissors, type: "anchorLink" },
   { link: "#contact", text: "Contato", icon: faPhone, type: "anchorLink" },
@@ -24,7 +24,7 @@ export function SaleLayout() {
     <>
       <div className="fixed top-5 left-1/2 z-100 w-full max-w-6xl translate-x-[-50%] px-4">
         <Header>
-          <nav className="flex w-full items-center justify-end gap-4 md:flex-row-reverse md:justify-between md:pl-30">
+          <nav className="flex w-full items-center justify-end gap-4 min-[900px]:flex-row-reverse md:justify-between md:pl-30">
             <div className="flex gap-4">
               <Button
                 onClick={() => navigate("/sign-in")}

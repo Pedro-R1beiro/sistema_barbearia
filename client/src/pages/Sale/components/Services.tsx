@@ -51,11 +51,8 @@ export default function Services() {
               Agende seu horário
             </Button>
             <LinesWithOr />
-            <Button
-              variant="ghost"
-              className="border-background w-full border-1 py-6 font-bold"
-            >
-              Veja seus horários?
+            <Button className="border-background hover:bg-background w-full border-1 py-6 font-bold hover:text-white">
+              Já tem horários?
             </Button>
           </CardContent>
           <CardFooter className="items-center justify-between">

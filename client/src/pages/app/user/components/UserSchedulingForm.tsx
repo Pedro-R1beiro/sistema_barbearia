@@ -25,7 +25,7 @@ export default function UserSchedulingForm() {
   const [date, setDate] = useState<Date>();
   return (
     <>
-      <form className="space-y-7 border-b-2 border-b-black pb-8">
+      <form className="space-y-7 border-b-2 border-b-black pb-8 lg:max-w-2xl lg:flex-1 lg:border-b-0">
         <h1 className="text-center text-xl font-bold sm:text-2xl">
           Adicionar um novo agendamento
         </h1>

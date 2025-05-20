@@ -14,9 +14,9 @@ import { NextAppointment } from "./components/NextAppointment";
 
 export function UserProfile() {
   return (
-    <div className="gap-16 space-y-10 lg:flex">
-      <div className="w-full space-y-10 md:flex md:gap-6">
-        <Card>
+    <div className="gap-16 space-y-10 lg:flex lg:items-stretch lg:space-y-0">
+      <div className="w-full space-y-10 md:flex md:gap-6 md:space-y-0 lg:flex-row-reverse">
+        <Card className="min-h-full md:flex-1">
           <CardHeader className="flex items-center justify-between">
             <CardTitle className="text-[1.375rem] font-bold">
               Sua conta
@@ -47,7 +47,7 @@ export function UserProfile() {
             </Button>
           </CardContent>
         </Card>
-        <Card className="bg-custom-foreground text-background border-foreground flex-1/12 border-4">
+        <Card className="bg-custom-foreground text-background min-h-full border-4 md:flex-1">
           <CardHeader>
             <div className="flex items-center gap-4">
               <ContactButton icon={faWhatsapp} link="whatsapp.api.client" />

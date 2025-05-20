@@ -9,6 +9,7 @@ import { UserLayout } from "./pages/_layouts/UserLayout";
 import { UserDashboard } from "./pages/app/user/UserDashboard";
 import { UserProfile } from "./pages/app/user/UserProfile";
 import { UserSchedule } from "./pages/app/user/UserSchedule";
+import NotFound from "./pages/Errors/notFound";
 
 export const router = createBrowserRouter([
   {
@@ -34,5 +35,9 @@ export const router = createBrowserRouter([
       { path: "/profile", element: <UserProfile /> },
       { path: "/to-schedule", element: <UserSchedule /> },
     ],
+  },
+  {
+    path: "*",
+    element: <NotFound />,
   },
 ]);
