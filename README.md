@@ -275,7 +275,7 @@ GET /backend/client/availableTimeSlots
 ```json
 "message": [
         {
-            "id" => 1,
+            "id": 1,
             "name": "Nome do Professional",
             "email": "professiona@gmail.com",
             "phone": "00111114444",
@@ -296,7 +296,7 @@ GET /backend/client/availableTimeSlots
             ]
         },
         {
-            "id" => 2,
+            "id": 2,
             "name": "Nome do Professional 2",
             "email": "professiona2@gmail.com",
             "phone": "00111115555",
