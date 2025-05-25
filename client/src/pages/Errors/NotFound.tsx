@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router";
 
-export default function NotFound() {
+export function NotFound() {
   const navigate = useNavigate();
   return (
     <div className="flex h-screen flex-col items-center justify-center gap-12 font-bold">

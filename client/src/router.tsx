@@ -8,8 +8,8 @@ import { Register } from "./pages/auth/Register";
 import { UserLayout } from "./pages/_layouts/UserLayout";
 import { UserDashboard } from "./pages/app/user/UserDashboard";
 import { UserProfile } from "./pages/app/user/UserProfile";
-import { UserSchedule } from "./pages/app/user/UserSchedule";
-import NotFound from "./pages/Errors/notFound";
+import { UserSchedule } from "./pages/app/user/UserScheduleForm";
+import { NotFound } from "./pages/Errors/NotFound";
 
 export const router = createBrowserRouter([
   {

@@ -1,11 +1,6 @@
-import { Calendar } from "@/components/ui/calendar";
 import { Card, CardContent } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
+
 import {
   Select,
   SelectContent,
@@ -15,14 +10,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { CalendarIcon } from "lucide-react";
-import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { format } from "date-fns";
-import { ptBR } from "date-fns/locale";
 
-export default function UserSchedulingForm() {
-  const [date, setDate] = useState<Date>();
+import { DatePicker } from "@/components/ui/date-picker";
+
+export function UserScheduleForm() {
   return (
     <>
       <form className="space-y-7 border-b-2 border-b-black pb-8 lg:max-w-2xl lg:flex-1 lg:border-b-0">
@@ -48,7 +40,7 @@ export default function UserSchedulingForm() {
           <h3 className="text-lg font-bold">Selecione serviços</h3>
           <Card>
             <CardContent className="max-h-50 space-y-4 overflow-auto">
-              {Array.from({ length: 10 }, (_, index) => (
+              {Array.from({ length: 3 }, (_, index) => (
                 <div
                   key={index}
                   className="flex w-full items-center justify-between"
@@ -70,37 +62,12 @@ export default function UserSchedulingForm() {
         <div>
           <h3 className="text-lg font-bold">Selecione uma data</h3>
 
-          <Popover>
-            <PopoverTrigger asChild>
-              <Button
-                variant="outline"
-                className="w-full px-3 text-left font-normal"
-              >
-                {date ? (
-                  <span>{format(date, "PPP", { locale: ptBR })}</span>
-                ) : (
-                  <span>Escolha uma data</span>
-                )}
-                <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-              </Button>
-            </PopoverTrigger>
-            <PopoverContent>
-              <Calendar
-                mode="single"
-                selected={date}
-                onSelect={(date) => setDate(date)}
-                disabled={(date) => date < new Date()}
-                locale={ptBR}
-                initialFocus
-              />
-            </PopoverContent>
-          </Popover>
+          <DatePicker />
         </div>
 
-        <div className="text-center">
-          <p>
-            Selecione uma data para ver os <br /> horários disponíveis.
-          </p>
+        <div className="flex w-full items-center justify-between">
+          <span className="text-xl font-bold">Total</span>
+          <span>33,90</span>
         </div>
 
         <Button type="submit" className="w-full py-6 font-bold">

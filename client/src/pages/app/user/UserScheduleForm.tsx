@@ -1,9 +1,9 @@
-import UserSchedulingForm from "./components/UserSchedulingForm";
+import { UserScheduleForm } from "./components/UserScheduleForm";
 
 export function UserSchedule() {
   return (
     <div className="space-y-12 pb-16 lg:flex lg:items-center lg:justify-center lg:pt-10">
-      <UserSchedulingForm />
+      <UserScheduleForm />
     </div>
   );
 }
