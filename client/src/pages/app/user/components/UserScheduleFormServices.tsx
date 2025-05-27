@@ -35,7 +35,7 @@ export function UserScheduleFormServices({
 
         return (
           <Card>
-            <CardContent className="max-h-50 space-y-4 overflow-auto">
+            <CardContent className="scrollbar-custom max-h-50 space-y-4 overflow-auto">
               {serviceOptions.map((service) => {
                 return (
                   <div
