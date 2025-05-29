@@ -19,7 +19,7 @@
 |[Logout](#logout-client)|[Registrar Agendamento](#registrar-agendamento)|
 |[Signup](#signup-client)|[Listar Agendamentos](#listar-agendamentos-client)|
 |[Validar Email](#validar-email-client)|[Cancelar Agendamento](#cancelar-agendamento-client)|
-|[Deletar Conta](#deletar-conta-client)|
+|[Deletar Conta](#deletar-conta-client)|[Selecionar Serviços Disponíveis](#selecionar-serviços-disponíveis-client)
 |[Alterar Informações](#alterar-informações-client)|
 |[Alterar Senha](#alterar-senha-client)|
 |[Enviar Email de Recuperação](#enviar-email-de-recuperação-client)|
@@ -242,16 +242,16 @@ GET /backend/client/getAppointment
 
 ### Caminho
 ```http
-DELETE /backend/client/delete
+PATCH /backend/client/cancelAppointment
 ```
 
 ### Formato de dados esperado:
 ```http
-/backend/client/delete?id=
+/backend/client/cancelAppointment?id=
 ```
 
 ### Códigos http
-- 204: Agendamento deletado
+- 204: Agendamento cancelado
 - 400: Id não informado ou inválido
 - 403: Tentativa de excluir agendamento de outra pessoa
 - 404: Nenhum agendamento com este Id
@@ -342,3 +342,34 @@ POST /backend/client/logout
 ### Códigos http
 - 204: Logout bem sucedido
 - 500: Erro interno
+
+## Selecionar Serviços Disponíveis (Client)
+
+### Caminho
+```http
+GET /backend/client/getServices
+```
+
+### Mensagem em caso de sucesso:
+```json
+"message": [
+        {
+            "id": 1,
+            "name": "Serviço 1",
+            "price": "15.00",
+            "duration": 30,
+            "active": 1
+        },
+        {
+            "id": 2,
+            "name": "Serviço 1",
+            "price": "20.00",
+            "duration": 45,
+            "active": 1
+        },
+]
+```
+
+### Códigos http
+- 200: Serviços encontrados
+- 404: Nenhum agendamento encontrado
