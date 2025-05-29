@@ -12,6 +12,10 @@
 > Em casos de sucesso, o conteúdo da mensagem (message) pode variar conforme a operação realizada. Sempre que houver uma mensagem específica relevante, ela será explicitamente descrita na documentação do endpoint correspondente.
 > Em cada endpoint também terá os códigos http que podem ser retornados e o que cada um deles pode significar.
 
+# CORS (Cross-Origin Resource Sharing)
+Para permitir que aplicações frontend hospedadas em domínios diferentes consumam esta API, o CORS (Cross-Origin Resource Sharing) foi habilitado. A configuração atual permite requisições de qualquer origem (__Access-Control-Allow-Origin: *__) e aceita os métodos HTTP __GET__, __POST__, __PATCH__, __DELETE__ e __OPTIONS__. 
+Para testar o CORS, basta acessar qualquer rota dentro da API (Até mesmo uma que não exista) usando o método __OPTIONS__.
+
 # Client Documentation
 |Conta|Agendar Horário|
 |--------|-------------|
@@ -19,7 +23,7 @@
 |[Logout](#logout-client)|[Registrar Agendamento](#registrar-agendamento)|
 |[Signup](#signup-client)|[Listar Agendamentos](#listar-agendamentos-client)|
 |[Validar Email](#validar-email-client)|[Cancelar Agendamento](#cancelar-agendamento-client)|
-|[Deletar Conta](#deletar-conta-client)|[Selecionar Serviços Disponíveis](#selecionar-serviços-disponíveis-client)
+|[Deletar Conta](#deletar-conta-client)|[Selecionar Serviços Disponíveis](#selecionar-serviços-disponíveis-client)|
 |[Alterar Informações](#alterar-informações-client)|
 |[Alterar Senha](#alterar-senha-client)|
 |[Enviar Email de Recuperação](#enviar-email-de-recuperação-client)|
