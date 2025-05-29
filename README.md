@@ -12,6 +12,10 @@
 > Em casos de sucesso, o conteúdo da mensagem (message) pode variar conforme a operação realizada. Sempre que houver uma mensagem específica relevante, ela será explicitamente descrita na documentação do endpoint correspondente.
 > Em cada endpoint também terá os códigos http que podem ser retornados e o que cada um deles pode significar.
 
+# CORS (Cross-Origin Resource Sharing)
+Para permitir que aplicações frontend hospedadas em domínios diferentes consumam esta API, o CORS (Cross-Origin Resource Sharing) foi habilitado. A configuração atual permite requisições de qualquer origem (__Access-Control-Allow-Origin: *__) e aceita os métodos HTTP __GET__, __POST__, __PATCH__, __DELETE__ e __OPTIONS__. 
+Para testar o CORS, basta acessar qualquer rota dentro da API (Até mesmo uma que não exista) usando o método __OPTIONS__.
+
 # Client Documentation
 |Conta|Agendar Horário|
 |--------|-------------|
@@ -19,7 +23,7 @@
 |[Logout](#logout-client)|[Registrar Agendamento](#registrar-agendamento)|
 |[Signup](#signup-client)|[Listar Agendamentos](#listar-agendamentos-client)|
 |[Validar Email](#validar-email-client)|[Cancelar Agendamento](#cancelar-agendamento-client)|
-|[Deletar Conta](#deletar-conta-client)|
+|[Deletar Conta](#deletar-conta-client)|[Selecionar Serviços Disponíveis](#selecionar-serviços-disponíveis-client)|
 |[Alterar Informações](#alterar-informações-client)|
 |[Alterar Senha](#alterar-senha-client)|
 |[Enviar Email de Recuperação](#enviar-email-de-recuperação-client)|
@@ -242,16 +246,16 @@ GET /backend/client/getAppointment
 
 ### Caminho
 ```http
-DELETE /backend/client/delete
+PATCH /backend/client/cancelAppointment
 ```
 
 ### Formato de dados esperado:
 ```http
-/backend/client/delete?id=
+/backend/client/cancelAppointment?id=
 ```
 
 ### Códigos http
-- 204: Agendamento deletado
+- 204: Agendamento cancelado
 - 400: Id não informado ou inválido
 - 403: Tentativa de excluir agendamento de outra pessoa
 - 404: Nenhum agendamento com este Id
@@ -275,7 +279,7 @@ GET /backend/client/availableTimeSlots
 ```json
 "message": [
         {
-            "id" => 1,
+            "id": 1,
             "name": "Nome do Professional",
             "email": "professiona@gmail.com",
             "phone": "00111114444",
@@ -296,7 +300,7 @@ GET /backend/client/availableTimeSlots
             ]
         },
         {
-            "id" => 2,
+            "id": 2,
             "name": "Nome do Professional 2",
             "email": "professiona2@gmail.com",
             "phone": "00111115555",
@@ -342,3 +346,34 @@ POST /backend/client/logout
 ### Códigos http
 - 204: Logout bem sucedido
 - 500: Erro interno
+
+## Selecionar Serviços Disponíveis (Client)
+
+### Caminho
+```http
+GET /backend/client/getServices
+```
+
+### Mensagem em caso de sucesso:
+```json
+"message": [
+        {
+            "id": 1,
+            "name": "Serviço 1",
+            "price": "15.00",
+            "duration": 30,
+            "active": 1
+        },
+        {
+            "id": 2,
+            "name": "Serviço 1",
+            "price": "20.00",
+            "duration": 45,
+            "active": 1
+        },
+]
+```
+
+### Códigos http
+- 200: Serviços encontrados
+- 404: Nenhum agendamento encontrado
