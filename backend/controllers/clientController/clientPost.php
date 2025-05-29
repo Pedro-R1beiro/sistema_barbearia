@@ -489,7 +489,7 @@ class ClientPost
                     ];
                 }
 
-                $appointmentIds[] = $result['id'];
+                $appointmentIds[] = $result;
 
                 $rowService = $this->service->getById($_idService);
                 $startTime = $endTime;

@@ -44,6 +44,7 @@ class Appointment
         ap.date,
         ap.startTime,
         ap.endTime,
+        ap.status,
         p.name AS professionalName,
         c.name AS clientName,
         s.name AS serviceName,
@@ -166,66 +167,38 @@ class Appointment
         return false;
     }
 
-    public function getByProfessional($idProfessional)
+    public function patch($id, $status)
     {
-        if (!empty($idProfessional) && is_numeric($idProfessional)) {
-            $sql = "SELECT
-                        ap.date,
-                        ap.startTime,
-                        ap.endTime,
-                        s.name AS serviceName,
-                        p.name AS professionalName,
-                        c.name AS clientName
-                    FROM appointments ap
-                    INNER JOIN services s ON ap.idService = s.id
-                    INNER JOIN professionals p ON ap.idProfessional = p.id
-                    INNER JOIN clients c ON ap.idClient = c.id
-                    WHERE ap.idProfessional = :idProfessional
-                    ORDER BY ap.date, ap.startTime";
-            $stmt = $this->conn->prepare($sql);
-            $stmt->bindParam(':idProfessional', $idProfessional);
-
-            if ($stmt->execute()) {
-                return $stmt->fetchAll(PDO::FETCH_ASSOC); // Retorna compromissos de um profissional
-            }
+        if (empty($id) || empty($status) || !is_numeric($id)) {
+            return false;
         }
-        return false;
-    }
 
-    public function getByClient($idClient)
-    {
-        if (!empty($idClient) && is_numeric($idClient)) {
-            $sql = "SELECT
-                        ap.date,
-                        ap.startTime,
-                        ap.endTime,
-                        s.name AS serviceName,
-                        p.name AS professionalName,
-                        c.name AS clientName
-                    FROM appointments ap
-                    INNER JOIN services s ON ap.idService = s.id
-                    INNER JOIN professionals p ON ap.idProfessional = p.id
-                    INNER JOIN clients c ON ap.idClient = c.id
-                    WHERE ap.idClient = :idClient
-                    ORDER BY ap.date, ap.startTime";
-            $stmt = $this->conn->prepare($sql);
-            $stmt->bindParam(':idClient', $idClient);
+        $allowedValues = ['Marcado', 'Cancelado', 'Concluído'];
 
-            if ($stmt->execute()) {
-                return $stmt->fetchAll(PDO::FETCH_ASSOC); // Retorna compromissos de um cliente
-            }
+        if (!in_array($status, $allowedValues)) {
+            return false;
         }
+
+        $sql = "UPDATE appointments SET status = :status WHERE id = :id";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bindParam(':status', $status);
+        $stmt->bindParam(':id', $id);
+
+        if ($stmt->execute()) {
+            return true;
+        }
+
         return false;
     }
 
     public function post($date, $startTime, $endTime, $idService, $idProfessional, $idClient)
     {
-        if (!empty($date) && !empty($startTime) && !empty($startTime) && is_numeric($idService) && is_numeric($idProfessional) && is_numeric($idClient)) {
+        if (!empty($date) && !empty($startTime) && is_numeric($idService) && is_numeric($idProfessional) && is_numeric($idClient)) {
             $date = trim($date);
             $startTime = trim($startTime);
             $endTime  = trim($endTime);
 
-            $sql = "INSERT INTO appointments (date, startTime, endTime, idClient, idService, idProfessional) VALUE (:date, :startTime, :endTime, :idClient, :idService, :idProfessional)";
+            $sql = "INSERT INTO appointments (date, startTime, endTime, idClient, idService, idProfessional) VALUES (:date, :startTime, :endTime, :idClient, :idService, :idProfessional)";
 
             $stmt = $this->conn->prepare($sql);
             $stmt->bindParam(':date', $date);
@@ -236,7 +209,7 @@ class Appointment
             $stmt->bindParam(':idProfessional', $idProfessional);
 
             if ($stmt->execute()) {
-                return true;
+                return $this->conn->lastInsertId();
             }
         }
         return false;

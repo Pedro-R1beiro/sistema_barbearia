@@ -161,6 +161,17 @@ class ClientGet
                 ];
             }
 
+            $today = date('Y-m-d');
+            if ($data['date'] < $today) {
+                return [
+                    'code' => 422,
+                    'body' => [
+                        'status' => 'error',
+                        'message' => 'Data informada anterior a ' . $today . ' (Hoje)'
+                    ]
+                ];
+            }
+
             $duration = 0;
 
             if (is_array($data['service'])) {

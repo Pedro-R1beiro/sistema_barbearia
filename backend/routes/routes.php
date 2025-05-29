@@ -84,26 +84,24 @@ if ($requestType === 'client') {
                     'validateEmail' => 'validateEmail',
                     'changeInfo' => 'changeInfo',
                     'changePassword' => 'changePassword',
-                    'resetPassword' => 'resetPassword'
+                    'resetPassword' => 'resetPassword',
+                    'cancelAppointment' => 'cancelAppointment'
                 ];
                 $controller = new ClientPatch();
+                // Ajuste extra no caso de cancelAppointment
+                if ($methodType === 'cancelAppointment') {
+                    if (!isset($data['id']) && isset($_GET['id'])) {
+                        $data['id'] = $_GET['id'];
+                    }
+                }
                 $response = resolveRoute($controller, $methodType, $routesMap);
                 break;
 
             case 'DELETE':
                 $routesMap = [
-                    'delete' => 'delete',
-                    'deleteAppointment' => 'deleteAppointment'
+                    'delete' => 'delete'
                 ];
                 $controller = new ClientDelete();
-
-                // Ajuste extra no caso de deleteAppointment
-                if ($methodType === 'deleteAppointment') {
-                    if (!isset($data['id']) && isset($_GET['id'])) {
-                        $data['id'] = $_GET['id'];
-                    }
-                }
-
                 $response = resolveRoute($controller, $methodType, $routesMap);
                 break;
 
