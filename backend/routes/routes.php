@@ -1,4 +1,18 @@
 <?php
+// Habilita CORS para qualquer origem — você pode trocar o * por um domínio específico
+header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Headers: Content-Type, Authorization");
+header("Access-Control-Allow-Methods: GET, POST, PATCH, DELETE, OPTIONS");
+
+// Se for uma requisição de pré-vôo (OPTIONS), responda imediatamente
+if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+    http_response_code(200);
+    echo json_encode([
+        'status' => 'success',
+        'message' => 'Requisição aceita'
+    ]);
+    exit;
+}
 
 // require_once __DIR__ . '/../controllers/professionalController.php';
 
