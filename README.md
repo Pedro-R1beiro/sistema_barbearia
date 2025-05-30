@@ -376,4 +376,4 @@ GET /backend/client/getServices
 
 ### Códigos http
 - 200: Serviços encontrados
-- 404: Nenhum agendamento encontrado
+- 404: Nenhum serviço encontrado
