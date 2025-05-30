@@ -5,6 +5,9 @@ import { z } from "zod";
 
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useMutation } from "@tanstack/react-query";
+import { signUp } from "@/api/sign-up";
+import { toast } from "sonner";
 
 const registerSchema = z.object({
   name: z.string().min(2, "mínimo de 2 caracteres"),
@@ -20,12 +23,22 @@ const registerSchema = z.object({
 
 type RegisterData = z.infer<typeof registerSchema>;
 
-function onSubmit(data: RegisterData) {
-  console.log(data);
-}
-
 export function Register() {
   const navigate = useNavigate();
+
+  const { mutateAsync: signUpFn } = useMutation({
+    mutationFn: signUp,
+  });
+
+  async function onSubmit(data: RegisterData) {
+    try {
+      await signUpFn(data);
+      toast.success("Sucesso ao criar conta");
+    } catch (err) {
+      toast.error("Erro ao criar conta, tente novamente mais tarde");
+      console.log(err);
+    }
+  }
 
   const {
     register,

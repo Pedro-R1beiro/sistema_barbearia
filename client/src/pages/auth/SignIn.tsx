@@ -4,6 +4,9 @@ import { useNavigate } from "react-router";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+import { useMutation } from "@tanstack/react-query";
+import { signIn } from "@/api/sign-in";
+import { toast } from "sonner";
 
 const signInSchema = z.object({
   email: z.string().email("E-mail inválido"),
@@ -15,6 +18,11 @@ type SignInData = z.infer<typeof signInSchema>;
 export function SignIn() {
   const navigate = useNavigate();
 
+  const { mutateAsync: signInFn } = useMutation({
+    mutationFn: signIn,
+    mutationKey: ["a"],
+  });
+
   const {
     register,
     handleSubmit,
@@ -23,8 +31,19 @@ export function SignIn() {
     resolver: zodResolver(signInSchema),
   });
 
-  function onSubmit(data: SignInData) {
-    console.log(data);
+  async function onSubmit(data: SignInData) {
+    try {
+      await signInFn(data);
+      toast.success("Logado com sucesso!", {
+        action: {
+          label: "Ir para o painel",
+          onClick: () => navigate("/dashboard"),
+        },
+      });
+    } catch (err) {
+      toast.error("Erro ao fazer login :(");
+      console.log(err);
+    }
   }
 
   return (
