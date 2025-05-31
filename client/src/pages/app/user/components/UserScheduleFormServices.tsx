@@ -2,12 +2,8 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Controller, type Control } from "react-hook-form";
 import type { ScheduleFormData } from "./UserScheduleForm";
-
-const serviceOptions = [
-  { id: 1, label: "Barba", price: "R$ 12,90" },
-  { id: 2, label: "Corte", price: "R$ 21,90" },
-  { id: 3, label: "Sobrancelha", price: "R$ 9,90" },
-];
+import { useQuery } from "@tanstack/react-query";
+import { getServices } from "@/api/get-services";
 
 interface UserScheduleFormServicesProps {
   control: Control<ScheduleFormData>;
@@ -16,6 +12,11 @@ interface UserScheduleFormServicesProps {
 export function UserScheduleFormServices({
   control,
 }: UserScheduleFormServicesProps) {
+  const { data: serviceOptions } = useQuery({
+    queryKey: ["services"],
+    queryFn: getServices,
+  });
+
   return (
     <Controller
       control={control}
@@ -34,31 +35,27 @@ export function UserScheduleFormServices({
         }
 
         return (
-          <Card>
-            <CardContent className="scrollbar-custom max-h-50 space-y-4 overflow-auto">
-              {serviceOptions.map((service) => {
-                return (
-                  <div
-                    key={service.id}
-                    className="flex w-full items-center justify-between"
-                  >
+          <Card className="p-0">
+            <CardContent className="scrollbar-custom max-h-50 overflow-auto p-4">
+              {serviceOptions &&
+                serviceOptions.map((service) => {
+                  return (
                     <label
-                      htmlFor={service.label}
-                      className="flex w-full items-center justify-between leading-none font-medium peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                      htmlFor={service.name}
+                      className="border-b-background hover:bg-background flex w-full items-center justify-between border-b-[1px] p-3 pb-3 leading-none font-medium peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                     >
-                      <span className="w-40">{service.label}</span>
+                      <span className="w-40">{service.name}</span>
                       <span className="w-40">{service.price}</span>
 
                       <Checkbox
                         name="services"
                         onCheckedChange={() => toggleService(service.id)}
-                        id={service.label}
+                        id={service.name}
                         value={service.id}
                       />
                     </label>
-                  </div>
-                );
-              })}
+                  );
+                })}
             </CardContent>
           </Card>
         );
