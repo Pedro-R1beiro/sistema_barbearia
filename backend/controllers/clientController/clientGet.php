@@ -70,66 +70,86 @@ class ClientGet
 
     public function getAppointment($data = null)
     {
-        $userData = $this->authenticate();
-        if (isset($userData['body']['status']) && $userData['body']['status'] == 'error') {
-            return $userData;
-        }
-        $id = $userData['sub'];
+        try {
+            $userData = $this->authenticate();
+            if (isset($userData['body']['status']) && $userData['body']['status'] == 'error') {
+                return $userData;
+            }
+            $id = $userData['sub'];
 
-        $filter = !empty($data['filter']) ? trim($data['filter']) : 'all';
-        if (!in_array($filter, ['today', 'nearby', 'history', 'next', 'last', 'all'])) {
+            $filter = !empty($data['filter']) ? trim($data['filter']) : 'all';
+            if (!in_array($filter, ['today', 'nearby', 'history', 'next', 'last', 'all'])) {
+                return [
+                    'code' => 400,
+                    'body' => [
+                        'status' => 'error',
+                        'message' => 'Filtro inválido'
+                    ]
+                ];
+            }
+
+            $appointment = $this->appo->get($filter, null, $id);
+            if ($appointment) {
+                return [
+                    'code' => 200,
+                    'body' => [
+                        'status' => 'success',
+                        'message' => $appointment
+                    ]
+                ];
+            }
             return [
-                'code' => 400,
+                'code' => 204,
                 'body' => [
                     'status' => 'error',
-                    'message' => 'Filtro inválido'
+                    'message' => 'Nenhum agendamento foi encontrado'
                 ]
             ];
-        }
-
-        $appointment = $this->appo->get($filter, null, $id);
-        if ($appointment) {
+        } catch (Exception $e) {
             return [
-                'code' => 200,
+                'code' => 500,
                 'body' => [
-                    'status' => 'success',
-                    'message' => $appointment
+                    'status' => 'error',
+                    'message' => 'Erro ao realizar seu pedido, tente novamente mais tarde'
                 ]
             ];
         }
-        return [
-            'code' => 404,
-            'body' => [
-                'status' => 'error',
-                'message' => 'Nenhum agendamento foi encontrado'
-            ]
-        ];
     }
 
     public function getServices()
     {
-        $userData = $this->authenticate();
-        if (isset($userData['body']['status']) && $userData['body']['status'] == 'error') {
-            return $userData;
-        }
+        try {
+            $userData = $this->authenticate();
+            if (isset($userData['body']['status']) && $userData['body']['status'] == 'error') {
+                return $userData;
+            }
 
-        $services = $this->service->get();
-        if ($services) {
+            $services = $this->service->get();
+            if ($services) {
+                return [
+                    'code' => 200,
+                    'body' => [
+                        'status' => 'success',
+                        'message' => $services
+                    ]
+                ];
+            }
             return [
-                'code' => 200,
+                'code' => 204,
                 'body' => [
-                    'status' => 'success',
-                    'message' => $services
+                    'status' => 'error',
+                    'message' => 'Nenhum agendamento foi encontrado'
+                ]
+            ];
+        } catch (Exception $e) {
+            return [
+                'code' => 500,
+                'body' => [
+                    'status' => 'error',
+                    'message' => 'Erro ao realizar seu pedido, tente novamente mais tarde'
                 ]
             ];
         }
-        return [
-            'code' => 404,
-            'body' => [
-                'status' => 'error',
-                'message' => 'Nenhum agendamento foi encontrado'
-            ]
-        ];
     }
 
     public function availableTimeSlots($data)
