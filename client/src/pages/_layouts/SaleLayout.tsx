@@ -1,6 +1,6 @@
 import { Header } from "@/components/Header";
 import { Outlet, useNavigate } from "react-router";
-import { Home } from "../app/Sale/components/Home";
+import { Home } from "../Sale/components/Home";
 import {
   faBuilding,
   faHouse,
