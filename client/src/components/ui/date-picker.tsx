@@ -1,7 +1,6 @@
 "use client";
 
-import * as React from "react";
-import { format } from "date-fns";
+import { format, subDays } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { CalendarIcon } from "lucide-react";
 
@@ -14,9 +13,12 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 
-export function DatePicker() {
-  const [date, setDate] = React.useState<Date>();
+interface DatePickerProps {
+  date: Date;
+  setDate: (date: Date) => void;
+}
 
+export function DatePicker({ date, setDate }: DatePickerProps) {
   return (
     <Popover>
       <PopoverTrigger asChild>
@@ -41,7 +43,7 @@ export function DatePicker() {
           locale={ptBR}
           selected={date}
           onSelect={setDate}
-          initialFocus
+          disabled={(date) => date <= subDays(new Date(), 1)}
         />
       </PopoverContent>
     </Popover>
