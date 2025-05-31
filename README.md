@@ -239,8 +239,9 @@ GET /backend/client/getAppointment
 ```
 ### Códigos http
 - 200: Sucesso
+- 204: Nenhum agendamento encontrado
 - 400: Filtro Inválido
-- 409: Nenhum agendamento encontrado
+- 500: Erro interno
 
 ## Cancelar Agendamento (Client)
 
@@ -376,4 +377,5 @@ GET /backend/client/getServices
 
 ### Códigos http
 - 200: Serviços encontrados
-- 404: Nenhum agendamento encontrado
+- 204: Nenhum serviço encontrado
+- 500: Erro interno
