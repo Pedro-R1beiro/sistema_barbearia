@@ -1,4 +1,4 @@
-import { UserScheduleForm } from "./components/UserScheduleForm";
+import { UserScheduleForm } from "./UserScheduleForm";
 
 export function UserSchedule() {
   return (
