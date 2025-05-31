@@ -1,5 +1,5 @@
 import { createBrowserRouter } from "react-router";
-import { Sale } from "./pages/app/Sale";
+import { Sale } from "./pages/Sale";
 import { SaleLayout } from "./pages/_layouts/SaleLayout";
 import { SignInLayout } from "./pages/_layouts/SignInLayout";
 import { SignIn } from "./pages/auth/SignIn";
