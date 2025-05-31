@@ -14,21 +14,25 @@ import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { UserScheduleFormServices } from "./UserScheduleFormServices";
+import { useState } from "react";
 
 const scheduleFormDataSchema = z.object({
   barber: z.string(),
   services: z.array(z.number()),
-  // date: z.date(),
+  date: z.date(),
 });
 
 export type ScheduleFormData = z.infer<typeof scheduleFormDataSchema>;
 
 export function UserScheduleForm() {
-  const { handleSubmit, control } = useForm<ScheduleFormData>({
+  const [date, setDate] = useState<Date>(new Date());
+
+  const { register, handleSubmit, control } = useForm<ScheduleFormData>({
     resolver: zodResolver(scheduleFormDataSchema),
     defaultValues: {
       barber: "",
       services: [],
+      date: date,
     },
   });
 
@@ -50,6 +54,22 @@ export function UserScheduleForm() {
       <h1 className="text-center text-xl font-bold sm:text-2xl">
         Adicionar um novo agendamento
       </h1>
+      <div>
+        <div>
+          <h3 className="text-lg font-bold">Selecione uma data</h3>
+          <input
+            className="hidden"
+            value={date.toDateString()}
+            {...register("date")}
+          />
+          <DatePicker date={date} setDate={setDate} />
+        </div>
+      </div>
+      <div>
+        <h3 className="text-lg font-bold">Selecione serviços</h3>
+        <UserScheduleFormServices control={control} />
+      </div>
+
       <div>
         <h3 className="text-lg font-bold">Selecione um barbeiro</h3>
         <Controller
@@ -81,14 +101,7 @@ export function UserScheduleForm() {
           )}
         />
       </div>
-      <div>
-        <h3 className="text-lg font-bold">Selecione serviços</h3>
-        <UserScheduleFormServices control={control} />
-      </div>
-      <div>
-        <h3 className="text-lg font-bold">Selecione uma data</h3>
-        <DatePicker />
-      </div>
+
       <div className="flex w-full items-center justify-between">
         <span className="text-xl font-bold">Total</span>
         <span>33,90</span>

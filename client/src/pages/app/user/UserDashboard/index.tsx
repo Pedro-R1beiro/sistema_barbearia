@@ -4,8 +4,8 @@ import { Card, CardContent, CardTitle } from "@/components/ui/card";
 import { faWhatsapp } from "@fortawesome/free-brands-svg-icons";
 import { faCalendarDays, faScissors } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { NextAppointment } from "./components/NextAppointment";
-import { AppointmentsTable } from "./components/AppointmentsTable";
+import { NextAppointment } from "../components/NextAppointment";
+import { AppointmentsTable } from "./AppointmentsTable";
 
 export function UserDashboard() {
   return (

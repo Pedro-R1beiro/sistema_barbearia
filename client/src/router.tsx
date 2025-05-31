@@ -1,15 +1,15 @@
 import { createBrowserRouter } from "react-router";
-import { Sale } from "./pages/Sale";
+import { Sale } from "./pages/app/Sale";
 import { SaleLayout } from "./pages/_layouts/SaleLayout";
 import { SignInLayout } from "./pages/_layouts/SignInLayout";
 import { SignIn } from "./pages/auth/SignIn";
 import { RegisterLayout } from "./pages/_layouts/RegisterLayout";
 import { Register } from "./pages/auth/Register";
 import { UserLayout } from "./pages/_layouts/UserLayout";
-import { UserDashboard } from "./pages/app/user/UserDashboard";
 import { UserProfile } from "./pages/app/user/UserProfile";
 import { UserSchedule } from "./pages/app/user/UserScheduleForm";
-import { NotFound } from "./pages/Errors/NotFound";
+import { NotFound } from "./pages/errors/NotFound";
+import { UserDashboard } from "./pages/app/user/UserDashboard";
 
 export const router = createBrowserRouter([
   {
