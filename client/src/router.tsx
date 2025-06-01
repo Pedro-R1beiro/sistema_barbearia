@@ -7,9 +7,9 @@ import { RegisterLayout } from "./pages/_layouts/RegisterLayout";
 import { Register } from "./pages/auth/Register";
 import { UserLayout } from "./pages/_layouts/UserLayout";
 import { UserProfile } from "./pages/app/user/UserProfile";
-import { UserSchedule } from "./pages/app/user/UserScheduleForm";
 import { NotFound } from "./pages/errors/NotFound";
 import { UserDashboard } from "./pages/app/user/UserDashboard";
+import { UserScheduleForm } from "./pages/app/user/UserScheduleForm";
 
 export const router = createBrowserRouter([
   {
@@ -25,7 +25,7 @@ export const router = createBrowserRouter([
   {
     path: "/",
     element: <RegisterLayout />,
-    children: [{ path: "/register", element: <Register /> }],
+    children: [{ path: "/sign-up", element: <Register /> }],
   },
   {
     path: "/",
@@ -33,7 +33,7 @@ export const router = createBrowserRouter([
     children: [
       { path: "/dashboard", element: <UserDashboard /> },
       { path: "/profile", element: <UserProfile /> },
-      { path: "/to-schedule", element: <UserSchedule /> },
+      { path: "/to-schedule", element: <UserScheduleForm /> },
     ],
   },
   {

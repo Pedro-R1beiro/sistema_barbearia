@@ -1,7 +1,7 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Controller, type Control } from "react-hook-form";
-import type { ScheduleFormData } from "./UserScheduleForm";
+import type { ScheduleFormData } from ".";
 import { useQuery } from "@tanstack/react-query";
 import { getServices } from "@/api/get-services";
 
