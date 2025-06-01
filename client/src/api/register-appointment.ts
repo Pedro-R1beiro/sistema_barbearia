@@ -16,7 +16,7 @@ export async function registerAppointment({
 }: RegisterAppointmentBody) {
   const formatedDate = formatDate(date);
 
-  await api.post("/client/login", {
+  await api.post("/client/registerAppointment", {
     startTime,
     date: formatedDate,
     service,
