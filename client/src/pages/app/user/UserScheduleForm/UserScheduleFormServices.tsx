@@ -52,6 +52,7 @@ export function UserScheduleFormServices({
                         onCheckedChange={() => toggleService(service.id)}
                         id={service.name}
                         value={service.id}
+                        checked={value?.includes(service.id)}
                       />
                     </label>
                   );

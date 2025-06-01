@@ -10,6 +10,8 @@ import { useMutation } from "@tanstack/react-query";
 import { Card, CardContent } from "@/components/ui/card";
 import { registerAppointment } from "@/api/register-appointment";
 import { UserScheduleFormBarber } from "./UserScheduleFormBarber";
+import { toast } from "sonner";
+import { queryClient } from "@/lib/react-query";
 
 const scheduleFormDataSchema = z.object({
   barber: z.string(),
@@ -21,7 +23,7 @@ const scheduleFormDataSchema = z.object({
 export type ScheduleFormData = z.infer<typeof scheduleFormDataSchema>;
 
 export function UserScheduleForm() {
-  const { handleSubmit, control, watch } = useForm<ScheduleFormData>({
+  const { handleSubmit, control, watch, reset } = useForm<ScheduleFormData>({
     resolver: zodResolver(scheduleFormDataSchema),
     defaultValues: {
       barber: "",
@@ -31,20 +33,35 @@ export function UserScheduleForm() {
     },
   });
 
-  const { mutateAsync: registerAppointmentFn } = useMutation({
-    mutationFn: registerAppointment,
-  });
-
   const selectedBarber = watch("barber");
   const selectedServices = watch("services");
+  const selectedDate = watch("date");
 
-  function onSubmit(data: ScheduleFormData) {
-    registerAppointmentFn({
-      date: data.date,
-      idProfessional: Number(data.barber),
-      service: data.services,
-      startTime: data.startTime,
-    });
+  const { mutateAsync: registerAppointmentFn } = useMutation({
+    mutationFn: registerAppointment,
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["appointment", selectedDate],
+      });
+    },
+  });
+
+  async function onSubmit(data: ScheduleFormData) {
+    try {
+      await registerAppointmentFn({
+        date: data.date,
+        idProfessional: Number(data.barber),
+        service: data.services,
+        startTime: data.startTime,
+      });
+
+      reset();
+
+      toast.success("Agendamento feito com sucesso!");
+    } catch (err) {
+      toast.error("Horário não disponível!");
+      console.log(err);
+    }
   }
 
   return (
