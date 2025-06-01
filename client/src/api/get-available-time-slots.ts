@@ -1,5 +1,5 @@
 import { api } from "@/lib/axios";
-import { format } from "date-fns";
+import { formatDate } from "@/utils/format-date";
 
 interface getAvailableTimeSlotsResponse {
   message: {
@@ -21,13 +21,13 @@ export async function getAvailableTimeSlots({
   service,
 }: getAvailableTimeSlotsQuery) {
   const formatService = service.join(",");
-  const formatDate = format(date, "yyyy-M-d");
+  const formatedDate = formatDate(date);
 
   const response = await api.get<getAvailableTimeSlotsResponse>(
     "/client/availableTimeSlots",
     {
       params: {
-        date: formatDate,
+        date: formatedDate,
         service: formatService,
       },
     },
