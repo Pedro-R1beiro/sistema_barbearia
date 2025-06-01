@@ -14,7 +14,6 @@ import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { UserScheduleFormServices } from "./UserScheduleFormServices";
-import { useState } from "react";
 import { UserScheduleFormTime } from "./UserScheduleFormTime";
 import { useQuery } from "@tanstack/react-query";
 import { getAvailableTimeSlots } from "@/api/get-available-time-slots";
@@ -30,14 +29,12 @@ const scheduleFormDataSchema = z.object({
 export type ScheduleFormData = z.infer<typeof scheduleFormDataSchema>;
 
 export function UserScheduleForm() {
-  const [date, setDate] = useState<Date>(new Date());
-
-  const { register, handleSubmit, control, watch } = useForm<ScheduleFormData>({
+  const { handleSubmit, control, watch } = useForm<ScheduleFormData>({
     resolver: zodResolver(scheduleFormDataSchema),
     defaultValues: {
       barber: "",
       services: [],
-      date: date,
+      date: new Date(),
     },
   });
 
@@ -67,13 +64,7 @@ export function UserScheduleForm() {
       <div>
         <div>
           <h3 className="text-lg font-bold">Selecione uma data</h3>
-
-          <input
-            className="hidden"
-            value={date?.toString()}
-            {...register("date")}
-          />
-          <DatePicker date={date} setDate={setDate} />
+          <DatePicker control={control} />
         </div>
       </div>
       <div>
@@ -103,7 +94,10 @@ export function UserScheduleForm() {
                     {availableTimeSlots &&
                       availableTimeSlots.map((available) => {
                         return (
-                          <SelectItem value={available.id.toString()}>
+                          <SelectItem
+                            key={available.id}
+                            value={available.id.toString()}
+                          >
                             {available.name}
                           </SelectItem>
                         );

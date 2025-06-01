@@ -23,7 +23,7 @@ export function NavLink({ link, text, icon, type }: NavLinkProps) {
   ) : (
     <a
       href={link}
-      className="w-full space-x-6 rounded-md p-2 whitespace-nowrap duration-200"
+      className="hover:bg-muted/10 w-full space-x-6 rounded-md p-2 whitespace-nowrap duration-200"
     >
       <FontAwesomeIcon icon={icon} />
       <span>{text}</span>

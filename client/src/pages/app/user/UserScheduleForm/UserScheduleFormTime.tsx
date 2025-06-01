@@ -37,6 +37,7 @@ export function UserScheduleFormTime({
   const available = availableTimeSlots?.filter((available) => {
     return available.id === Number(selectedBarber);
   });
+  console.log(available);
   const timeSlots = available?.flatMap((item) => item.timeSlot);
 
   return (
@@ -55,10 +56,19 @@ export function UserScheduleFormTime({
           </SelectTrigger>
           <SelectContent className="max-h-70">
             <SelectGroup>
-              <SelectLabel>Horários</SelectLabel>
+              {timeSlots && timeSlots.length >= 1 ? (
+                <SelectLabel>Horários</SelectLabel>
+              ) : (
+                <SelectLabel>Profissional sem horários disponíveis</SelectLabel>
+              )}
+
               {timeSlots &&
                 timeSlots.map((time) => {
-                  return <SelectItem value={time}>{time}</SelectItem>;
+                  return (
+                    <SelectItem key={time} value={time}>
+                      {time}
+                    </SelectItem>
+                  );
                 })}
             </SelectGroup>
           </SelectContent>

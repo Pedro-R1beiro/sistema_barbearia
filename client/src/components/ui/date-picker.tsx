@@ -12,44 +12,47 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { Controller, type Control } from "react-hook-form";
+import type { ScheduleFormData } from "@/pages/app/user/UserScheduleForm/UserScheduleForm";
 
 interface DatePickerProps {
-  date: Date;
-  setDate: (date: Date) => void;
+  control: Control<ScheduleFormData>;
 }
 
-export function DatePicker({ date, setDate }: DatePickerProps) {
+export function DatePicker({ control }: DatePickerProps) {
   return (
-    <Popover>
-      <PopoverTrigger asChild>
-        <Button
-          variant={"outline"}
-          className={cn(
-            "w-full justify-start text-left font-normal",
-            !date && "text-muted-foreground",
-          )}
-        >
-          <CalendarIcon />
-          {date ? (
-            format(date, "PPPP", { locale: ptBR })
-          ) : (
-            <span>Escolha uma data</span>
-          )}
-        </Button>
-      </PopoverTrigger>
-      <PopoverContent className="w-auto p-0">
-        <Calendar
-          mode="single"
-          locale={ptBR}
-          selected={date}
-          onSelect={(selectedDate) => {
-            if (selectedDate) {
-              setDate(selectedDate);
-            }
-          }}
-          disabled={(date) => date <= subDays(new Date(), 1)}
-        />
-      </PopoverContent>
-    </Popover>
+    <Controller
+      control={control}
+      name="date"
+      render={({ field }) => (
+        <Popover>
+          <PopoverTrigger asChild>
+            <Button
+              variant={"outline"}
+              className={cn(
+                "w-full justify-start text-left font-normal",
+                !field.value && "text-muted-foreground",
+              )}
+            >
+              <CalendarIcon />
+              {field.value ? (
+                format(field.value, "PPPP", { locale: ptBR })
+              ) : (
+                <span>Escolha uma data</span>
+              )}
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent className="w-auto p-0">
+            <Calendar
+              mode="single"
+              locale={ptBR}
+              selected={field.value}
+              onSelect={field.onChange}
+              disabled={(date) => date <= subDays(new Date(), 1)}
+            />
+          </PopoverContent>
+        </Popover>
+      )}
+    />
   );
 }
