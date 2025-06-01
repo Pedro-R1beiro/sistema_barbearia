@@ -1,31 +1,16 @@
-import { ContactButton } from "@/components/ContactButton";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
-import { faWhatsapp } from "@fortawesome/free-brands-svg-icons";
-import { faCalendarDays, faScissors } from "@fortawesome/free-solid-svg-icons";
+import { faCalendarDays } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { NextAppointment } from "../components/NextAppointment";
 import { AppointmentsTable } from "./AppointmentsTable";
+import { NextAppointmentCard } from "./NextAppointmentCard";
 
 export function UserDashboard() {
   return (
     <div className="gap-x-14 lg:mt-6 lg:grid lg:grid-cols-[1fr_auto] lg:grid-rows-[180px_1fr]">
       <div className="col-1 row-1 space-y-10 md:flex md:items-center md:gap-8 md:space-y-0">
-        <Card className="bg-custom-foreground text-background lg:w-72">
-          <CardContent>
-            <div className="flex items-start justify-between pr-2">
-              <span className="text-2xl font-bold">22 dias</span>
-              <FontAwesomeIcon icon={faScissors} className="text-3xl" />
-            </div>
-            <div className="mt-6 flex items-center justify-between text-lg">
-              <span className="font-medium">
-                Para seu próximo <br />
-                horário.
-              </span>
-              <ContactButton icon={faWhatsapp} link="Whatsapp.client.api" />
-            </div>
-          </CardContent>
-        </Card>
+        <NextAppointmentCard />
         <Card className="bg-custom-foreground text-background md:flex-1">
           <CardContent className="px-3">
             <div className="flex items-start justify-between pr-2">

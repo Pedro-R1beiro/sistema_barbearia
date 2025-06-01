@@ -37,7 +37,7 @@ export function UserScheduleFormTime({
   const available = availableTimeSlots?.filter((available) => {
     return available.id === Number(selectedBarber);
   });
-  console.log(available);
+
   const timeSlots = available?.flatMap((item) => item.timeSlot);
 
   return (
