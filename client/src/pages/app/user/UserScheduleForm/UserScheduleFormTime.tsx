@@ -11,22 +11,22 @@ import {
 import { getAvailableTimeSlots } from "@/api/get-available-time-slots";
 
 import { useQuery } from "@tanstack/react-query";
-import { Controller, type Control } from "react-hook-form";
-import type { ScheduleFormData } from "./UserScheduleForm";
+import { Controller, type Control, type UseFormWatch } from "react-hook-form";
+import type { ScheduleFormData } from ".";
 
 interface UserScheduleFormTimeProps {
   control: Control<ScheduleFormData>;
-  selectedDate: Date;
-  selectedServices: number[];
-  selectedBarber: string | null | undefined;
+  watch: UseFormWatch<ScheduleFormData>;
 }
 
 export function UserScheduleFormTime({
   control,
-  selectedDate,
-  selectedServices,
-  selectedBarber,
+  watch,
 }: UserScheduleFormTimeProps) {
+  const selectedBarber = watch("barber");
+  const selectedServices = watch("services");
+  const selectedDate = watch("date");
+
   const { data: availableTimeSlots } = useQuery({
     queryKey: ["appointment", selectedDate, selectedServices],
     queryFn: () =>
@@ -43,7 +43,7 @@ export function UserScheduleFormTime({
   return (
     <Controller
       control={control}
-      name="time"
+      name="startTime"
       render={({ field: { name, onChange, value, disabled } }) => (
         <Select
           name={name}
