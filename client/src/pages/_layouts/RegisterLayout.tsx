@@ -1,11 +1,13 @@
 import { ContactButton } from "@/components/ContactButton";
 import { Button } from "@/components/ui/button";
+import { scrollToTop } from "@/utils/scroll-to-top";
 import {
   faGithub,
   faInstagram,
   faLinkedin,
   faWhatsapp,
 } from "@fortawesome/free-brands-svg-icons";
+import { ArrowUp } from "lucide-react";
 import { Outlet, useNavigate } from "react-router";
 
 export function RegisterLayout() {
@@ -14,7 +16,10 @@ export function RegisterLayout() {
   return (
     <>
       <div className="mx-auto grid min-h-screen overflow-hidden lg:grid-cols-2">
-        <div className="relative flex min-h-[95dvh] flex-col items-center justify-center bg-white p-3 pt-70 pb-100 lg:col-1 lg:min-h-[100dvh] lg:max-w-180 lg:pt-70">
+        <div
+          id="#"
+          className="relative flex min-h-[95dvh] flex-col items-center justify-center bg-white p-3 pt-70 pb-100 lg:col-1 lg:min-h-[100dvh] lg:max-w-180 lg:pt-70"
+        >
           <Outlet />
         </div>
         <div className="dark:text-foreground dark:bg-background bg-muted-foreground relative z-1000 mt-12 flex min-h-screen flex-col items-center justify-center p-3 pt-20 text-center lg:col-2">
@@ -52,6 +57,10 @@ export function RegisterLayout() {
             />
             <ContactButton link="github.api.client" icon={faGithub} size="sm" />
           </span>
+
+          <button onClick={scrollToTop} className="cursor-pointer p-3">
+            <ArrowUp className="bg-foreground text-background mt-15 rounded-full md:hidden" />
+          </button>
         </div>
       </div>
     </>

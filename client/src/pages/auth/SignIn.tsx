@@ -49,7 +49,7 @@ export function SignIn() {
   return (
     <>
       <Button
-        onClick={() => navigate("/register")}
+        onClick={() => navigate("/sign-up")}
         className="dark:text-background dark:border-background/20 dark:bg-foreground dark:hover:bg-background/5 absolute top-5 left-5 z-1000"
         variant="outline"
       >

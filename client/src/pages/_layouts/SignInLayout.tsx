@@ -1,11 +1,13 @@
 import { ContactButton } from "@/components/ContactButton";
 import { Button } from "@/components/ui/button";
+import { scrollToTop } from "@/utils/scroll-to-top";
 import {
   faGithub,
   faInstagram,
   faLinkedin,
   faWhatsapp,
 } from "@fortawesome/free-brands-svg-icons";
+import { ArrowUp } from "lucide-react";
 import { Outlet, useNavigate } from "react-router";
 
 export function SignInLayout() {
@@ -33,11 +35,9 @@ export function SignInLayout() {
             variant="tertiary"
           />
         </div>
-
         <div className="border-muted-foreground dark:border-muted-background mx-auto my-10 w-50 border-t lg:my-25 lg:w-75" />
-
         <Button
-          onClick={() => navigate("/register")}
+          onClick={() => navigate("/sign-up")}
           className="mx-auto mb-12 w-full max-w-50 lg:max-w-65"
         >
           Não tenho uma conta
@@ -51,6 +51,10 @@ export function SignInLayout() {
           />
           <ContactButton link="github.api.client" icon={faGithub} size="sm" />
         </span>
+
+        <button onClick={scrollToTop} className="cursor-pointer p-3">
+          <ArrowUp className="bg-foreground text-background mt-15 rounded-full md:hidden" />
+        </button>
       </div>
     </div>
   );
