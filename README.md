@@ -272,7 +272,7 @@ GET /backend/client/availableTimeSlots
 
 ### Formato de dados esperado:
 ```http
-/backend/client/getAppointment?date=&service=
+/backend/client/availableTimeSlots?date=&service=
 ```
 <sub>Date no formato Y-m-d (Ex.: 2025-05-21). Service deve ser um número, caso tenha mais de um id, separe-os por vírgula (Ex.: 1 ou 1,4,2)</sub>
 
