@@ -15,11 +15,16 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { UserScheduleFormServices } from "./UserScheduleFormServices";
 import { useState } from "react";
+import { UserScheduleFormTime } from "./UserScheduleFormTime";
+import { useQuery } from "@tanstack/react-query";
+import { getAvailableTimeSlots } from "@/api/get-available-time-slots";
+import { Card, CardContent } from "@/components/ui/card";
 
 const scheduleFormDataSchema = z.object({
   barber: z.string(),
   services: z.array(z.number()),
   date: z.date(),
+  time: z.string(),
 });
 
 export type ScheduleFormData = z.infer<typeof scheduleFormDataSchema>;
@@ -27,7 +32,7 @@ export type ScheduleFormData = z.infer<typeof scheduleFormDataSchema>;
 export function UserScheduleForm() {
   const [date, setDate] = useState<Date>(new Date());
 
-  const { register, handleSubmit, control } = useForm<ScheduleFormData>({
+  const { register, handleSubmit, control, watch } = useForm<ScheduleFormData>({
     resolver: zodResolver(scheduleFormDataSchema),
     defaultValues: {
       barber: "",
@@ -36,20 +41,25 @@ export function UserScheduleForm() {
     },
   });
 
+  const selectedDate = watch("date");
+  const selectedServices = watch("services");
+  const selectedBarber = watch("barber");
+
+  const { data: availableTimeSlots } = useQuery({
+    queryKey: ["appointment", selectedDate, selectedServices],
+    queryFn: () =>
+      getAvailableTimeSlots({ date: selectedDate, service: selectedServices }),
+    enabled: !!selectedDate && selectedServices.length > 0,
+  });
+
   function onSubmit(data: ScheduleFormData) {
     console.log(data);
   }
 
-  const options = [
-    { value: "a", label: "José Alfredo 1" },
-    { value: "b", label: "SJosé Alfredo 2" },
-    { value: "c", label: "José Alfredo 3" },
-  ];
-
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="space-y-7 border-b-2 border-b-black pb-8 lg:max-w-2xl lg:flex-1 lg:border-b-0"
+      className="space-y-7 pb-8 lg:max-w-2xl lg:flex-1 lg:border-b-0"
     >
       <h1 className="text-center text-xl font-bold sm:text-2xl">
         Adicionar um novo agendamento
@@ -57,9 +67,10 @@ export function UserScheduleForm() {
       <div>
         <div>
           <h3 className="text-lg font-bold">Selecione uma data</h3>
+
           <input
             className="hidden"
-            value={date.toDateString()}
+            value={date?.toString()}
             {...register("date")}
           />
           <DatePicker date={date} setDate={setDate} />
@@ -70,37 +81,66 @@ export function UserScheduleForm() {
         <UserScheduleFormServices control={control} />
       </div>
 
-      <div>
-        <h3 className="text-lg font-bold">Selecione um barbeiro</h3>
-        <Controller
-          control={control}
-          name="barber"
-          render={({ field: { name, onChange, value, disabled } }) => (
-            <Select
-              name={name}
-              value={value}
-              onValueChange={onChange}
-              disabled={disabled}
-            >
-              <SelectTrigger className="w-full">
-                <SelectValue placeholder="Selecionar barbeiro" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectGroup>
-                  <SelectLabel>Barbeiros</SelectLabel>
-                  {options.map((option) => {
-                    return (
-                      <SelectItem value={option.value}>
-                        {option.label}
-                      </SelectItem>
-                    );
-                  })}
-                </SelectGroup>
-              </SelectContent>
-            </Select>
-          )}
-        />
-      </div>
+      {selectedServices.length >= 1 ? (
+        <div>
+          <h3 className="text-lg font-bold">Selecione um barbeiro</h3>
+          <Controller
+            control={control}
+            name="barber"
+            render={({ field: { name, onChange, value, disabled } }) => (
+              <Select
+                name={name}
+                value={value}
+                onValueChange={onChange}
+                disabled={disabled}
+              >
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="Selecionar barbeiro" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    <SelectLabel>Barbeiros</SelectLabel>
+                    {availableTimeSlots &&
+                      availableTimeSlots.map((available) => {
+                        return (
+                          <SelectItem value={available.id.toString()}>
+                            {available.name}
+                          </SelectItem>
+                        );
+                      })}
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
+            )}
+          />
+        </div>
+      ) : (
+        <Card>
+          <CardContent>
+            <p>
+              Selecione horário e data para ver os profissionais disponíveis.
+            </p>
+          </CardContent>
+        </Card>
+      )}
+
+      {selectedBarber && selectedServices.length >= 1 ? (
+        <div>
+          <h3 className="text-lg font-bold">Selecione um horário</h3>
+          <UserScheduleFormTime
+            control={control}
+            selectedDate={selectedDate}
+            selectedServices={selectedServices}
+            selectedBarber={selectedBarber}
+          />
+        </div>
+      ) : (
+        <Card>
+          <CardContent>
+            <p>Selecione um barbeiro para ver os horários disponiveis.</p>
+          </CardContent>
+        </Card>
+      )}
 
       <div className="flex w-full items-center justify-between">
         <span className="text-xl font-bold">Total</span>

@@ -42,7 +42,11 @@ export function DatePicker({ date, setDate }: DatePickerProps) {
           mode="single"
           locale={ptBR}
           selected={date}
-          onSelect={setDate}
+          onSelect={(selectedDate) => {
+            if (selectedDate) {
+              setDate(selectedDate);
+            }
+          }}
           disabled={(date) => date <= subDays(new Date(), 1)}
         />
       </PopoverContent>
