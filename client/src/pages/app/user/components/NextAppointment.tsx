@@ -1,11 +1,24 @@
+import { getAppointment } from "@/api/get-appointment";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { remainingTime } from "@/utils/remaining-time";
+import { useQuery } from "@tanstack/react-query";
+import { format } from "date-fns";
+import { ptBR } from "date-fns/locale";
 
 interface NextAppointmentProps {
   type?: "primary" | "secondary";
 }
 
 export function NextAppointment({ type = "primary" }: NextAppointmentProps) {
+  const { data: nextAppointmentData } = useQuery({
+    queryKey: ["next-appointment"],
+    queryFn: () => getAppointment("next"),
+  });
+
+  if (!nextAppointmentData) return;
+  const nextAppointment = nextAppointmentData[0];
+
   return (
     <Card
       className={`shadow-2xl lg:min-w-85 ${
@@ -23,17 +36,22 @@ export function NextAppointment({ type = "primary" }: NextAppointmentProps) {
             <ul>
               <li>
                 <p>
-                  <span className="font-bold">Barbeiro</span>: José Alfredo
+                  <span className="font-bold">Barbeiro</span>:{" "}
+                  {nextAppointment.professionalName}
                 </p>
               </li>
               <li>
                 <p>
-                  <span className="font-bold">Data</span>: José Alfredo
+                  <span className="font-bold">Data</span>:{" "}
+                  {format(nextAppointment.date, "PPPP", {
+                    locale: ptBR,
+                  })}
                 </p>
               </li>
               <li>
                 <p>
-                  <span className="font-bold">Horário</span>: José Alfredo
+                  <span className="font-bold">Horário</span>:{" "}
+                  {nextAppointment.startTime}
                 </p>
               </li>
             </ul>
@@ -41,14 +59,19 @@ export function NextAppointment({ type = "primary" }: NextAppointmentProps) {
 
           <div>
             <p>
-              <span className="block text-2xl font-bold">22 dias</span>
+              <span className="block text-2xl font-bold">
+                {remainingTime({
+                  startDate: nextAppointment.date,
+                  startTime: nextAppointment.startTime,
+                })}
+              </span>
               para seu serviço
             </p>
           </div>
 
           <div>
             <span className="block text-2xl font-bold">Total</span>
-            <span>R$ 30.00</span>
+            <span>R$ {nextAppointment.servicePrice}</span>
           </div>
         </div>
 
@@ -64,7 +87,7 @@ export function NextAppointment({ type = "primary" }: NextAppointmentProps) {
               variant="secondary"
               className="w-full flex-1 py-5 font-bold md:w-auto lg:flex-none"
             >
-              Contatar barbeiro
+              Falar com barbeiro
             </Button>
             <Button
               variant="secondary"

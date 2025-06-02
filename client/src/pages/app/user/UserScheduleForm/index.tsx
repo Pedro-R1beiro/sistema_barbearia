@@ -65,60 +65,64 @@ export function UserScheduleForm() {
   }
 
   return (
-    <div className="space-y-12 pb-16 lg:flex lg:items-center lg:justify-center lg:pt-10">
+    <div className="w-full space-y-12 pb-16 lg:pt-10">
+      <h1 className="text-center text-xl font-bold sm:text-2xl">
+        Adicionar um novo agendamento
+      </h1>
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="space-y-7 pb-8 lg:max-w-2xl lg:flex-1 lg:border-b-0"
+        className="min-w-full space-y-7 pb-8 lg:flex lg:max-w-2xl lg:flex-1 lg:items-center lg:justify-center lg:gap-15"
       >
-        <h1 className="text-center text-xl font-bold sm:text-2xl">
-          Adicionar um novo agendamento
-        </h1>
-        <div>
+        <div className="space-y-7 lg:flex-1">
           <div>
             <h3 className="text-lg font-bold">Selecione uma data</h3>
             <DatePicker control={control} />
           </div>
-        </div>
-        <div>
-          <h3 className="text-lg font-bold">Selecione serviços</h3>
-          <UserScheduleFormServices control={control} />
-        </div>
 
-        {selectedServices.length >= 1 ? (
           <div>
-            <h3 className="text-lg font-bold">Selecione um barbeiro</h3>
-            <UserScheduleFormBarber control={control} watch={watch} />
+            <h3 className="text-lg font-bold">Selecione serviços</h3>
+            <UserScheduleFormServices control={control} />
           </div>
-        ) : (
-          <Card>
-            <CardContent>
-              <p>
-                Selecione horário e data para ver os profissionais disponíveis.
-              </p>
-            </CardContent>
-          </Card>
-        )}
-
-        {selectedBarber && selectedServices.length >= 1 ? (
-          <div>
-            <h3 className="text-lg font-bold">Selecione um horário</h3>
-            <UserScheduleFormTime control={control} watch={watch} />
-          </div>
-        ) : (
-          <Card>
-            <CardContent>
-              <p>Selecione um barbeiro para ver os horários disponiveis.</p>
-            </CardContent>
-          </Card>
-        )}
-
-        <div className="flex w-full items-center justify-between">
-          <span className="text-xl font-bold">Total</span>
-          <span>33,90</span>
         </div>
-        <Button type="submit" className="w-full py-6 font-bold">
-          Adicionar novo agendamento
-        </Button>
+
+        <div className="space-y-7 lg:w-120">
+          {selectedServices.length >= 1 ? (
+            <div>
+              <h3 className="text-lg font-bold">Selecione um barbeiro</h3>
+              <UserScheduleFormBarber control={control} watch={watch} />
+            </div>
+          ) : (
+            <Card className="p-2.5">
+              <CardContent className="px-2">
+                <p>
+                  Selecione horário e data para ver os profissionais
+                  disponíveis.
+                </p>
+              </CardContent>
+            </Card>
+          )}
+
+          {selectedBarber && selectedServices.length >= 1 ? (
+            <div>
+              <h3 className="text-lg font-bold">Selecione um horário</h3>
+              <UserScheduleFormTime control={control} watch={watch} />
+            </div>
+          ) : (
+            <Card className="p-2.5">
+              <CardContent className="px-2">
+                <p>Selecione um barbeiro para ver os horários disponiveis.</p>
+              </CardContent>
+            </Card>
+          )}
+
+          <div className="flex w-full items-center justify-between">
+            <span className="text-xl font-bold">Total:</span>
+            <span>33,90</span>
+          </div>
+          <Button type="submit" className="w-full py-6 font-bold">
+            Adicionar novo agendamento
+          </Button>
+        </div>
       </form>
     </div>
   );
