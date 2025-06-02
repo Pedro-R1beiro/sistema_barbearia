@@ -8,6 +8,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import { signUp } from "@/api/sign-up";
 import { toast } from "sonner";
+import { isAxiosError, type AxiosError } from "axios";
 
 const registerSchema = z.object({
   name: z.string().min(2, "mínimo de 2 caracteres"),
@@ -23,6 +24,27 @@ const registerSchema = z.object({
 
 type RegisterData = z.infer<typeof registerSchema>;
 
+function signUpError(err: AxiosError) {
+  const code = err.response?.status;
+  console.log(err);
+
+  switch (code) {
+    case 400:
+      {
+        toast.error("Entrada inválida de dados.");
+      }
+      break;
+    case 409:
+      {
+        toast.error("email já cadastrado.");
+      }
+      break;
+    default: {
+      toast.error("Houve um erro interno. Tente novamente mais tarde.");
+    }
+  }
+}
+
 export function Register() {
   const navigate = useNavigate();
 
@@ -33,10 +55,18 @@ export function Register() {
   async function onSubmit(data: RegisterData) {
     try {
       await signUpFn(data);
-      toast.success("Sucesso ao criar conta");
+      toast.success("Sucesso ao criar conta.", {
+        action: {
+          label: "Ir para o login",
+          onClick: () => navigate("/sign-in"),
+        },
+      });
     } catch (err) {
-      toast.error("Erro ao criar conta, tente novamente mais tarde");
-      console.log(err);
+      if (isAxiosError(err)) {
+        signUpError(err);
+        return;
+      }
+      toast.error("Houve um erro interno. Tente novamente mais tarde!");
     }
   }
 
@@ -59,6 +89,7 @@ export function Register() {
       </Button>
       <div className="border-foreground/80 dark:border-background/80 absolute mt-50 rounded-full border-2 p-10 px-48.5 lg:mt-50">
         <form
+          noValidate
           onSubmit={handleSubmit(onSubmit)}
           className="dark:text-background relative mx-auto flex max-w-50 flex-col gap-1 text-center font-bold"
         >

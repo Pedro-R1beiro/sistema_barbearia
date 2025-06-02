@@ -12,7 +12,7 @@ import { Button } from "@/components/ui/button";
 import { NavLinks } from "@/components/NavLinks";
 
 const navLinks: NavLinkInterface[] = [
-  { link: "#", text: "Ínicio", icon: faHouse, type: "anchorLink" },
+  { link: "#home", text: "Ínicio", icon: faHouse, type: "anchorLink" },
   { link: "#about", text: "Sobre", icon: faBuilding, type: "anchorLink" },
   { link: "#services", text: "Serviços", icon: faScissors, type: "anchorLink" },
   { link: "#contact", text: "Contato", icon: faPhone, type: "anchorLink" },

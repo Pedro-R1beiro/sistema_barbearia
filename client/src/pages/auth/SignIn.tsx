@@ -7,11 +7,33 @@ import { z } from "zod";
 import { useMutation } from "@tanstack/react-query";
 import { signIn } from "@/api/sign-in";
 import { toast } from "sonner";
+import { AxiosError, isAxiosError } from "axios";
 
 const signInSchema = z.object({
   email: z.string().email("E-mail inválido"),
   password: z.string(),
 });
+
+function signInError(err: AxiosError) {
+  const code = err.response?.status;
+  console.log(err);
+
+  switch (code) {
+    case 400:
+      {
+        toast.error("Entrada inválida de dados.");
+      }
+      break;
+    case 401:
+      {
+        toast.error("email ou senha inválidos.");
+      }
+      break;
+    default: {
+      toast.error("Houve um erro interno. Tente novamente mais tarde.");
+    }
+  }
+}
 
 type SignInData = z.infer<typeof signInSchema>;
 
@@ -34,15 +56,14 @@ export function SignIn() {
   async function onSubmit(data: SignInData) {
     try {
       await signInFn(data);
-      toast.success("Logado com sucesso!", {
-        action: {
-          label: "Ir para o painel",
-          onClick: () => navigate("/dashboard"),
-        },
-      });
+      toast.success("Logado com sucesso!");
+      navigate("/dashboard", { replace: true });
     } catch (err) {
-      toast.error("Erro ao fazer login :(");
-      console.log(err);
+      if (isAxiosError(err)) {
+        signInError(err);
+        return;
+      }
+      toast.error("Houve um erro interno. Tente novamente mais tarde!");
     }
   }
 
