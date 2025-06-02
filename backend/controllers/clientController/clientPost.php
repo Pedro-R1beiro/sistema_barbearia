@@ -96,7 +96,7 @@ class ClientPost
             $account = $this->client->getByEmail($email);
             if (!$account || !password_verify($password, $account['password'])) {
                 return [
-                    'code' => 400,
+                    'code' => 401,
                     'body' => [
                         'status' => 'error',
                         'message' => 'E-mail ou senha incorretos'
