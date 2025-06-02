@@ -22,7 +22,7 @@ export function RegisterLayout() {
         >
           <Outlet />
         </div>
-        <div className="dark:text-foreground dark:bg-background bg-muted-foreground relative z-1000 mt-12 flex min-h-screen flex-col items-center justify-center p-3 pt-20 text-center lg:col-2">
+        <div className="dark:text-foreground dark:bg-background bg-muted-foreground relative z-1000 mt-12 flex min-h-screen flex-col items-center justify-center p-3 pt-20 text-center lg:col-2 lg:mt-0">
           <h1 className="text-4xl font-bold">Crie sua conta</h1>
           <p className="py-6 text-2xl">
             Faça seu cadastro para <br /> fazer agendamentos.

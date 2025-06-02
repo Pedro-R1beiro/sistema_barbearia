@@ -42,7 +42,10 @@ export function UserProfile() {
             <Button variant="secondary" className="w-full py-5 font-bold">
               Editar dados
             </Button>
-            <Button variant="destructive" className="w-full py-5 font-bold">
+            <Button
+              variant="customDestructive"
+              className="w-full py-5 font-bold"
+            >
               Deletar conta
             </Button>
           </CardContent>

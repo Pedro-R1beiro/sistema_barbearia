@@ -109,7 +109,7 @@ export function NextAppointment({ type = "primary" }: NextAppointmentProps) {
             </Button>
             <Button
               className="w-full flex-1 py-5 font-bold md:w-auto lg:flex-none"
-              variant="destructive"
+              variant="customDestructive"
             >
               Cancelar agendamento
             </Button>

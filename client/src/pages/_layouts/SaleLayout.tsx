@@ -35,7 +35,7 @@ export function SaleLayout() {
               </Button>
               <Button
                 variant="ghost"
-                onClick={() => navigate("/register")}
+                onClick={() => navigate("/sign-up")}
                 className="dark:text-background dark:hover:bg-foreground py-5.5 font-bold md:px-6"
               >
                 Cadastrar

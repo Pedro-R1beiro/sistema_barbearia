@@ -17,7 +17,7 @@ interface NavLinksProps {
 export function NavLinks({ navLinks }: NavLinksProps) {
   return (
     <>
-      <ul className="hidden gap-7 py-3 font-bold min-[900px]:flex">
+      <ul className="hidden gap-7 font-bold min-[900px]:flex">
         {navLinks.map((link) => (
           <li key={link.text} className="w-full">
             <NavLink
