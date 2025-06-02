@@ -1,4 +1,4 @@
-import { format, intervalToDuration, isBefore, parse } from "date-fns";
+import { intervalToDuration, isBefore, parse } from "date-fns";
 
 interface RemainingTimeParams {
   startDate: Date;
@@ -8,17 +8,11 @@ interface RemainingTimeParams {
 export function remainingTime({ startDate, startTime }: RemainingTimeParams) {
   const now = new Date();
 
-  const formattedDate = format(startDate, "yyyy-MM-dd");
-
   const scheduledDateAndTime = parse(
-    `${formattedDate} ${startTime}`,
+    `${startDate} ${startTime}`,
     "yyyy-MM-dd HH:mm:ss",
     now,
   );
-
-  if (isBefore(startTime, now)) {
-    return "Já começou ou passou do horário!";
-  }
 
   if (isBefore(scheduledDateAndTime, now)) return "";
 

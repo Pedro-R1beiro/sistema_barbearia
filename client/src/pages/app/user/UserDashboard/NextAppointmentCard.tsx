@@ -25,7 +25,7 @@ export function NextAppointmentCard() {
       <CardContent>
         <div className="flex items-start justify-between pr-2">
           {remaining.length > 0 ? (
-            <span className="font-medium">{remaining}</span>
+            <span className="text-2xl font-bold">{remaining}</span>
           ) : (
             <>
               <span className="text-2xl font-bold md:hidden">
