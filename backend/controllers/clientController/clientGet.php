@@ -264,10 +264,20 @@ class ClientGet
                     'name' => $row['name'],
                     'email' => $row['email'],
                     'phone' => $row['phone'],
+                    'status' => 'fully_booked',
                     'timeSlot' => []
                 ];
 
-                if ($_isOnVacation || $_isOnDayOff || !$_availabilities || count($_availabilities) <= 0) {
+                if ($_isOnVacation) {
+                    $timeSlots[$indice]['status'] = 'on_vacation';
+                    continue;
+                }
+                if ($_isOnDayOff) {
+                    $timeSlots[$indice]['status'] = 'day_off';
+                    continue;
+                }
+                if (!$_availabilities || count($_availabilities) <= 0) {
+                    $timeSlots[$indice]['status'] = 'not_working';
                     continue;
                 }
 
@@ -306,6 +316,9 @@ class ClientGet
 
                             $isAppointment = $this->appo->isOnAppointment($date, $row['id'], $now->format('H:i:s'), $periodEnd->format('H:i:s'));
                             if (!$isAppointment || count($isAppointment) === 0) {
+                                if ($timeSlots[$indice]['status'] != 'available') {
+                                    $timeSlots[$indice]['status'] = 'available';
+                                }
                                 $timeSlots[$indice]['timeSlot'][] = $now->format('H:i');
                             }
                         }
