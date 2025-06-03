@@ -284,6 +284,7 @@ GET /backend/client/availableTimeSlots
             "name": "Nome do Professional",
             "email": "professiona@gmail.com",
             "phone": "00111114444",
+            "status": "day_off" || "on_vacation" || "not_working" || "fully_booked" || "available",
             "timeSlot": [
                 "08:00",
                 "08:30",
@@ -309,6 +310,13 @@ GET /backend/client/availableTimeSlots
         }
     ]
 ```
+### Significado de cada status:
+- day_off 	=> O barbeiro folga regularmente nesse dia.
+- on_vacation => O barbeiro está de férias nesse dia.
+- not_working => Não há expediente nesse dia (por escala).
+- fully_booked => Todos os horários foram preenchidos.
+- available => Existem horários disponíveis.
+
 ### Códigos http
 - 200: Sucesso
 - 400: Valores Inválidos
