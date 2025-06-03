@@ -6,8 +6,9 @@ import { faScissors } from "@fortawesome/free-solid-svg-icons";
 import { useQuery } from "@tanstack/react-query";
 import { getAppointment } from "@/api/get-appointment";
 import { remainingTime } from "@/utils/remaining-time";
+import { WithoutNextAppointmentCard } from "./WithoutNextAppointmentCard";
 
-export function NextAppointmentCard() {
+export function NextAppointmentTimeCard() {
   const { data: nextAppointmentData } = useQuery({
     queryKey: ["next-appointment"],
     queryFn: () => getAppointment("next"),
@@ -16,13 +17,16 @@ export function NextAppointmentCard() {
   if (!nextAppointmentData) return;
   const nextAppointment = nextAppointmentData[0];
 
+  if (!nextAppointment) return <WithoutNextAppointmentCard />;
+
   const remaining = remainingTime({
     startDate: nextAppointment.date,
     startTime: nextAppointment.startTime,
   });
+
   return (
     <Card className="bg-custom-foreground text-background lg:w-72">
-      <CardContent>
+      <CardContent className="px-4">
         <div className="flex items-start justify-between pr-2">
           {remaining.length > 0 ? (
             <span className="text-2xl font-bold">{remaining}</span>

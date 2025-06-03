@@ -10,7 +10,9 @@ interface NextAppointmentProps {
   type?: "primary" | "secondary";
 }
 
-export function NextAppointment({ type = "primary" }: NextAppointmentProps) {
+export function NextAppointmentCard({
+  type = "primary",
+}: NextAppointmentProps) {
   const { data: nextAppointmentData } = useQuery({
     queryKey: ["next-appointment"],
     queryFn: () => getAppointment("next"),

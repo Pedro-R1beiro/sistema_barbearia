@@ -1,5 +1,5 @@
 import { api } from "@/lib/axios";
-import { formatDateFromRequests } from "@/utils/format-date-from-requests";
+import { formatDateRequest } from "@/utils/format-date-request";
 
 interface RegisterAppointmentBody {
   startTime: string;
@@ -14,7 +14,7 @@ export async function registerAppointment({
   service,
   idProfessional,
 }: RegisterAppointmentBody) {
-  const formatedDate = formatDateFromRequests(date);
+  const formatedDate = formatDateRequest(date);
 
   await api.post("/client/registerAppointment", {
     startTime,

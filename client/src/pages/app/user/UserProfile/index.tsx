@@ -10,7 +10,7 @@ import {
 import { faInstagram, faWhatsapp } from "@fortawesome/free-brands-svg-icons";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { NextAppointment } from "../components/NextAppointment";
+import { NextAppointmentCard } from "../components/NextAppointmentCard";
 
 export function UserProfile() {
   return (
@@ -84,7 +84,7 @@ export function UserProfile() {
         </Card>
       </div>
 
-      <NextAppointment />
+      <NextAppointmentCard />
     </div>
   );
 }
