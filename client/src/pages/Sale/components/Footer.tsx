@@ -7,8 +7,11 @@ import {
   faWhatsapp,
 } from "@fortawesome/free-brands-svg-icons";
 import { faEnvelope } from "@fortawesome/free-regular-svg-icons";
+import { useNavigate } from "react-router";
 
 export default function Footer() {
+  const navigate = useNavigate();
+
   return (
     <footer
       id="contact"
@@ -39,11 +42,15 @@ export default function Footer() {
 
       <div className="mb-30 md:min-w-100/260">
         <div className="flex flex-col items-center gap-4">
-          <Button className="w-full py-5.5 font-bold md:py-7">
+          <Button
+            onClick={() => navigate("/sign-up")}
+            className="w-full py-5.5 font-bold md:py-7"
+          >
             Criar minha conta
           </Button>
           <Button
-            variant={"outline"}
+            onClick={() => navigate("/sign-in")}
+            variant="outline"
             className="w-full py-5.5 font-bold md:py-7"
           >
             Entrar com minha conta

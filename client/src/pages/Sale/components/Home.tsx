@@ -7,8 +7,11 @@ import { faInstagram, faWhatsapp } from "@fortawesome/free-brands-svg-icons";
 import { SeparationArrow } from "@/components/SeparationArrow";
 
 import bg from "@/assets/sale-bg.svg";
+import { useNavigate } from "react-router";
 
 export function Home() {
+  const navigate = useNavigate();
+
   return (
     <section
       style={{ backgroundImage: `url(${bg})` }}
@@ -29,10 +32,14 @@ export function Home() {
           em dia.
         </p>
 
-        <Button className="bg-foreground text-background text-md mt-2 w-full p-6 font-bold md:max-w-114">
+        <Button
+          onClick={() => navigate("/sign-in")}
+          className="bg-foreground text-background text-md mt-2 w-full p-6 font-bold md:max-w-114"
+        >
           Agende seu horário
         </Button>
         <Button
+          onClick={() => navigate("/sign-up")}
           variant="secondary"
           className="text-md mt-2 w-full p-6 font-bold md:max-w-114 dark:bg-[#303030] dark:hover:bg-[#404040]"
         >

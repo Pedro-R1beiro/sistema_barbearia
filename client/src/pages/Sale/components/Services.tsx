@@ -10,8 +10,11 @@ import { LinesWithOr } from "@/components/LinesWithOr";
 import { ContactButton } from "@/components/ContactButton";
 
 import { faInstagram, faWhatsapp } from "@fortawesome/free-brands-svg-icons";
+import { useNavigate } from "react-router";
 
 export default function Services() {
+  const navigate = useNavigate();
+
   return (
     <section
       id="services"
@@ -45,13 +48,17 @@ export default function Services() {
           </CardTitle>
           <CardContent className="space-y-4">
             <Button
+              onClick={() => navigate("/sign-up")}
               variant="secondary"
               className="border-background w-full border-1 py-6 font-bold"
             >
               Agende seu horário
             </Button>
             <LinesWithOr />
-            <Button className="border-background hover:bg-background hover:text-foreground w-full border-1 py-6 font-bold">
+            <Button
+              onClick={() => navigate("/sign-in")}
+              className="border-background hover:bg-background hover:text-foreground w-full border-1 py-6 font-bold"
+            >
               Já tem horários?
             </Button>
           </CardContent>

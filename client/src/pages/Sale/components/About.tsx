@@ -6,8 +6,11 @@ import { ContactButton } from "@/components/ContactButton";
 import { LinesWithOr } from "@/components/LinesWithOr";
 import { Button } from "@/components/ui/button";
 import { SeparationArrow } from "@/components/SeparationArrow";
+import { useNavigate } from "react-router";
 
 export function About() {
+  const navigate = useNavigate();
+
   return (
     <>
       <section
@@ -34,7 +37,10 @@ export function About() {
             </p>
           </div>
           <div className="flex w-full flex-col items-center justify-center md:max-w-[26rem] md:items-end">
-            <Button className="bg-foreground text-md mt-4 w-full p-6 font-bold">
+            <Button
+              onClick={() => navigate("/sign-up")}
+              className="bg-foreground text-md mt-4 w-full p-6 font-bold"
+            >
               Agende seu horário
             </Button>
             <div className="mt-4 flex w-full flex-col items-center">
