@@ -1,6 +1,7 @@
 import { getAppointment } from "@/api/get-appointment";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { formatDateRequest } from "@/utils/formatDateRequest";
 import { remainingTime } from "@/utils/remaining-time";
 import { useQuery } from "@tanstack/react-query";
 import { format } from "date-fns";
@@ -20,6 +21,8 @@ export function NextAppointmentCard({
 
   if (!nextAppointmentData) return;
   const nextAppointment = nextAppointmentData[0];
+
+  const formatedDate = formatDateRequest(nextAppointment.date);
 
   return (
     <Card
@@ -45,7 +48,7 @@ export function NextAppointmentCard({
               <li>
                 <p>
                   <span className="font-bold">Data</span>:{" "}
-                  {format(nextAppointment.date, "PPPP", {
+                  {format(formatedDate, "PPPP", {
                     locale: ptBR,
                   })}
                 </p>

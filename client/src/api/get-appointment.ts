@@ -25,5 +25,9 @@ export async function getAppointment(filter: getAppointmentFilter = "history") {
     },
   );
 
+  if (filter === "next") {
+    console.log(response.data.message);
+  }
+
   return response.data.message;
 }

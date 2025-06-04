@@ -1,5 +1,5 @@
 import { api } from "@/lib/axios";
-import { formatDateRequest } from "@/utils/format-date-request";
+import { formatDateRequest } from "@/utils/formatDateRequest";
 
 interface getAvailableTimeSlotsResponse {
   message: {
