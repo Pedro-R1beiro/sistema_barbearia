@@ -41,7 +41,7 @@ export function UserScheduleForm() {
     mutationFn: registerAppointment,
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: ["appointment", selectedDate],
+        queryKey: ["available-appointments", selectedDate],
       });
     },
   });

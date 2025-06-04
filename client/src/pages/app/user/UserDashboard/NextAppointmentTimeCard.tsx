@@ -10,7 +10,7 @@ import { WithoutNextAppointmentCard } from "./WithoutNextAppointmentCard";
 
 export function NextAppointmentTimeCard() {
   const { data: nextAppointmentData } = useQuery({
-    queryKey: ["next-appointment"],
+    queryKey: ["appointments"],
     queryFn: () => getAppointment("next"),
   });
 

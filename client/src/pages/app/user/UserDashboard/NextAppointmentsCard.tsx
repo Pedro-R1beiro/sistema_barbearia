@@ -1,9 +1,16 @@
+import { getAppointment } from "@/api/get-appointment";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
 import { faCalendarDays } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useQuery } from "@tanstack/react-query";
 
 export function NextAppointmentsCard() {
+  const { data: nextAppointmentsData } = useQuery({
+    queryKey: ["next-appointments"],
+    queryFn: () => getAppointment("nearby"),
+  });
+
   return (
     <Card className="bg-custom-foreground text-background md:flex-1">
       <CardContent className="px-4">
@@ -14,10 +21,18 @@ export function NextAppointmentsCard() {
           <FontAwesomeIcon icon={faCalendarDays} className="text-3xl" />
         </div>
         <div className="mt-6 flex items-center justify-between text-lg">
-          <span className="font-medium">
-            3 agendamentos para <br />
-            os próximos dias.
-          </span>
+          {nextAppointmentsData && nextAppointmentsData?.length > 1 ? (
+            <span className="font-medium">
+              {nextAppointmentsData?.length} agendamentos para <br />
+              os próximos dias.
+            </span>
+          ) : (
+            <span className="font-medium">
+              {nextAppointmentsData?.length} agendamento para <br />
+              os próximos dias.
+            </span>
+          )}
+
           <Button variant="secondary" className="px-7 py-5.5">
             VER
           </Button>

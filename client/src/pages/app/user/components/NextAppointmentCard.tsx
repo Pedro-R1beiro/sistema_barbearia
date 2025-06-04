@@ -14,7 +14,7 @@ export function NextAppointmentCard({
   type = "primary",
 }: NextAppointmentProps) {
   const { data: nextAppointmentData } = useQuery({
-    queryKey: ["next-appointment"],
+    queryKey: ["appointments"],
     queryFn: () => getAppointment("next"),
   });
 

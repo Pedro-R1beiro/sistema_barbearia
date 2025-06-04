@@ -25,7 +25,7 @@ export function UserScheduleFormBarber({
   const selectedServices = watch("services");
 
   const { data: availableTimeSlots } = useQuery({
-    queryKey: ["appointment", selectedDate, selectedServices],
+    queryKey: ["available-appointments", selectedDate, selectedServices],
     queryFn: () =>
       getAvailableTimeSlots({ date: selectedDate, service: selectedServices }),
     enabled: !!selectedDate && selectedServices.length > 0,
