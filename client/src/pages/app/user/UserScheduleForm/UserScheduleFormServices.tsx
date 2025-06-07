@@ -15,6 +15,9 @@ export function UserScheduleFormServices({
   const { data: serviceOptions } = useQuery({
     queryKey: ["services"],
     queryFn: getServices,
+    staleTime: Infinity,
+    refetchOnWindowFocus: false,
+    refetchOnMount: false,
   });
 
   return (

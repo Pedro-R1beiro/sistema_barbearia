@@ -9,6 +9,8 @@ export function NextAppointmentsCard() {
   const { data: nextAppointmentsData } = useQuery({
     queryKey: ["next-appointments"],
     queryFn: () => getAppointment("nearby"),
+    staleTime: Infinity,
+    refetchOnWindowFocus: false,
   });
 
   return (
@@ -21,9 +23,10 @@ export function NextAppointmentsCard() {
           <FontAwesomeIcon icon={faCalendarDays} className="text-3xl" />
         </div>
         <div className="mt-3 flex items-center justify-between text-lg">
-          {nextAppointmentsData && nextAppointmentsData?.length > 1 ? (
+          {nextAppointmentsData && nextAppointmentsData?.length >= 1 ? (
             <span className="font-medium">
-              {nextAppointmentsData?.length} agendamentos para os próximos dias.
+              {nextAppointmentsData?.length} agendamento(s) para os próximos
+              dias.
             </span>
           ) : (
             <span className="font-medium">sem agendamento marcados.</span>

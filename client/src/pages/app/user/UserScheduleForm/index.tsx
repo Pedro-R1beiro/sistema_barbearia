@@ -35,14 +35,13 @@ export function UserScheduleForm() {
 
   const selectedBarber = watch("barber");
   const selectedServices = watch("services");
-  const selectedDate = watch("date");
 
   const { mutateAsync: registerAppointmentFn } = useMutation({
     mutationFn: registerAppointment,
     onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: ["available-appointments", "next-appointment", selectedDate],
-      });
+      queryClient.invalidateQueries({ queryKey: ["next-appointments"] });
+      queryClient.invalidateQueries({ queryKey: ["available-appointments"] });
+      queryClient.invalidateQueries({ queryKey: ["next-appointment"] });
     },
   });
 

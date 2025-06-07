@@ -24,7 +24,7 @@ export function remainingTime({ startDate, startTime }: RemainingTimeParams) {
   if (duration.days) {
     return `${duration.days} ${duration.days === 1 ? "dia" : "dias"}`;
   } else if (duration.hours) {
-    return `${duration.hours} ${duration.hours === 1 ? "hora" : "horas"}`;
+    return `${duration.hours} ${duration.hours === 1 ? "hora" : "horas"} e ${duration.minutes} ${duration.minutes === 1 ? "minuto" : "minutos"}`;
   } else if (duration.minutes) {
     return `${duration.minutes} ${duration.minutes === 1 ? "minuto" : "minutos"}`;
   } else {

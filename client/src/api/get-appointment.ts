@@ -1,16 +1,18 @@
 import { api } from "@/lib/axios";
 
+export type NextAppointmentInterface = {
+  id: number;
+  date: Date;
+  startTime: string;
+  endTime: string;
+  professionalName: string;
+  clientName: string;
+  serviceName: string;
+  servicePrice: number;
+};
+
 interface getAppointmentResposne {
-  message: {
-    id: number;
-    date: Date;
-    startTime: string;
-    endTime: string;
-    professionalName: string;
-    clientName: string;
-    serviceName: string;
-    servicePrice: number;
-  }[];
+  message: NextAppointmentInterface[];
 }
 
 type getAppointmentFilter = "today" | "nearby" | "history" | "next" | "last";
@@ -24,10 +26,6 @@ export async function getAppointment(filter: getAppointmentFilter = "history") {
       },
     },
   );
-
-  if (filter === "next") {
-    console.log(response.data.message);
-  }
 
   return response.data.message;
 }
