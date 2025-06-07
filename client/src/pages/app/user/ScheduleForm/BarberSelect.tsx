@@ -7,43 +7,31 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-
-import { getAvailableTimeSlots } from "@/api/get-available-time-slots";
-
-import { useQuery } from "@tanstack/react-query";
 import { Controller, type Control, type UseFormWatch } from "react-hook-form";
 import type { ScheduleFormData } from ".";
+import { useQuery } from "@tanstack/react-query";
+import { getAvailableTimeSlots } from "@/api/get-available-time-slots";
 
-interface UserScheduleFormTimeProps {
+interface UserScheduleFormBarberProps {
   control: Control<ScheduleFormData>;
   watch: UseFormWatch<ScheduleFormData>;
 }
 
-export function UserScheduleFormTime({
-  control,
-  watch,
-}: UserScheduleFormTimeProps) {
-  const selectedBarber = watch("barber");
-  const selectedServices = watch("services");
+export function BarberSelect({ control, watch }: UserScheduleFormBarberProps) {
   const selectedDate = watch("date");
+  const selectedServices = watch("services");
 
   const { data: availableTimeSlots } = useQuery({
-    queryKey: ["appointment", selectedDate, selectedServices],
+    queryKey: ["available-appointments", selectedDate, selectedServices],
     queryFn: () =>
       getAvailableTimeSlots({ date: selectedDate, service: selectedServices }),
     enabled: !!selectedDate && selectedServices.length > 0,
   });
 
-  const available = availableTimeSlots?.filter((available) => {
-    return available.id === Number(selectedBarber);
-  });
-
-  const timeSlots = available?.flatMap((item) => item.timeSlot);
-
   return (
     <Controller
       control={control}
-      name="startTime"
+      name="barber"
       render={({ field: { name, onChange, value, disabled } }) => (
         <Select
           name={name}
@@ -52,21 +40,19 @@ export function UserScheduleFormTime({
           disabled={disabled}
         >
           <SelectTrigger className="w-full">
-            <SelectValue placeholder="Selecionar horário" />
+            <SelectValue placeholder="Selecionar barbeiro" />
           </SelectTrigger>
-          <SelectContent className="max-h-70">
+          <SelectContent>
             <SelectGroup>
-              {timeSlots && timeSlots.length >= 1 ? (
-                <SelectLabel>Horários</SelectLabel>
-              ) : (
-                <SelectLabel>Profissional sem horários disponíveis</SelectLabel>
-              )}
-
-              {timeSlots &&
-                timeSlots.map((time) => {
+              <SelectLabel>Barbeiros</SelectLabel>
+              {availableTimeSlots &&
+                availableTimeSlots.map((available) => {
                   return (
-                    <SelectItem key={time} value={time}>
-                      {time}
+                    <SelectItem
+                      key={available.id}
+                      value={available.id.toString()}
+                    >
+                      {available.name}
                     </SelectItem>
                   );
                 })}

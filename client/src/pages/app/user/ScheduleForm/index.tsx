@@ -4,12 +4,12 @@ import { DatePicker } from "@/components/ui/date-picker";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { UserScheduleFormServices } from "./UserScheduleFormServices";
-import { UserScheduleFormTime } from "./UserScheduleFormTime";
+import { SelectServices } from "./CheckBoxServices";
+import { TimeSelect } from "./TimeSelect";
 import { useMutation } from "@tanstack/react-query";
 import { Card, CardContent } from "@/components/ui/card";
 import { registerAppointment } from "@/api/register-appointment";
-import { UserScheduleFormBarber } from "./UserScheduleFormBarber";
+import { BarberSelect } from "./BarberSelect";
 import { toast } from "sonner";
 import { queryClient } from "@/lib/react-query";
 
@@ -22,7 +22,7 @@ const scheduleFormDataSchema = z.object({
 
 export type ScheduleFormData = z.infer<typeof scheduleFormDataSchema>;
 
-export function UserScheduleForm() {
+export function ScheduleForm() {
   const { handleSubmit, control, watch, reset } = useForm<ScheduleFormData>({
     resolver: zodResolver(scheduleFormDataSchema),
     defaultValues: {
@@ -80,7 +80,7 @@ export function UserScheduleForm() {
 
           <div>
             <h3 className="text-lg font-bold">Selecione serviços</h3>
-            <UserScheduleFormServices control={control} />
+            <SelectServices control={control} />
           </div>
         </div>
 
@@ -88,7 +88,7 @@ export function UserScheduleForm() {
           {selectedServices.length >= 1 ? (
             <div>
               <h3 className="text-lg font-bold">Selecione um barbeiro</h3>
-              <UserScheduleFormBarber control={control} watch={watch} />
+              <BarberSelect control={control} watch={watch} />
             </div>
           ) : (
             <Card className="p-2.5">
@@ -104,7 +104,7 @@ export function UserScheduleForm() {
           {selectedBarber && selectedServices.length >= 1 ? (
             <div>
               <h3 className="text-lg font-bold">Selecione um horário</h3>
-              <UserScheduleFormTime control={control} watch={watch} />
+              <TimeSelect control={control} watch={watch} />
             </div>
           ) : (
             <Card className="p-2.5">

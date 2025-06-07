@@ -12,7 +12,7 @@ import { faUser } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { NextAppointmentCard } from "../components/NextAppointmentCard";
 
-export function UserProfile() {
+export function Account() {
   return (
     <div className="gap-16 space-y-10 lg:flex lg:items-stretch lg:space-y-0">
       <div className="w-full space-y-10 md:flex md:gap-6 md:space-y-0 lg:flex-row-reverse">

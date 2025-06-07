@@ -11,14 +11,19 @@ export type NextAppointmentInterface = {
   servicePrice: number;
 };
 
-interface getAppointmentResposne {
+export interface GetAppointmentResponse {
   message: NextAppointmentInterface[];
 }
 
-type getAppointmentFilter = "today" | "nearby" | "history" | "next" | "last";
+export type getAppointmentFilter =
+  | "today"
+  | "nearby"
+  | "history"
+  | "next"
+  | "last";
 
 export async function getAppointment(filter: getAppointmentFilter = "history") {
-  const response = await api.get<getAppointmentResposne>(
+  const response = await api.get<GetAppointmentResponse>(
     "/client/getAppointment",
     {
       params: {

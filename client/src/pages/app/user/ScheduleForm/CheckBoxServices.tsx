@@ -9,9 +9,7 @@ interface UserScheduleFormServicesProps {
   control: Control<ScheduleFormData>;
 }
 
-export function UserScheduleFormServices({
-  control,
-}: UserScheduleFormServicesProps) {
+export function SelectServices({ control }: UserScheduleFormServicesProps) {
   const { data: serviceOptions } = useQuery({
     queryKey: ["services"],
     queryFn: getServices,

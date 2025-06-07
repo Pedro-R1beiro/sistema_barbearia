@@ -13,7 +13,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { Controller, type Control } from "react-hook-form";
-import type { ScheduleFormData } from "@/pages/app/user/UserScheduleForm";
+import type { ScheduleFormData } from "@/pages/app/user/ScheduleForm";
 
 interface DatePickerProps {
   control: Control<ScheduleFormData>;

@@ -26,7 +26,7 @@ export function UserAccounDropdowm() {
           <Cog />
           Configurações
         </DropdownMenuItem>
-        <DropdownMenuItem className="text-destructive">
+        <DropdownMenuItem className="text-destructive hover:text-destructive/90 dark:hover:text-destructive/90">
           <LogOut className="text-destructive" />
           Sair da conta
         </DropdownMenuItem>

@@ -1,31 +1,28 @@
 import { cancelAppointment } from "@/api/cancel-appointment";
 import { Button } from "@/components/ui/button";
-import { CardFooter } from "@/components/ui/card";
-import { queryClient } from "@/lib/react-query";
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "sonner";
+import { AppointmentDialog } from "./AppointmentDialog";
+import { CardFooter } from "@/components/ui/card";
 
 interface NextAppointmentProps {
   type?: "primary" | "secondary";
   id: number;
 }
 
-export function NextApointmentCardFooter({
+export function AppointmentCardFooter({
   type = "primary",
   id,
 }: NextAppointmentProps) {
   const { mutateAsync: cancelAppointmentFn } = useMutation({
     mutationFn: cancelAppointment,
     onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: ["available-appointments", "next-appointment"],
-      });
       toast.success("Agendamento cancelado!");
     },
   });
 
   return (
-    <CardFooter>
+    <CardFooter className="mt-6 md:mt-0 lg:mt-6">
       {type === "secondary" ? (
         <div className="w-full max-w-full space-y-5 md:flex md:flex-col md:justify-between md:gap-6 lg:gap-2">
           <Button
@@ -52,9 +49,7 @@ export function NextApointmentCardFooter({
           <Button className="w-full flex-1 py-5 font-bold md:w-auto lg:flex-none">
             Contatar barbeiro
           </Button>
-          <Button className="w-full flex-1 py-5 font-bold md:w-auto lg:flex-none">
-            Ver mais informações
-          </Button>
+          <AppointmentDialog />
           <Button
             onClick={() => cancelAppointmentFn({ id })}
             className="w-full flex-1 py-5 font-bold md:w-auto lg:flex-none"
