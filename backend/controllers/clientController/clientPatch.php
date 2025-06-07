@@ -431,6 +431,15 @@ class ClientPatch
                     ]
                 ];
             }
+            if ($appointment['status'] == "Cancelado") {
+                return [
+                    'code' => 422,
+                    'body' => [
+                        'status' => 'error',
+                        'message' => 'Este agendamento já foi cancelado'
+                    ]
+                ];
+            }
 
             if ($this->appo->patch($id, "Cancelado")) {
                 return [

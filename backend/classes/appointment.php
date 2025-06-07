@@ -33,7 +33,7 @@ class Appointment
         return false;
     }
 
-    public function get($filter = null, $idProfessional = null, $idClient = null)
+    public function get($filter = null, $status = null, $idProfessional = null, $idClient = null)
     {
         date_default_timezone_set('America/Sao_Paulo');
         $today = date('Y-m-d');
@@ -57,6 +57,17 @@ class Appointment
         $conditions = [];
         $params = [];
 
+        $possible_status = [
+            "Marcado", "Concluído", "Cancelado"
+        ];
+        if (!isset($status) && in_array($status, $possible_status)) {
+            $conditions[] = "ap.status = :status";
+            $params[':status'] = $status;
+        } else {
+            $conditions[] = "ap.status != :status";
+            $params[':status'] = "Cancelado";
+        }
+
         if (!empty($idProfessional) && is_numeric($idProfessional)) {
             $conditions[] = "ap.idProfessional = :idProfessional";
             $params[':idProfessional'] = $idProfessional;
@@ -75,13 +86,15 @@ class Appointment
                     break;
 
                 case 'nearby':
-                    $conditions[] = "ap.date > :today";
+                    $conditions[] = "ap.date > :today OR (ap.date = :today AND ap.startTime > :now)";
                     $params[':today'] = $today;
+                    $params[':now'] = $now;
                     break;
 
                 case 'history':
-                    $conditions[] = "ap.date < :today";
+                    $conditions[] = "ap.date < :today OR (ap.date = :today AND ap.endTime < :now)";
                     $params[':today'] = $today;
+                    $params[':now'] = $now;
                     break;
 
                 case 'next':

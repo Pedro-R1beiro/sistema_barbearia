@@ -88,7 +88,7 @@ class ClientGet
                 ];
             }
 
-            $appointment = $this->appo->get($filter, null, $id);
+            $appointment = $this->appo->get($filter, null, null, $id);
             if ($appointment) {
                 return [
                     'code' => 200,
