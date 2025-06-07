@@ -11,7 +11,7 @@ import {
 import { Cog, LogOut } from "lucide-react";
 import { useNavigate } from "react-router";
 
-export default function UserAccounDropdowm() {
+export function UserAccounDropdowm() {
   const navigate = useNavigate();
   return (
     <DropdownMenu>

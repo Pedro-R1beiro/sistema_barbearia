@@ -22,6 +22,4 @@ export async function registerAppointment({
     service,
     idProfessional,
   });
-
-  console.log({ startTime, date: formatedDate, service, idProfessional });
 }

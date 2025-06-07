@@ -1,3 +1,4 @@
+import { scrollToTop } from "@/utils/scroll-to-top";
 import { twMerge } from "tailwind-merge";
 
 interface HeaderProps {
@@ -13,14 +14,14 @@ export function Header({ children, className }: HeaderProps) {
         className,
       )}
     >
-      <a
-        href="#"
+      <button
+        onClick={scrollToTop}
         className="bg-background absolute left-0 h-full rounded-l-[0.40rem] rounded-r-[1.5rem] px-3 py-2"
       >
         <div className="bg-foreground rounded-full p-2 py-[0.8rem] font-bold">
           logo
         </div>
-      </a>
+      </button>
       {children}
     </header>
   );

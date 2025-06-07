@@ -29,7 +29,7 @@ export function NextAppointmentTimeCard() {
       <CardContent className="px-4">
         <div className="flex items-start justify-between pr-2">
           {remaining.length > 0 ? (
-            <span className="text-2xl font-bold">{remaining}</span>
+            <span className="text-xl font-bold">{remaining}</span>
           ) : (
             <>
               <span className="text-2xl font-bold md:hidden">
@@ -42,12 +42,9 @@ export function NextAppointmentTimeCard() {
           )}
           <FontAwesomeIcon icon={faScissors} className="text-3xl" />
         </div>
-        <div className="mt-6 flex items-center justify-between text-lg">
+        <div className="mt-3 flex items-center justify-between text-lg">
           {remaining.length > 0 ? (
-            <span className="font-medium">
-              Para seu próximo <br />
-              horário.
-            </span>
+            <span className="font-medium">Para seu próximo horário.</span>
           ) : (
             <span className="font-medium">passou ou em andamento.</span>
           )}

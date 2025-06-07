@@ -15,22 +15,18 @@ export function NextAppointmentsCard() {
     <Card className="bg-custom-foreground text-background md:flex-1">
       <CardContent className="px-4">
         <div className="flex items-start justify-between pr-2">
-          <CardTitle className="text-2xl font-bold">
+          <CardTitle className="text-xl font-bold">
             Próximos agendamentos
           </CardTitle>
           <FontAwesomeIcon icon={faCalendarDays} className="text-3xl" />
         </div>
-        <div className="mt-6 flex items-center justify-between text-lg">
+        <div className="mt-3 flex items-center justify-between text-lg">
           {nextAppointmentsData && nextAppointmentsData?.length > 1 ? (
             <span className="font-medium">
-              {nextAppointmentsData?.length} agendamentos para <br />
-              os próximos dias.
+              {nextAppointmentsData?.length} agendamentos para os próximos dias.
             </span>
           ) : (
-            <span className="font-medium">
-              {nextAppointmentsData?.length} agendamento para <br />
-              os próximos dias.
-            </span>
+            <span className="font-medium">sem agendamento marcados.</span>
           )}
 
           <Button variant="secondary" className="px-7 py-5.5">

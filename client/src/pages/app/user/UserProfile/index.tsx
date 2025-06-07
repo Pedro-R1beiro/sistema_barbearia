@@ -74,7 +74,7 @@ export function UserProfile() {
               (79) 9 9999-9999
             </div>
             <div>
-              <span className="block font-bold">Endereço</span>
+              <span className="block font-bold">Endereço:</span>
               <address>
                 Rua exemplos, nª 20. <br />
                 Bairro exemplos.

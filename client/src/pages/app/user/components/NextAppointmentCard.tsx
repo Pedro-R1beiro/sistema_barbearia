@@ -1,11 +1,11 @@
 import { getAppointment } from "@/api/get-appointment";
-import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { formatDateRequest } from "@/utils/formatDateRequest";
 import { remainingTime } from "@/utils/remaining-time";
 import { useQuery } from "@tanstack/react-query";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
+import { NextApointmentCardFooter } from "./NextApointmentCardFooter";
 
 interface NextAppointmentProps {
   type?: "primary" | "secondary";
@@ -79,48 +79,8 @@ export function NextAppointmentCard({
             <span>R$ {nextAppointment.servicePrice}</span>
           </div>
         </div>
-
-        <div
-          className={`bg-foreground h-[0.01rem] max-h-full w-full md:h-[16rem] md:w-[0.1rem] lg:h-[0.1rem] lg:w-full ${
-            type === "secondary" && "bg-background dark:bg-background"
-          }`}
-        />
-
-        {type === "secondary" ? (
-          <div className="max-w-full space-y-5 md:flex md:flex-col md:justify-between md:gap-6 lg:gap-2">
-            <Button
-              variant="secondary"
-              className="w-full flex-1 py-5 font-bold md:w-auto lg:flex-none"
-            >
-              Falar com barbeiro
-            </Button>
-            <Button
-              variant="secondary"
-              className="w-full flex-1 py-5 font-bold md:w-auto lg:flex-none"
-            >
-              Ver mais informações
-            </Button>
-            <Button className="text-foreground w-full flex-1 bg-rose-600 py-5 font-bold hover:bg-rose-600/80 md:w-auto lg:flex-none">
-              Cancelar agendamento
-            </Button>
-          </div>
-        ) : (
-          <div className="max-w-full space-y-5 md:flex md:flex-col md:justify-between md:gap-6 lg:gap-2">
-            <Button className="w-full flex-1 py-5 font-bold md:w-auto lg:flex-none">
-              Contatar barbeiro
-            </Button>
-            <Button className="w-full flex-1 py-5 font-bold md:w-auto lg:flex-none">
-              Ver mais informações
-            </Button>
-            <Button
-              className="w-full flex-1 py-5 font-bold md:w-auto lg:flex-none"
-              variant="customDestructive"
-            >
-              Cancelar agendamento
-            </Button>
-          </div>
-        )}
       </CardContent>
+      <NextApointmentCardFooter id={nextAppointment.id} type={type} />
     </Card>
   );
 }
