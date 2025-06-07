@@ -16,17 +16,16 @@ const signInSchema = z.object({
 
 function signInError(err: AxiosError) {
   const code = err.response?.status;
-  console.log(err);
 
   switch (code) {
     case 400:
       {
-        toast.error("Entrada inválida de dados.");
+        toast.error("Dados inválidos.");
       }
       break;
     case 401:
       {
-        toast.error("email ou senha inválidos.");
+        toast.error("Email ou senha incorretos.");
       }
       break;
     default: {

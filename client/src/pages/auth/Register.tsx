@@ -31,12 +31,12 @@ function signUpError(err: AxiosError) {
   switch (code) {
     case 400:
       {
-        toast.error("Entrada inválida de dados.");
+        toast.error("Dados inválidos.");
       }
       break;
     case 409:
       {
-        toast.error("email já cadastrado.");
+        toast.error("Email já cadastrado.");
       }
       break;
     default: {
