@@ -118,17 +118,11 @@
     @apply border-border outline-ring/50;
     scrollbar-width: thin;
   }
-  html {
-    overflow: hidden;
-  }
+
   body {
     @apply bg-background text-foreground;
     font-family: "Poppins", sans-serif;
 
     max-width: 100vw;
-    min-width: 100vw;
-    height: 100dvh;
-    overflow-x: hidden;
-    overflow-y: scroll;
   }
 }
