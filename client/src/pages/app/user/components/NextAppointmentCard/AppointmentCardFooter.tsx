@@ -4,61 +4,55 @@ import { useMutation } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { AppointmentDialog } from "./AppointmentDialog";
 import { CardFooter } from "@/components/ui/card";
+import { isAxiosError, type AxiosError } from "axios";
 
 interface NextAppointmentProps {
-  type?: "primary" | "secondary";
   id: number;
 }
 
-export function AppointmentCardFooter({
-  type = "primary",
-  id,
-}: NextAppointmentProps) {
+function handleCancelAppointmentError(error: AxiosError) {
+  const statusCode = error.response?.status;
+
+  switch (statusCode) {
+    case 422:
+      toast.error("Agendamento já cancelado!");
+      break;
+    default:
+      toast.error("Houve um erro interno. Tente novamente mais tarde!");
+  }
+}
+
+export function AppointmentCardFooter({ id }: NextAppointmentProps) {
   const { mutateAsync: cancelAppointmentFn } = useMutation({
     mutationFn: cancelAppointment,
     onSuccess: () => {
       toast.success("Agendamento cancelado!");
     },
+    onError: (error) => {
+      if (isAxiosError(error)) {
+        handleCancelAppointmentError(error);
+        return;
+      }
+
+      toast.error("Houve um erro interno. Tente novamente mais tarde!");
+    },
   });
 
   return (
-    <CardFooter className="mt-6 md:mt-0 lg:mt-6">
-      {type === "secondary" ? (
-        <div className="w-full max-w-full space-y-5 md:flex md:flex-col md:justify-between md:gap-6 lg:gap-2">
-          <Button
-            variant="secondary"
-            className="w-full flex-1 py-5 font-bold md:w-auto lg:flex-none"
-          >
-            Falar com barbeiro
-          </Button>
-          <Button
-            variant="secondary"
-            className="w-full flex-1 py-5 font-bold md:w-auto lg:flex-none"
-          >
-            Ver mais informações
-          </Button>
-          <Button
-            onClick={() => cancelAppointmentFn({ id })}
-            className="text-foreground w-full flex-1 bg-rose-600 py-5 font-bold hover:bg-rose-600/80 md:w-auto lg:flex-none"
-          >
-            Cancelar agendamento
-          </Button>
-        </div>
-      ) : (
-        <div className="w-full max-w-full space-y-5 md:flex md:flex-col md:justify-between md:gap-6 lg:gap-2">
-          <Button className="w-full flex-1 py-5 font-bold md:w-auto lg:flex-none">
-            Contatar barbeiro
-          </Button>
-          <AppointmentDialog />
-          <Button
-            onClick={() => cancelAppointmentFn({ id })}
-            className="w-full flex-1 py-5 font-bold md:w-auto lg:flex-none"
-            variant="customDestructive"
-          >
-            Cancelar agendamento
-          </Button>
-        </div>
-      )}
+    <CardFooter className="mt-6 md:mt-0 md:w-1/2 lg:mt-6 lg:w-full">
+      <div className="w-full max-w-full space-y-5 md:flex md:flex-col md:justify-between md:gap-6 lg:gap-2">
+        <Button className="w-full flex-1 py-5 font-bold md:w-auto md:py-3 lg:flex-none lg:py-5">
+          Contatar barbeiro
+        </Button>
+        <AppointmentDialog />
+        <Button
+          onClick={() => cancelAppointmentFn({ id })}
+          className="w-full flex-1 py-5 font-bold md:w-auto md:py-3 lg:flex-none lg:py-5"
+          variant="customDestructive"
+        >
+          Cancelar agendamento
+        </Button>
+      </div>
     </CardFooter>
   );
 }

@@ -12,7 +12,7 @@ export function AppointmentDialog() {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button className="w-full flex-1 py-5 font-bold md:w-auto lg:flex-none">
+        <Button className="w-full flex-1 py-5 font-bold md:w-auto md:py-3 lg:flex-none lg:py-5">
           Ver mais informações
         </Button>
       </DialogTrigger>

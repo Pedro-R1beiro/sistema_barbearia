@@ -19,7 +19,7 @@ const appointments = Array.from({ length: 22 }, (_, index) => ({
 
 export function AppointmentsTable() {
   return (
-    <div className="bg-custom-foreground/90 text-background row-2 mt-8 max-h-[360px] overflow-y-auto rounded-md p-4">
+    <div className="bg-custom-foreground/90 text-background row-2 mt-8 max-h-[380px] overflow-y-auto rounded-md p-4">
       <Table className="border-separate border-spacing-x-0 border-spacing-y-2">
         <TableHeader>
           <TableRow>
