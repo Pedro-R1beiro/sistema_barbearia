@@ -38,9 +38,6 @@ export function AppointmentDialog() {
               <TableHead>Horário de término:</TableHead>
             </TableRow>
             <TableRow>
-              <TableHead>Inicia em:</TableHead>
-            </TableRow>
-            <TableRow>
               <TableHead>Serviço:</TableHead>
             </TableRow>
           </TableHeader>

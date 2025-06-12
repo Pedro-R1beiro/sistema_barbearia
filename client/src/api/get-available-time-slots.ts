@@ -1,6 +1,13 @@
 import { api } from "@/lib/axios";
 import { formatDateRequest } from "@/utils/formatDateRequest";
 
+export type BarberAvailabilityStatus =
+  | "day_off"
+  | "on_vacation"
+  | "not_working"
+  | "fully_booked"
+  | "available";
+
 interface getAvailableTimeSlotsResponse {
   message: {
     id: number;
@@ -8,6 +15,7 @@ interface getAvailableTimeSlotsResponse {
     email: string;
     phone: string;
     timeSlot: string[];
+    status: BarberAvailabilityStatus;
   }[];
 }
 

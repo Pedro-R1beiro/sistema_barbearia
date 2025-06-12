@@ -4,12 +4,12 @@ import { DatePicker } from "@/components/ui/date-picker";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { SelectServices } from "./CheckBoxServices";
-import { TimeSelect } from "./TimeSelect";
+import { SelectServices } from "./components/CheckBoxServices";
+import { TimeSelect } from "./components/TimeSelect";
 import { useMutation } from "@tanstack/react-query";
 import { Card, CardContent } from "@/components/ui/card";
 import { registerAppointment } from "@/api/register-appointment";
-import { BarberSelect } from "./BarberSelect";
+import { BarberSelect } from "./components/BarberSelect";
 import { toast } from "sonner";
 import { queryClient } from "@/lib/react-query";
 

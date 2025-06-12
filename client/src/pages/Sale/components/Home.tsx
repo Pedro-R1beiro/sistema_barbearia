@@ -33,13 +33,13 @@ export function Home() {
         </p>
 
         <Button
-          onClick={() => navigate("/sign-in")}
+          onClick={() => navigate("/sign-up")}
           className="bg-foreground text-background text-md mt-2 w-full p-6 font-bold md:max-w-114"
         >
           Agende seu horário
         </Button>
         <Button
-          onClick={() => navigate("/sign-up")}
+          onClick={() => navigate("/sign-in")}
           variant="secondary"
           className="text-md mt-2 w-full p-6 font-bold md:max-w-114 dark:bg-[#303030] dark:hover:bg-[#404040]"
         >

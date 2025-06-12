@@ -8,7 +8,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Controller, type Control, type UseFormWatch } from "react-hook-form";
-import type { ScheduleFormData } from ".";
+import type { ScheduleFormData } from "..";
 import { useQuery } from "@tanstack/react-query";
 import { getAvailableTimeSlots } from "@/api/get-available-time-slots";
 

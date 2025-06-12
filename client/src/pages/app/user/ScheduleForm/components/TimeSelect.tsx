@@ -8,11 +8,14 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-import { getAvailableTimeSlots } from "@/api/get-available-time-slots";
+import {
+  getAvailableTimeSlots,
+  type BarberAvailabilityStatus,
+} from "@/api/get-available-time-slots";
 
 import { useQuery } from "@tanstack/react-query";
 import { Controller, type Control, type UseFormWatch } from "react-hook-form";
-import type { ScheduleFormData } from ".";
+import type { ScheduleFormData } from "..";
 
 interface UserScheduleFormTimeProps {
   control: Control<ScheduleFormData>;
@@ -36,6 +39,15 @@ export function TimeSelect({ control, watch }: UserScheduleFormTimeProps) {
   });
 
   const timeSlots = available?.flatMap((item) => item.timeSlot);
+  const availableStatusMap: Record<BarberAvailabilityStatus, string> = {
+    available: "Horários disponíveis",
+    day_off: "Barbeiro de folga neste dia",
+    fully_booked: "Dia com horários preenchidos",
+    not_working: "Barberia fechada neste dia",
+    on_vacation: "Barbeiro de férias nesta dia",
+  };
+
+  if (!available) return;
 
   return (
     <Controller
@@ -54,19 +66,22 @@ export function TimeSelect({ control, watch }: UserScheduleFormTimeProps) {
           <SelectContent className="max-h-70">
             <SelectGroup>
               {timeSlots && timeSlots.length >= 1 ? (
-                <SelectLabel>Horários</SelectLabel>
+                <>
+                  <SelectLabel>Horários</SelectLabel>
+                  {timeSlots &&
+                    timeSlots.map((time) => {
+                      return (
+                        <SelectItem key={time} value={time}>
+                          {time}
+                        </SelectItem>
+                      );
+                    })}
+                </>
               ) : (
-                <SelectLabel>Profissional sem horários disponíveis</SelectLabel>
+                <SelectLabel>
+                  {availableStatusMap[available[0].status]}
+                </SelectLabel>
               )}
-
-              {timeSlots &&
-                timeSlots.map((time) => {
-                  return (
-                    <SelectItem key={time} value={time}>
-                      {time}
-                    </SelectItem>
-                  );
-                })}
             </SelectGroup>
           </SelectContent>
         </Select>

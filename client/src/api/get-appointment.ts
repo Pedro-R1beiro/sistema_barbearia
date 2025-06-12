@@ -3,11 +3,11 @@ import { api } from "@/lib/axios";
 export type NextAppointmentInterface = {
   id: number;
   date: Date;
-  startTime: string;
-  endTime: string;
   professionalName: string;
   clientName: string;
   serviceName: string;
+  startTime: string;
+  endTime: string;
   servicePrice: number;
 };
 
