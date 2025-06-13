@@ -45,6 +45,7 @@ class Appointment
         ap.startTime,
         ap.endTime,
         ap.status,
+        ap.created_at,
         p.name AS professionalName,
         c.name AS clientName,
         s.name AS serviceName,

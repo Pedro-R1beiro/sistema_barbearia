@@ -231,6 +231,7 @@ GET /backend/client/getAppointment
     'date': '2025-05-11',
     'startTime': '08:00:00',
     'endTime': '08:30:00',
+    'created_at': '2025-06-03 20:24:42',
     'professionalName': 'Nome do Barbeiro',
     'clientName': 'Nome do Cliente',
     'serviceName': 'Nome do Serviço',
