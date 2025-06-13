@@ -66,9 +66,9 @@ export function NextAppointmentCard() {
               <span>R$ {nextAppointment.servicePrice}</span>
             </div>
           </div>
+          <div className="bg-background h-[0.09rem] w-full md:hidden lg:block" />
         </CardContent>
-        <div className="bg-foreground hidden min-h-full min-w-px md:block lg:hidden" />
-        <div className="bg-foreground mx-auto my-4 min-h-px w-75 max-w-full md:my-0 md:hidden lg:block" />
+        <div className="bg-background hidden min-h-full min-w-px md:block lg:hidden" />
         <AppointmentCardFooter id={nextAppointment.id} />
       </div>
     </Card>

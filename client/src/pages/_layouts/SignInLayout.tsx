@@ -52,8 +52,11 @@ export function SignInLayout() {
           <ContactButton link="github.api.client" icon={faGithub} size="sm" />
         </span>
 
-        <button onClick={scrollToTop} className="cursor-pointer p-3">
-          <ArrowUp className="bg-foreground text-background mt-15 rounded-full md:hidden" />
+        <button
+          onClick={scrollToTop}
+          className="bg-foreground text-background mt-6 cursor-pointer rounded-full p-1 lg:hidden"
+        >
+          <ArrowUp />
         </button>
       </div>
     </div>

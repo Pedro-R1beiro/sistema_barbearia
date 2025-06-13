@@ -75,7 +75,7 @@ export function ScheduleForm() {
       </h1>
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="min-w-full space-y-7 pb-8 lg:flex lg:max-w-2xl lg:flex-1 lg:items-center lg:items-start lg:justify-center lg:gap-15"
+        className="min-w-full space-y-7 pb-8 lg:flex lg:max-w-2xl lg:flex-1 lg:items-start lg:justify-center lg:gap-15"
       >
         <div className="space-y-7 lg:flex-1">
           <div>

@@ -1,7 +1,7 @@
 import { NextAppointmentCard } from "../components/NextAppointmentCard";
-import { AppointmentsTable } from "./AppointmentsTable";
-import { NextAppointmentTimeCard } from "./NextAppointmentTimeCard";
-import { NextAppointmentsCard } from "./NextAppointmentsCard";
+import { AppointmentsTable } from "./components/AppointmentsTable";
+import { NextAppointmentTimeCard } from "./components/NextAppointmentTimeCard";
+import { NextAppointmentsCard } from "./components/NextAppointmentsCard";
 
 export function Dashboard() {
   return (
