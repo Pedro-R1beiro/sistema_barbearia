@@ -59,14 +59,22 @@ class Appointment
         $params = [];
 
         $possible_status = [
-            "Marcado", "Concluído", "Cancelado"
+            "marcado",
+            "concluído",
+            "cancelado"
         ];
-        if (!isset($status) && in_array($status, $possible_status)) {
-            $conditions[] = "ap.status = :status";
-            $params[':status'] = $status;
-        } else {
-            $conditions[] = "ap.status != :status";
-            $params[':status'] = "Cancelado";
+        if (isset($status)) {
+            if (is_array($status)) {
+                foreach ($status as $i => $value) {
+                    $param = ":status$i";
+                    $placeholders[] = "ap.status = $param";
+                    $params[$param] = strtolower(trim($value));
+                }
+                $conditions[] = '(' . implode(' OR ', $placeholders) . ')';
+            } else if (in_array($status, $possible_status)) {
+                $conditions[] = "ap.status = :status";
+                $params[':status'] = $status;
+            }
         }
 
         if (!empty($idProfessional) && is_numeric($idProfessional)) {

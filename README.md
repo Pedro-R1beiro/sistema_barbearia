@@ -215,14 +215,24 @@ GET /backend/client/getAppointment
 
 ### Formato de dados esperado:
 ```http
-/backend/client/getAppointment?filter=
+/backend/client/getAppointment?filter=&status=
 ```
+### Status:
+- marcado
+- concluído
+- cancelado
+<sub>Caso queira adicionar mais de um status, separe-os por vírgula (Ex.: status=marcado,cancelado)</sub>
+
 ### Filtros:
 - today: Todos agendamentos para hoje
 - nearby: Todos depois de hoje
 - history: Todos antes de hoje
 - next: Próximo agendamento
 - last: Último agendamento
+
+### Default:
+Caso não seja enviado nenhum status, ele retornará todos (marcado, concluído, cancelado).
+Caso não seja enviado nehum filtro, ele retornará todos agendamentos registrados.
 
 ### Mensagem em caso de sucesso:
 ```json

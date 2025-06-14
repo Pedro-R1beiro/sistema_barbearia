@@ -88,7 +88,18 @@ class ClientGet
                 ];
             }
 
-            $appointment = $this->appo->get($filter, null, null, $id);
+            $status = null;
+            if (!empty($data['status'])) {
+                if (is_array($data['status'])) {
+                    $status = $data['status'];
+                } else if (is_string($data['status'])) {
+                    $status = explode(',', $data['status']);
+                } else {
+                    $status = $data['status'];
+                }
+            }
+
+            $appointment = $this->appo->get($filter, $status, null, $id);
             if ($appointment) {
                 return [
                     'code' => 200,
@@ -199,7 +210,7 @@ class ClientGet
             } elseif (is_string($data['service'])) {
                 $services = explode(',', $data['service']);
             } else {
-                $services = [$data['service']];
+                $services = $data['service'];
             }
 
             $services = array_unique(array_map('trim', $services));
