@@ -25,7 +25,7 @@ export function NextAppointmentTimeCard() {
   });
 
   return (
-    <Card className="bg-custom-foreground text-background lg:w-72">
+    <Card className="bg-custom-foreground text-background lg:w-74">
       <CardContent className="px-4">
         <div className="flex items-start justify-between pr-2">
           {remaining.length > 0 ? (

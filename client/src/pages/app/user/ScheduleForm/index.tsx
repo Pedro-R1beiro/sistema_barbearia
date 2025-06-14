@@ -40,6 +40,7 @@ export function ScheduleForm() {
 
   const selectedBarber = watch("barber");
   const selectedServices = watch("services");
+  const selectedDate = watch("date");
 
   const { mutateAsync: registerAppointmentFn } = useMutation({
     mutationFn: registerAppointment,
@@ -100,7 +101,7 @@ export function ScheduleForm() {
         </div>
 
         <div className="space-y-7 lg:w-120">
-          {selectedServices.length >= 1 ? (
+          {selectedServices.length >= 1 && !!selectedDate ? (
             <div>
               <h3 className="text-lg font-bold">Selecione um barbeiro</h3>
               <BarberSelect control={control} watch={watch} />

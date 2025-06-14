@@ -5,6 +5,8 @@ import { toast } from "sonner";
 import { AppointmentDialog } from "./AppointmentDialog";
 import { CardFooter } from "@/components/ui/card";
 import { isAxiosError, type AxiosError } from "axios";
+import { queryClient } from "@/lib/react-query";
+import type { NextAppointmentInterface } from "@/api/get-appointment";
 
 interface NextAppointmentProps {
   id: number;
@@ -22,12 +24,39 @@ function handleCancelAppointmentError(error: AxiosError) {
   }
 }
 
+function handleCancelAppointmentSuccess(id: number) {
+  queryClient.refetchQueries({
+    queryKey: ["next-appointment"],
+  });
+
+  const nextAppointmentsData = queryClient.getQueriesData<
+    NextAppointmentInterface[]
+  >({
+    queryKey: ["next-appointments"],
+  });
+
+  if (!nextAppointmentsData) return [{}];
+
+  nextAppointmentsData.forEach(([cacheKey, cacheData]) => {
+    if (!cacheData) return;
+
+    queryClient.setQueryData<NextAppointmentInterface[]>(
+      cacheKey,
+      (cacheData) => {
+        if (!cacheData) return [];
+        return cacheData.filter((appointment) => appointment.id !== id);
+      },
+    );
+  });
+
+  toast.success("Agendamento cancelado!");
+  return;
+}
+
 export function AppointmentCardFooter({ id }: NextAppointmentProps) {
   const { mutateAsync: cancelAppointmentFn } = useMutation({
     mutationFn: cancelAppointment,
-    onSuccess: () => {
-      toast.success("Agendamento cancelado!");
-    },
+    onSuccess: () => handleCancelAppointmentSuccess(id),
     onError: (error) => {
       if (isAxiosError(error)) {
         handleCancelAppointmentError(error);

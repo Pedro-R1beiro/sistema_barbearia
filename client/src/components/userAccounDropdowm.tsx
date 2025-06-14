@@ -15,7 +15,7 @@ export function UserAccounDropdowm() {
   const navigate = useNavigate();
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger className="bg-custom-foreground flex cursor-pointer items-center gap-4 rounded-md p-2 px-4 font-bold md:order-2">
+      <DropdownMenuTrigger className="bg-custom-foreground flex cursor-pointer items-center gap-4 rounded-md p-2 px-4 font-bold">
         <FontAwesomeIcon icon={faUser} className="text-lg" />
         <span>UserName</span>
       </DropdownMenuTrigger>

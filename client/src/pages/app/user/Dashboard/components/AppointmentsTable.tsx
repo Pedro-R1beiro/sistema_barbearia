@@ -10,7 +10,7 @@ import {
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-const appointments = Array.from({ length: 22 }, (_, index) => ({
+const appointments = Array.from({ length: 5 }, (_, index) => ({
   id: index + 1,
   barber: "José Alfredo",
   date: "Em 22 dias",
@@ -19,7 +19,7 @@ const appointments = Array.from({ length: 22 }, (_, index) => ({
 
 export function AppointmentsTable() {
   return (
-    <div className="bg-custom-foreground/90 text-background row-2 mt-8 max-h-[380px] overflow-y-auto rounded-md p-4">
+    <div className="bg-custom-foreground/70 text-background row-2 mt-8 max-h-[380px] overflow-y-hidden rounded-md p-4">
       <Table className="border-separate border-spacing-x-0 border-spacing-y-2">
         <TableHeader>
           <TableRow>

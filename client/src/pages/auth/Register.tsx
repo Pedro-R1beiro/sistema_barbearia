@@ -11,9 +11,9 @@ import { toast } from "sonner";
 import { isAxiosError, type AxiosError } from "axios";
 
 const registerSchema = z.object({
-  name: z.string().min(2, "mínimo de 2 caracteres"),
+  name: z.string().min(2, "Mínimo de 2 caracteres"),
   email: z.string().email("E-mail inválido"),
-  password: z.string().min(8, "mínimo de 8 caracteres"),
+  password: z.string().min(8, "Mínimo de 8 caracteres"),
   phone: z
     .string()
     .transform((val) => val.replace(/\D/g, ""))
