@@ -5,8 +5,8 @@
 ### Todas as respostas do servidor seguem o formato padrão abaixo.
 ```json
 {
-  'status': 'success' | 'error',
-  'message': 'Mensagem Explicativa'
+  "status": "success" | "error",
+  "message": "Mensagem Explicativa"
 }
 ```
 > Em casos de sucesso, o conteúdo da mensagem (message) pode variar conforme a operação realizada. Sempre que houver uma mensagem específica relevante, ela será explicitamente descrita na documentação do endpoint correspondente.
@@ -39,16 +39,16 @@ POST /backend/client/login
 ### Formato de dados esperado:
 ```json
 {
-  'email': 'user@gmail.com', // Deve conter menos que 50 caracteres
-  'password': '12345678' // Deve conter no mínimo 8 caracteres
+  "email": "user@gmail.com", // Deve conter menos que 50 caracteres
+  "password": "12345678" // Deve conter no mínimo 8 caracteres
 }
 ```
 
 ### Mensagem em caso de sucesso:
 ```json
-'message': {
-    'email': 'user@gmail.com,
-    'code': // Código único do usuário
+"message": {
+    "email": "user@gmail.com",
+    "code": // Código único do usuário
 }
 ```
 ### Códigos http
@@ -66,19 +66,19 @@ POST /backend/client/signup
 ### Formato de dados esperado:
 ```json
 {
-  'name': 'User Name', // Deve conter entre 3 e 30 caracteres
-  'email': 'user@gmail.com', // Deve conter menos que 50 caracteres
-  'password': '12345678', // Deve conter no mínimo 8 caracteres
-  'phone': '(xx) xxxxx-xxxx',
-  'validationScreen': 'url/validationScreen.com.br' // Url da tela para validar e-mail
+  "name": "User Name", // Deve conter entre 3 e 30 caracteres
+  "email": "user@gmail.com", // Deve conter menos que 50 caracteres
+  "password": "12345678", // Deve conter no mínimo 8 caracteres
+  "phone": "(xx) xxxxx-xxxx",
+  "validationScreen": "url/validationScreen.com.br" // Url da tela para validar e-mail
 }
 ```
 
 ### Mensagem em caso de sucesso:
 ```json
-'message': {
-    'validationEmail': 'Mensagem informando se o e-mail de validação foi enviado ou não',
-    'email': 'user@gmail.com
+"message": {
+    "validationEmail": "Mensagem informando se o e-mail de validação foi enviado ou não",
+    "email": "user@gmail.com"
 }
 ```
 ### Códigos http
@@ -98,7 +98,7 @@ PATCH /backend/client/validateEmail
 ### Formato de dados esperado:
 ```json
 {
-  'code': // Código único do usuário que estará na url que foi enviada para o e-mail do usuário
+  "code": // Código único do usuário que estará na url que foi enviada para o e-mail do usuário
 }
 ```
 
@@ -130,10 +130,10 @@ PATCH /backend/client/chageInfo
 ### Formato de dados esperado:
 ```json
 {
-  'name': ,
-  'email': ,
-  'phone': ,
-  'senha': // Deve ser a senha atual, para conseguir alterar as outras informações
+  "name": ,
+  "email": ,
+  "phone": ,
+  "senha": // Deve ser a senha atual, para conseguir alterar as outras informações
 }
 ```
 
@@ -153,8 +153,8 @@ PATCH /backend/client/chagePassword
 ### Formato de dados esperado:
 ```json
 {
-  'currentPassword': ,// Senha atual
-  'newPassword': // Nova senha
+  "currentPassword": ,// Senha atual
+  "newPassword": // Nova senha
 }
 ```
 
@@ -174,8 +174,8 @@ POST /backend/client/sendRecoveryEmail
 ### Formato de dados esperado:
 ```json
 {
-  'recoveryScreen': , // Link da tela para recuperção que será enviado para o email
-  'email': // opcional caso o usuário esteja logado, caso não, obrigatório
+  "recoveryScreen": , // Link da tela para recuperção que será enviado para o email
+  "email": // opcional caso o usuário esteja logado, caso não, obrigatório
 }
 ```
 
@@ -195,8 +195,8 @@ PATCH /backend/client/resetPassword
 ### Formato de dados esperado:
 ```json
 {
-  'code': , // Código único do usuário que estará na url que foi enviada para o e-mail do usuário
-  'newPassword': // Nova senha
+  "code": , // Código único do usuário que estará na url que foi enviada para o e-mail do usuário
+  "newPassword": // Nova senha
 }
 ```
 
@@ -237,16 +237,16 @@ Caso não seja enviado nehum filtro, ele retornará todos agendamentos registrad
 
 ### Mensagem em caso de sucesso:
 ```json
-'message': {
-    'id': 1,
-    'date': '2025-05-11',
-    'startTime': '08:00:00',
-    'endTime': '08:30:00',
-    'created_at': '2025-06-03 20:24:42',
-    'professionalName': 'Nome do Barbeiro',
-    'clientName': 'Nome do Cliente',
-    'serviceName': 'Nome do Serviço',
-    'servicePrice': '15.00'
+"message": {
+    "id": 1,
+    "date": "2025-05-11",
+    "startTime": "08:00:00",
+    "endTime": "08:30:00",
+    "created_at": "2025-06-03 20:24:42",
+    "professionalName": "Nome do Barbeiro",
+    "clientName": "Nome do Cliente",
+    "serviceName": "Nome do Serviço",
+    "servicePrice": "15.00"
 }
 ```
 ### Códigos http
