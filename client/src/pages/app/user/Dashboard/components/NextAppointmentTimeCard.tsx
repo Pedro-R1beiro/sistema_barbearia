@@ -12,6 +12,9 @@ export function NextAppointmentTimeCard() {
   const { data: nextAppointmentData } = useQuery({
     queryKey: ["next-appointment"],
     queryFn: () => getAppointment("next"),
+    staleTime: Infinity,
+    refetchOnWindowFocus: false,
+    enabled: false,
   });
 
   if (!nextAppointmentData) return;

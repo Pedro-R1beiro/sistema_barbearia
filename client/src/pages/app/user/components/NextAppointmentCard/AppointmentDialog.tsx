@@ -1,3 +1,4 @@
+import { getAppointment } from "@/api/get-appointment";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -6,9 +7,32 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Table, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow,
+} from "@/components/ui/table";
+import { formatDateUtc } from "@/utils/formatDateUtc";
+import { useQuery } from "@tanstack/react-query";
 
-export function AppointmentDialog() {
+interface AppointmentDialogProps {
+  appointmentId: number;
+}
+
+export function AppointmentDialog({ appointmentId }: AppointmentDialogProps) {
+  const { data: appointmentData } = useQuery({
+    queryKey: ["appointments", appointmentId],
+    queryFn: () => getAppointment("next"),
+  });
+
+  if (!appointmentData) return;
+
+  const appointment = appointmentData.filter(
+    (appointment) => appointment.id === appointmentId,
+  )[0];
+
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -21,26 +45,42 @@ export function AppointmentDialog() {
           <DialogTitle>Detalhes do seu próximo horário</DialogTitle>
         </DialogHeader>
         <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead>Marcado na data:</TableHead>
-            </TableRow>
-            <TableRow>
-              <TableHead>Barbeiro:</TableHead>
-            </TableRow>
-            <TableRow>
-              <TableHead>Data:</TableHead>
-            </TableRow>
+          <TableBody>
             <TableRow>
               <TableHead>Horário:</TableHead>
+              <TableCell className="text-right">
+                {appointment.startTime}
+              </TableCell>
             </TableRow>
             <TableRow>
               <TableHead>Horário de término:</TableHead>
+              <TableCell className="text-right">
+                {appointment.endTime}
+              </TableCell>
+            </TableRow>
+            <TableRow>
+              <TableHead>Data:</TableHead>
+              <TableCell className="text-right">
+                {formatDateUtc(appointment.date, "dd 'de' MMMM/Y")}
+              </TableCell>
+            </TableRow>
+            <TableRow>
+              <TableHead>Barbeiro:</TableHead>
+              <TableCell className="text-right">
+                {appointment.professionalName}
+              </TableCell>
+            </TableRow>
+            <TableRow>
+              <TableHead>Marcado na data:</TableHead>
+              {/* {formatDateUtc(appointment.created_at, "dd 'de' MMMM/Y")} */}
             </TableRow>
             <TableRow>
               <TableHead>Serviço:</TableHead>
+              <TableCell className="text-right">
+                {appointment.serviceName}
+              </TableCell>
             </TableRow>
-          </TableHeader>
+          </TableBody>
         </Table>
       </DialogContent>
     </Dialog>

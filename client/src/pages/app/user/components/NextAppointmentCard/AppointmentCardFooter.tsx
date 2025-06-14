@@ -73,7 +73,7 @@ export function AppointmentCardFooter({ id }: NextAppointmentProps) {
         <Button className="w-full flex-1 py-5 font-bold md:w-auto md:py-3 lg:flex-none lg:py-5">
           Contatar barbeiro
         </Button>
-        <AppointmentDialog />
+        <AppointmentDialog appointmentId={id} />
         <Button
           onClick={() => cancelAppointmentFn({ id })}
           className="w-full flex-1 py-5 font-bold md:w-auto md:py-3 lg:flex-none lg:py-5"
