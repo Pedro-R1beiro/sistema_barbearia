@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import { intervalToDuration, isBefore, parse } from "date-fns";
+import { intervalToDuration, isBefore } from "date-fns";
+import { parseDateTimeInTimeZone } from "@/utils/parseDateTimeInTimeZone";
 
 interface UseRemainingTimeParams {
   startDate: Date | undefined;
@@ -13,25 +14,20 @@ export function useRemainingTime({
   const [remaining, setRemaining] = useState<string>("");
 
   useEffect(() => {
-    if (!startTime || !startDate) return;
+    if (!startDate || !startTime) return;
 
     const updateRemaining = () => {
       const now = new Date();
+      const scheduledDateTime = parseDateTimeInTimeZone(startDate, startTime);
 
-      const scheduledDateAndTime = parse(
-        `${startDate.toISOString().split("T")[0]} ${startTime}`,
-        "yyyy-MM-dd HH:mm:ss",
-        now,
-      );
-
-      if (isBefore(scheduledDateAndTime, now)) {
+      if (isBefore(scheduledDateTime, now)) {
         setRemaining("");
         return;
       }
 
       const duration = intervalToDuration({
         start: now,
-        end: scheduledDateAndTime,
+        end: scheduledDateTime,
       });
 
       if (duration.days) {

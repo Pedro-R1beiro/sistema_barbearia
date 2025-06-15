@@ -54,7 +54,7 @@ function handleCancelAppointmentSuccess(id: number) {
 }
 
 export function AppointmentCardFooter({ id }: NextAppointmentProps) {
-  const { mutateAsync: cancelAppointmentFn } = useMutation({
+  const { mutateAsync: cancelAppointmentFn, isPending } = useMutation({
     mutationFn: cancelAppointment,
     onSuccess: () => handleCancelAppointmentSuccess(id),
     onError: (error) => {
@@ -75,11 +75,12 @@ export function AppointmentCardFooter({ id }: NextAppointmentProps) {
         </Button>
         <AppointmentDialog appointmentId={id} />
         <Button
+          disabled={isPending}
           onClick={() => cancelAppointmentFn({ id })}
           className="w-full flex-1 py-5 font-bold md:w-auto md:py-3 lg:flex-none lg:py-5"
           variant="customDestructive"
         >
-          Cancelar agendamento
+          {isPending ? "Cancelando..." : "Cancelar agendamento"}
         </Button>
       </div>
     </CardFooter>
