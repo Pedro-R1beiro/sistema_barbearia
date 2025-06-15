@@ -10,6 +10,7 @@ import { Account } from "./pages/app/user/Account";
 import { NotFound } from "./pages/error/NotFound";
 import { Dashboard } from "./pages/app/user/Dashboard";
 import { ScheduleForm } from "./pages/app/user/ScheduleForm";
+import { EditPassword } from "./pages/auth/EditPassword";
 
 export const router = createBrowserRouter([
   {
@@ -20,7 +21,10 @@ export const router = createBrowserRouter([
   {
     path: "/",
     element: <SignInLayout />,
-    children: [{ path: "/sign-in", element: <SignIn /> }],
+    children: [
+      { path: "/sign-in", element: <SignIn /> },
+      { path: "/edit-password", element: <EditPassword /> },
+    ],
   },
   {
     path: "/",

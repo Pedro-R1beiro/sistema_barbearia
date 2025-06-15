@@ -8,6 +8,7 @@ import { useMutation } from "@tanstack/react-query";
 import { signIn } from "@/api/sign-in";
 import { toast } from "sonner";
 import { AxiosError, isAxiosError } from "axios";
+import { ForgotPasswordDialog } from "./ForgotPasswordDialog";
 
 const signInSchema = z.object({
   email: z.string().email("E-mail inválido"),
@@ -70,7 +71,7 @@ export function SignIn() {
     <>
       <Button
         onClick={() => navigate("/sign-up")}
-        className="dark:text-background dark:border-background/20 dark:bg-foreground dark:hover:bg-background/5 absolute top-5 left-5 z-1000"
+        className="dark:text-background dark:border-background/20 dark:bg-foreground dark:hover:bg-background/5 absolute top-5 left-5 z-10"
         variant="outline"
       >
         Não tem uma conta?
@@ -120,8 +121,8 @@ export function SignIn() {
           >
             Entrar
           </Button>
-          <p className="text-sm font-medium underline">Esqueci minha senha</p>
         </form>
+        <ForgotPasswordDialog />
       </div>
     </>
   );

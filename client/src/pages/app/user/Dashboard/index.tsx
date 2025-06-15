@@ -1,4 +1,4 @@
-import { NextAppointmentCard } from "../components/NextAppointmentCard";
+import { NextAppointmentCard } from "@/components/NextAppointmentCard";
 import { AppointmentsTable } from "./components/AppointmentsTable";
 import { NextAppointmentTimeCard } from "./components/NextAppointmentTimeCard";
 import { NextAppointmentsCard } from "./components/NextAppointmentsCard";
