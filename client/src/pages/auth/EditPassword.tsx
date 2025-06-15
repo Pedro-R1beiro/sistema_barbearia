@@ -1,10 +1,14 @@
+import { resetPassword } from "@/api/reset-password";
 import { LinesWithOr } from "@/components/LinesWithOr";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useMutation } from "@tanstack/react-query";
+import { AxiosError, isAxiosError } from "axios";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router";
+import { useNavigate, useSearchParams } from "react-router";
 import { toast } from "sonner";
 import { z } from "zod";
 
@@ -18,20 +22,56 @@ export function EditPassword() {
   const {
     handleSubmit,
     register,
-    reset,
     formState: { errors },
   } = useForm<FormData>({
     resolver: zodResolver(formSchema),
   });
 
-  function onSubmitForm(data: FormData) {
-    console.log(data);
+  const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
 
-    reset();
-    toast.success("E-mail de recuperação enviado");
+  const code = searchParams.get("code");
+
+  const { mutateAsync: resetPasswordFn, isPending } = useMutation({
+    mutationFn: resetPassword,
+  });
+
+  function handleResetPasswordError(error: AxiosError) {
+    const code = error.response?.status;
+    switch (code) {
+      case 400:
+        toast.error("Senha inválida ou igual a atual.");
+        break;
+      case 404:
+        toast.error("Houve um erro. Solicite um novo e-mail de recuperação!", {
+          action: {
+            label: "Solicitar",
+            onClick: () => navigate("/sign-in"),
+          },
+        });
+        break;
+      default:
+        toast.error("Houve um erro interno. Tente novamente mais tarde!");
+    }
   }
 
-  const navigate = useNavigate();
+  useEffect(() => {
+    if (!code) navigate("/sign-in");
+  });
+
+  async function onSubmitForm(data: FormData) {
+    try {
+      await resetPasswordFn({ code, newPassword: data.newPassword });
+      navigate("/sign-in", { replace: true });
+      toast.success("Senha alterada com sucesso.");
+    } catch (error) {
+      if (isAxiosError(error)) {
+        handleResetPasswordError(error);
+        return;
+      }
+      toast.error("Houve um erro interno. Tente novamente mais tarde!");
+    }
+  }
 
   return (
     <div className="text-background mt-20">
@@ -54,8 +94,8 @@ export function EditPassword() {
             </p>
           )}
         </div>
-        <Button type="submit" className="w-full">
-          Enviar
+        <Button disabled={isPending} type="submit" className="w-full">
+          {isPending ? "Enviando" : "Enviar"}
         </Button>
         <LinesWithOr />
         <Button
