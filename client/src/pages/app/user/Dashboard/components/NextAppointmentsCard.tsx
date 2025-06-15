@@ -14,7 +14,7 @@ export function NextAppointmentsCard() {
   });
 
   return (
-    <Card className="bg-custom-foreground text-background md:flex-1">
+    <Card className="bg-custom-foreground text-background h-34 md:h-38 md:flex-1">
       <CardContent className="px-4">
         <div className="flex items-start justify-between pr-2">
           <CardTitle className="text-xl font-bold">
@@ -29,7 +29,7 @@ export function NextAppointmentsCard() {
               dias.
             </span>
           ) : (
-            <span className="font-medium">sem agendamento marcados.</span>
+            <span className="font-medium">Sem agendamentos marcados.</span>
           )}
 
           <Button variant="secondary" className="px-7 py-5.5">

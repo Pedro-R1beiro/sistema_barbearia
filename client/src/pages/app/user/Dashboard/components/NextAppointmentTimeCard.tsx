@@ -32,7 +32,7 @@ export function NextAppointmentTimeCard() {
   if (!nextAppointmentData) return <WithoutNextAppointmentCard />;
 
   return (
-    <Card className="bg-custom-foreground text-background lg:w-74">
+    <Card className="bg-custom-foreground text-background h-34 md:h-38 lg:w-74">
       <CardContent className="px-4">
         <div className="flex items-start justify-between pr-2">
           {remainingTime.length > 0 ? (
@@ -53,7 +53,7 @@ export function NextAppointmentTimeCard() {
           {remainingTime.length > 0 ? (
             <span className="font-medium">Para seu próximo horário.</span>
           ) : (
-            <span className="font-medium">passou ou em andamento.</span>
+            <span className="font-medium">Passou ou em andamento.</span>
           )}
 
           <ContactButton icon={faWhatsapp} link="Whatsapp.client.api" />
