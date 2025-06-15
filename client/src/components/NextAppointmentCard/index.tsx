@@ -1,11 +1,11 @@
 import { getAppointment } from "@/api/get-appointment";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { formatDateRequest } from "@/utils/formatDateRequest";
-import { remainingTime } from "@/utils/remaining-time";
 import { useQuery } from "@tanstack/react-query";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { AppointmentCardFooter } from "./AppointmentCardFooter";
+import { useRemainingTime } from "@/hooks/useRemainingTime";
 
 export function NextAppointmentCard() {
   const { data: nextAppointmentData } = useQuery({
@@ -15,10 +15,21 @@ export function NextAppointmentCard() {
     refetchOnWindowFocus: false,
   });
 
-  if (!nextAppointmentData) return;
-  const nextAppointment = nextAppointmentData[0];
+  const { date, startTime, servicePrice, id } = nextAppointmentData
+    ? nextAppointmentData[0]
+    : {
+        date: new Date(),
+        startTime: "00:00",
+        servicePrice: 0,
+        id: 0,
+      };
+  const remainingTime = useRemainingTime({
+    startDate: new Date(date),
+    startTime,
+  });
+  if (!nextAppointmentData) return null;
 
-  const formatedDate = formatDateRequest(nextAppointment.date);
+  const formatedDate = formatDateRequest(date);
 
   return (
     <Card className="shadow-2xl lg:min-w-85">
@@ -42,8 +53,7 @@ export function NextAppointmentCard() {
                 </li>
                 <li>
                   <p>
-                    <span className="font-bold">Horário</span>:{" "}
-                    {nextAppointment.startTime}
+                    <span className="font-bold">Horário</span>: {startTime}
                   </p>
                 </li>
               </ul>
@@ -52,24 +62,21 @@ export function NextAppointmentCard() {
             <div>
               <p>
                 <span className="block text-2xl font-bold">
-                  {remainingTime({
-                    startDate: nextAppointment.date,
-                    startTime: nextAppointment.startTime,
-                  })}
+                  {remainingTime}
                 </span>
                 para seu serviço
               </p>
             </div>
 
             <div>
-              <span className="block text-2xl font-bold">Total</span>
-              <span>R$ {nextAppointment.servicePrice}</span>
+              <span className="block text-2xl font-bold">Preço</span>
+              <span>R$ {servicePrice}</span>
             </div>
           </div>
           <div className="bg-background h-[0.09rem] w-full md:hidden lg:block" />
         </CardContent>
         <div className="bg-background hidden min-h-full min-w-px md:block lg:hidden" />
-        <AppointmentCardFooter id={nextAppointment.id} />
+        <AppointmentCardFooter id={id} />
       </div>
     </Card>
   );

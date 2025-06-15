@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { Link, useNavigate } from "react-router";
+import { useNavigate } from "react-router";
 
 import { z } from "zod";
 
@@ -9,6 +9,7 @@ import { useMutation } from "@tanstack/react-query";
 import { signUp } from "@/api/sign-up";
 import { toast } from "sonner";
 import { isAxiosError, type AxiosError } from "axios";
+import { PrivacyPoliciesDialog } from "@/components/PrivacyPoliciesDialog";
 
 const registerSchema = z.object({
   name: z.string().min(2, "Mínimo de 2 caracteres"),
@@ -163,11 +164,12 @@ export function Register() {
           >
             Entrar
           </Button>
+
           <p className="text-sm font-medium">
             Ao cadastrar, concordo com os{" "}
-            <Link to="/" className="font-bold hover:underline">
-              termos
-            </Link>
+            <PrivacyPoliciesDialog>
+              <span className="font-bold hover:underline">termos</span>
+            </PrivacyPoliciesDialog>
             .
           </p>
         </form>

@@ -5,8 +5,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faScissors } from "@fortawesome/free-solid-svg-icons";
 import { useQuery } from "@tanstack/react-query";
 import { getAppointment } from "@/api/get-appointment";
-import { remainingTime } from "@/utils/remaining-time";
 import { WithoutNextAppointmentCard } from "./WithoutNextAppointmentCard";
+import { useRemainingTime } from "@/hooks/useRemainingTime";
 
 export function NextAppointmentTimeCard() {
   const { data: nextAppointmentData } = useQuery({
@@ -17,22 +17,26 @@ export function NextAppointmentTimeCard() {
     enabled: false,
   });
 
-  if (!nextAppointmentData) return;
-  const nextAppointment = nextAppointmentData[0];
+  const { date, startTime } = nextAppointmentData
+    ? nextAppointmentData[0]
+    : {
+        date: new Date(),
+        startTime: "00:00",
+      };
 
-  if (!nextAppointment) return <WithoutNextAppointmentCard />;
-
-  const remaining = remainingTime({
-    startDate: nextAppointment.date,
-    startTime: nextAppointment.startTime,
+  const remainingTime = useRemainingTime({
+    startDate: new Date(date),
+    startTime,
   });
+
+  if (!nextAppointmentData) return <WithoutNextAppointmentCard />;
 
   return (
     <Card className="bg-custom-foreground text-background lg:w-74">
       <CardContent className="px-4">
         <div className="flex items-start justify-between pr-2">
-          {remaining.length > 0 ? (
-            <span className="text-xl font-bold">{remaining}</span>
+          {remainingTime.length > 0 ? (
+            <span className="text-xl font-bold">{remainingTime}</span>
           ) : (
             <>
               <span className="text-2xl font-bold md:hidden">
@@ -46,7 +50,7 @@ export function NextAppointmentTimeCard() {
           <FontAwesomeIcon icon={faScissors} className="text-3xl" />
         </div>
         <div className="mt-3 flex items-center justify-between text-lg">
-          {remaining.length > 0 ? (
+          {remainingTime.length > 0 ? (
             <span className="font-medium">Para seu próximo horário.</span>
           ) : (
             <span className="font-medium">passou ou em andamento.</span>

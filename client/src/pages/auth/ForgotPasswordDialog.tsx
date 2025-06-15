@@ -27,7 +27,7 @@ type FormData = z.infer<typeof formSchema>;
 export function ForgotPasswordDialog() {
   const navigate = useNavigate();
 
-  const { mutateAsync: sendRecoveryEmailFn } = useMutation({
+  const { mutateAsync: sendRecoveryEmailFn, isPending } = useMutation({
     mutationFn: sendRecoveryEmail,
   });
 
@@ -79,12 +79,12 @@ export function ForgotPasswordDialog() {
       <DialogTrigger className="text-background w-full cursor-pointer text-sm font-medium underline duration-200 hover:scale-105">
         Esqueci minha senha
       </DialogTrigger>
-      <DialogContent className="min-h-80">
+      <DialogContent className="z-100000 min-h-80">
         <DialogHeader>
           <DialogTitle>Esqueci minha senha</DialogTitle>
           <DialogDescription>
             Após informar seu e-mail, enviaremos um link de recuperação de senha
-            pelo e-mail
+            pelo e-mail.
           </DialogDescription>
         </DialogHeader>
         <form
@@ -100,8 +100,8 @@ export function ForgotPasswordDialog() {
             </p>
           )}
           <div className="mt-8 flex justify-between">
-            <Button type="submit" className="w-24 md:w-30">
-              Enviar
+            <Button type="submit" disabled={isPending} className="w-24 md:w-30">
+              {isPending ? "Enviando..." : "Enviar"}
             </Button>
             <Button onClick={() => navigate("/sign-up")} variant="secondary">
               Não tenho uma conta

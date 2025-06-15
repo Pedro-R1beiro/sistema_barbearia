@@ -16,6 +16,8 @@ import {
 } from "@/components/ui/table";
 import { formatDateUtc } from "@/utils/formatDateUtc";
 import { useQuery } from "@tanstack/react-query";
+import { format } from "date-fns";
+import { ptBR } from "date-fns/locale";
 
 interface AppointmentDialogProps {
   appointmentId: number;
@@ -61,7 +63,16 @@ export function AppointmentDialog({ appointmentId }: AppointmentDialogProps) {
             <TableRow>
               <TableHead>Data:</TableHead>
               <TableCell className="text-right">
-                {formatDateUtc(appointment.date, "dd 'de' MMMM/Y")}
+                {formatDateUtc(appointment.date, "dd 'de' MMMM Y")}
+              </TableCell>
+            </TableRow>
+            <TableRow>
+              <TableHead>Marcado na data:</TableHead>
+              {/* {formatDateUtc(appointment.created_at, "dd 'de' MMMM/Y")} */}
+              <TableCell className="text-right">
+                {format(appointment.created_at.toString(), "dd 'de' MMMM Y", {
+                  locale: ptBR,
+                })}
               </TableCell>
             </TableRow>
             <TableRow>
@@ -71,13 +82,15 @@ export function AppointmentDialog({ appointmentId }: AppointmentDialogProps) {
               </TableCell>
             </TableRow>
             <TableRow>
-              <TableHead>Marcado na data:</TableHead>
-              {/* {formatDateUtc(appointment.created_at, "dd 'de' MMMM/Y")} */}
-            </TableRow>
-            <TableRow>
               <TableHead>Serviço:</TableHead>
               <TableCell className="text-right">
                 {appointment.serviceName}
+              </TableCell>
+            </TableRow>
+            <TableRow>
+              <TableHead>Preço do serviço:</TableHead>
+              <TableCell className="text-right">
+                R$ {appointment.servicePrice}
               </TableCell>
             </TableRow>
           </TableBody>
