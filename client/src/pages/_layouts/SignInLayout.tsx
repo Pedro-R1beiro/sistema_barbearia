@@ -56,6 +56,7 @@ export function SignInLayout() {
           onClick={scrollToTop}
           className="bg-foreground text-background mt-6 cursor-pointer rounded-full p-1 lg:hidden"
         >
+          <p className="sr-only">Ir para o topo da página</p>
           <ArrowUp />
         </button>
       </div>

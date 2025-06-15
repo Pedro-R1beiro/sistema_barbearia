@@ -82,7 +82,7 @@ export function Register() {
     <>
       <Button
         onClick={() => navigate("/sign-in")}
-        className="dark:text-background dark:border-background/20 dark:bg-foreground dark:hover:bg-background/5 absolute top-5 left-5 z-1000"
+        className="dark:text-background dark:border-background/20 dark:bg-foreground dark:hover:bg-background/5 absolute top-5 left-5 z-10"
         variant="outline"
       >
         Já tem uma conta?

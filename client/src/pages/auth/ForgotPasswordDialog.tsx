@@ -1,3 +1,4 @@
+import { sendRecoveryEmail } from "@/api/send-recovery-email";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -10,19 +11,25 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useMutation } from "@tanstack/react-query";
+import { AxiosError, isAxiosError } from "axios";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router";
 import { toast } from "sonner";
 import { z } from "zod";
 
 const formSchema = z.object({
-  email: z.string().email("Digite um e-mail válido"),
+  email: z.string().email(),
 });
 
 type FormData = z.infer<typeof formSchema>;
 
 export function ForgotPasswordDialog() {
   const navigate = useNavigate();
+
+  const { mutateAsync: sendRecoveryEmailFn } = useMutation({
+    mutationFn: sendRecoveryEmail,
+  });
 
   const {
     handleSubmit,
@@ -33,11 +40,38 @@ export function ForgotPasswordDialog() {
     resolver: zodResolver(formSchema),
   });
 
-  function onSubmitForm(data: FormData) {
-    console.log(data);
+  function hadleSendRecoveryEmailError(error: AxiosError) {
+    const code = error.response?.status;
 
-    reset();
-    toast.success("E-mail de recuperação enviado");
+    switch (code) {
+      case 400:
+        toast.error("E-mail inválido");
+        break;
+      case 404:
+        toast.error("E-mail não encontrado/cadastrado", {
+          action: {
+            label: "Criar conta",
+            onClick: () => navigate("/sign-up"),
+          },
+        });
+        break;
+      default:
+        toast.error("Houve um erro interno. Tente novamente mais tarde");
+    }
+  }
+
+  async function onSubmitForm({ email }: FormData) {
+    try {
+      await sendRecoveryEmailFn({ email });
+      toast.success("E-mail de recuperação enviado");
+      reset();
+    } catch (error) {
+      if (isAxiosError(error)) {
+        hadleSendRecoveryEmailError(error);
+        return;
+      }
+      toast.error("Houve um erro interno. Tente novamente mais tarde");
+    }
   }
 
   return (
@@ -53,16 +87,20 @@ export function ForgotPasswordDialog() {
             pelo e-mail
           </DialogDescription>
         </DialogHeader>
-        <form onSubmit={handleSubmit(onSubmitForm)} className="mt-6 space-y-3">
+        <form
+          onSubmit={handleSubmit(onSubmitForm)}
+          className="mt-6 space-y-3"
+          noValidate
+        >
           <Label>Seu e-mail</Label>
           <Input type="email" {...register("email")} />
           {errors.email && (
             <p className="text-sm text-rose-500 dark:text-rose-400">
-              {errors.email.message}
+              Digite um e-mail válido
             </p>
           )}
           <div className="mt-8 flex justify-between">
-            <Button type="submit" className="w-30">
+            <Button type="submit" className="w-24 md:w-30">
               Enviar
             </Button>
             <Button onClick={() => navigate("/sign-up")} variant="secondary">

@@ -1,15 +1,15 @@
 import { api } from "@/lib/axios";
 
 interface SendRecoveryEmailBody {
-  recoveryScreen: string;
   email: string;
+  recoveryScreen?: string;
 }
 
-export async function signIn({
+export async function sendRecoveryEmail({
   email,
   recoveryScreen = "http://localhost:5173/edit-password",
 }: SendRecoveryEmailBody) {
-  await api.post("/client/login", {
+  await api.post("/client/sendRecoveryEmail", {
     email,
     recoveryScreen,
   });
