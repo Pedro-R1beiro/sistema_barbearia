@@ -95,25 +95,25 @@ class Appointment
                     break;
 
                 case 'nearby':
-                    $conditions[] = "ap.date > :today OR (ap.date = :today AND ap.startTime > :now)";
+                    $conditions[] = "(ap.date > :today OR (ap.date = :today AND ap.startTime > :now))";
                     $params[':today'] = $today;
                     $params[':now'] = $now;
                     break;
 
                 case 'history':
-                    $conditions[] = "ap.date < :today OR (ap.date = :today AND ap.endTime < :now)";
+                    $conditions[] = "(ap.date < :today OR (ap.date = :today AND ap.endTime < :now))";
                     $params[':today'] = $today;
                     $params[':now'] = $now;
                     break;
 
                 case 'next':
-                    $conditions[] = "ap.date > :today OR (ap.date = :today AND ap.startTime > :now)";
+                    $conditions[] = "(ap.date > :today OR (ap.date = :today AND ap.startTime > :now))";
                     $params[':today'] = $today;
                     $params[':now'] = $now;
                     break;
 
                 case 'last':
-                    $conditions[] = "ap.date < :today OR (ap.date = :today AND ap.endTime < :now)";
+                    $conditions[] = "(ap.date < :today OR (ap.date = :today AND ap.endTime < :now))";
                     $params[':today'] = $today;
                     $params[':now'] = $now;
                     break;
@@ -143,7 +143,7 @@ class Appointment
         }
 
         if ($stmt->execute()) {
-            return $stmt->fetchAll(PDO::FETCH_ASSOC); // Retorna os compromissos filtrados
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
         }
 
         return false;
