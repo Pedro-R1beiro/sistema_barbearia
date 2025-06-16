@@ -50,17 +50,17 @@ export function NextAppointmentTimeCard() {
           </div>
         </div>
       ) : (
-        <Card className="bg-custom-foreground text-background h-34 md:h-38 lg:w-fit">
+        <Card className="bg-custom-foreground text-background h-34 min-w-fit md:h-38 lg:w-65">
           <CardContent className="px-4">
             <div className="flex items-start justify-between pr-2">
               {remainingTime.length > 0 ? (
                 <span className="text-xl font-bold">{remainingTime}</span>
               ) : (
                 <>
-                  <span className="text-2xl font-bold md:hidden">
+                  <span className="text-xl font-bold md:hidden">
                     Próximo Horário
                   </span>
-                  <span className="hidden text-2xl font-bold md:inline">
+                  <span className="hidden text-xl font-bold md:inline">
                     Próximo Horá...
                   </span>
                 </>
@@ -69,7 +69,10 @@ export function NextAppointmentTimeCard() {
             </div>
             <div className="mt-3 flex items-center justify-between text-lg">
               {remainingTime.length > 0 ? (
-                <span className="font-medium">Para seu próximo horário.</span>
+                <span className="font-medium">
+                  Para seu próximo
+                  <br className="hidden md:block" /> horário.
+                </span>
               ) : (
                 <span className="font-medium">Passou ou em andamento.</span>
               )}

@@ -42,7 +42,7 @@ export function ScheduleForm() {
   const selectedServices = watch("services");
   const selectedDate = watch("date");
 
-  const { mutateAsync: registerAppointmentFn } = useMutation({
+  const { mutateAsync: registerAppointmentFn, isPending } = useMutation({
     mutationFn: registerAppointment,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["next-appointments"] });
@@ -144,8 +144,19 @@ export function ScheduleForm() {
             <span className="text-xl font-bold">Total:</span>
             <span>33,90</span>
           </div>
-          <Button type="submit" className="w-full py-6 font-bold">
-            Adicionar novo agendamento
+          <Button
+            disabled={isPending}
+            type="submit"
+            className="w-full py-6 font-bold"
+          >
+            {isPending ? (
+              <>
+                Agendando{" "}
+                <span className="bg-background ml-1 h-3 w-3 animate-spin" />
+              </>
+            ) : (
+              "Adicionar novo agendamento"
+            )}
           </Button>
         </div>
       </form>

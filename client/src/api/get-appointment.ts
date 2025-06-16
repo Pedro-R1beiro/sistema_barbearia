@@ -3,7 +3,10 @@ import { api } from "@/lib/axios";
 export type NextAppointmentInterface = {
   id: number;
   date: Date;
-  created_at: Date;
+  created_at: {
+    date: Date;
+    time: string;
+  };
   professionalName: string;
   clientName: string;
   serviceName: string;
@@ -24,11 +27,11 @@ export type getAppointmentFilter =
   | "next"
   | "last";
 
-export type getAppointmentStatus = "marcado" | "concluído" | "cancelado";
+export type getAppointmentStatus = "booked" | "completed" | "canceled";
 
 export async function getAppointment(
   filter: getAppointmentFilter = "history",
-  status: getAppointmentStatus = "marcado",
+  status: getAppointmentStatus = "booked",
 ) {
   const response = await api.get<GetAppointmentResponse>(
     "/client/getAppointment",

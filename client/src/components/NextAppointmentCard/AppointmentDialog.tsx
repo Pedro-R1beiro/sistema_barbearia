@@ -14,7 +14,6 @@ import {
   TableHead,
   TableRow,
 } from "@/components/ui/table";
-import { useRemainingTime } from "@/hooks/useRemainingTime";
 import { formatDateUtc } from "@/utils/formatDateUtc";
 import { useQuery } from "@tanstack/react-query";
 
@@ -26,20 +25,6 @@ export function AppointmentDialog({ appointmentId }: AppointmentDialogProps) {
   const { data: appointmentData } = useQuery({
     queryKey: ["appointments", appointmentId],
     queryFn: () => getAppointment("next"),
-  });
-
-  const { created_at, startTime } = appointmentData
-    ? appointmentData[0]
-    : {
-        created_at: new Date(),
-        startTime: "00:00",
-      };
-
-  console.log(created_at);
-
-  const remainingTime = useRemainingTime({
-    startDate: new Date(created_at),
-    startTime,
   });
 
   if (!appointmentData) return null;
@@ -81,7 +66,9 @@ export function AppointmentDialog({ appointmentId }: AppointmentDialogProps) {
             </TableRow>
             <TableRow>
               <TableHead>Marcado na data:</TableHead>
-              <TableCell className="text-right">{remainingTime}</TableCell>
+              <TableCell className="text-right">
+                {formatDateUtc(appointment.created_at.date, "dd 'de' MMMM Y")}
+              </TableCell>
             </TableRow>
             <TableRow>
               <TableHead>Barbeiro:</TableHead>
