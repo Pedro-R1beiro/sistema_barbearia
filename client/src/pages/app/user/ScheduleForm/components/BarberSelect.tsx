@@ -11,6 +11,7 @@ import { Controller, type Control, type UseFormWatch } from "react-hook-form";
 import type { ScheduleFormData } from "..";
 import { useQuery } from "@tanstack/react-query";
 import { getAvailableTimeSlots } from "@/api/get-available-time-slots";
+import { Skeleton } from "@/components/ui/skeleton";
 
 interface UserScheduleFormBarberProps {
   control: Control<ScheduleFormData>;
@@ -21,7 +22,7 @@ export function BarberSelect({ control, watch }: UserScheduleFormBarberProps) {
   const selectedDate = watch("date");
   const selectedServices = watch("services");
 
-  const { data: availableTimeSlots } = useQuery({
+  const { data: availableTimeSlots, isFetching } = useQuery({
     queryKey: ["available-appointments", selectedDate, selectedServices],
     queryFn: () =>
       getAvailableTimeSlots({ date: selectedDate, service: selectedServices }),
@@ -45,17 +46,28 @@ export function BarberSelect({ control, watch }: UserScheduleFormBarberProps) {
           <SelectContent>
             <SelectGroup>
               <SelectLabel>Barbeiros</SelectLabel>
-              {availableTimeSlots &&
-                availableTimeSlots.map((available) => {
-                  return (
-                    <SelectItem
-                      key={available.id}
-                      value={available.id.toString()}
-                    >
-                      {available.name}
-                    </SelectItem>
-                  );
-                })}
+              {isFetching ? (
+                <div className="space-y-4 py-3">
+                  <Skeleton className="h-5.5 w-full" />
+                  <Skeleton className="h-5.5 w-full" />
+                  <Skeleton className="h-5.5 w-full" />
+                  <Skeleton className="h-5.5 w-full" />
+                </div>
+              ) : (
+                <>
+                  {availableTimeSlots &&
+                    availableTimeSlots.map((available) => {
+                      return (
+                        <SelectItem
+                          key={available.id}
+                          value={available.id.toString()}
+                        >
+                          {available.name}
+                        </SelectItem>
+                      );
+                    })}
+                </>
+              )}
             </SelectGroup>
           </SelectContent>
         </Select>

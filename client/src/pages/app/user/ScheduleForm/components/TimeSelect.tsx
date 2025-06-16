@@ -16,6 +16,7 @@ import {
 import { useQuery } from "@tanstack/react-query";
 import { Controller, type Control, type UseFormWatch } from "react-hook-form";
 import type { ScheduleFormData } from "..";
+import { Skeleton } from "@/components/ui/skeleton";
 
 interface UserScheduleFormTimeProps {
   control: Control<ScheduleFormData>;
@@ -27,7 +28,7 @@ export function TimeSelect({ control, watch }: UserScheduleFormTimeProps) {
   const selectedServices = watch("services");
   const selectedDate = watch("date");
 
-  const { data: availableTimeSlots } = useQuery({
+  const { data: availableTimeSlots, isFetching } = useQuery({
     queryKey: ["appointment", selectedDate, selectedServices],
     queryFn: () =>
       getAvailableTimeSlots({ date: selectedDate, service: selectedServices }),
@@ -47,8 +48,6 @@ export function TimeSelect({ control, watch }: UserScheduleFormTimeProps) {
     on_vacation: "Barbeiro de férias nesta dia",
   };
 
-  if (!available) return;
-
   return (
     <Controller
       control={control}
@@ -65,22 +64,34 @@ export function TimeSelect({ control, watch }: UserScheduleFormTimeProps) {
           </SelectTrigger>
           <SelectContent className="max-h-70">
             <SelectGroup>
-              {timeSlots && timeSlots.length >= 1 ? (
-                <>
-                  <SelectLabel>Horários</SelectLabel>
-                  {timeSlots &&
-                    timeSlots.map((time) => {
-                      return (
-                        <SelectItem key={time} value={time}>
-                          {time}
-                        </SelectItem>
-                      );
-                    })}
-                </>
+              {isFetching ? (
+                <div className="space-y-4 py-3">
+                  <Skeleton className="h-5.5 w-full" />
+                  <Skeleton className="h-5.5 w-full" />
+                  <Skeleton className="h-5.5 w-full" />
+                  <Skeleton className="h-5.5 w-full" />
+                </div>
               ) : (
-                <SelectLabel>
-                  {availableStatusMap[available[0].status]}
-                </SelectLabel>
+                <>
+                  {" "}
+                  {timeSlots && timeSlots.length >= 1 ? (
+                    <>
+                      <SelectLabel>Horários</SelectLabel>
+                      {timeSlots &&
+                        timeSlots.map((time) => {
+                          return (
+                            <SelectItem key={time} value={time}>
+                              {time}
+                            </SelectItem>
+                          );
+                        })}
+                    </>
+                  ) : (
+                    <SelectLabel>
+                      {available && availableStatusMap[available[0].status]}
+                    </SelectLabel>
+                  )}
+                </>
               )}
             </SelectGroup>
           </SelectContent>
