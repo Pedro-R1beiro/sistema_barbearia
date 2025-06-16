@@ -218,11 +218,18 @@ GET /backend/client/getAppointment
 /backend/client/getAppointment?filter=&status=
 ```
 ### Status:
+<<<<<<< Updated upstream
 - marcado
 - concluído
 - cancelado
 
 <sub>Caso queira adicionar mais de um status, separe-os por vírgula (Ex.: status=marcado,cancelado)</sub>
+=======
+- booked (Marcado)
+- completed (Concluído)
+- canceled (Cancelado)
+<sub>Caso queira adicionar mais de um status, separe-os por vírgula (Ex.: status=booked,canceled)</sub>
+>>>>>>> Stashed changes
 
 ### Filtros:
 - today: Todos agendamentos para hoje
@@ -232,7 +239,7 @@ GET /backend/client/getAppointment
 - last: Último agendamento
 
 ### Default:
-Caso não seja enviado nenhum status, ele retornará todos (marcado, concluído, cancelado).
+Caso não seja enviado nenhum status, ele retornará todos (booked, completed, canceled).
 Caso não seja enviado nehum filtro, ele retornará todos agendamentos registrados.
 
 ### Mensagem em caso de sucesso:
@@ -242,7 +249,10 @@ Caso não seja enviado nehum filtro, ele retornará todos agendamentos registrad
     "date": "2025-05-11",
     "startTime": "08:00:00",
     "endTime": "08:30:00",
-    "created_at": "2025-06-03 20:24:42",
+    "created_at": {
+                "date": "2025-06-03",
+                "time": "20:24:42"
+            },
     "professionalName": "Nome do Barbeiro",
     "clientName": "Nome do Cliente",
     "serviceName": "Nome do Serviço",

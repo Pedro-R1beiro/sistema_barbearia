@@ -97,10 +97,31 @@ class ClientGet
                 } else {
                     $status = $data['status'];
                 }
+
+                foreach ($status as $i) {
+                    if (!in_array($i, ['canceled', 'booked', 'completed'])) {
+                        return [
+                            'code' => 400,
+                            'body' => [
+                                'status' => 'error',
+                                'message' => "O filtro: '" . $i . "' não é um status válido (canceled, booked, completed)"
+                            ]
+                        ];
+                    }
+                }
             }
 
             $appointment = $this->appo->get($filter, $status, null, $id);
             if ($appointment) {
+                foreach ($appointment as $i => $value) {
+                    $_dateTime = new DateTime($appointment[$i]['created_at']);
+                    $_dateTimeFormatted = $_dateTime->format('Y-m-d H:i:s');
+                    list($_date, $_time) = explode(' ', $_dateTimeFormatted);
+                    $appointment[$i]['created_at'] = [
+                        'date' => $_date,
+                        'time' => $_time
+                    ];
+                }
                 return [
                     'code' => 200,
                     'body' => [

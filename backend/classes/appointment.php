@@ -59,9 +59,9 @@ class Appointment
         $params = [];
 
         $possible_status = [
-            "marcado",
-            "concluído",
-            "cancelado"
+            "booked",
+            "completed",
+            "canceled"
         ];
         if (isset($status)) {
             if (is_array($status)) {
@@ -195,7 +195,7 @@ class Appointment
             return false;
         }
 
-        $allowedValues = ['Marcado', 'Cancelado', 'Concluído'];
+        $allowedValues = ['booked', 'canceled', 'completed'];
 
         if (!in_array($status, $allowedValues)) {
             return false;

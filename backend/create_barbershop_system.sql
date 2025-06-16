@@ -83,6 +83,6 @@ CREATE TABLE IF NOT EXISTS appointments (
     FOREIGN KEY (idClient) REFERENCES clients(id),
     FOREIGN KEY (idService) REFERENCES services(id),
     FOREIGN KEY (idProfessional) REFERENCES professionals(id),
-    status VARCHAR(15) DEFAULT "Marcado",
+    status VARCHAR(15) DEFAULT "booked",
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );

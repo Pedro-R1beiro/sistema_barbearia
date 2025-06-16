@@ -431,7 +431,7 @@ class ClientPatch
                     ]
                 ];
             }
-            if ($appointment['status'] == "Cancelado") {
+            if ($appointment['status'] == "canceled") {
                 return [
                     'code' => 422,
                     'body' => [
@@ -441,7 +441,7 @@ class ClientPatch
                 ];
             }
 
-            if ($this->appo->patch($id, "Cancelado")) {
+            if ($this->appo->patch($id, "canceled")) {
                 return [
                     'code' => 204,
                     'body' => [
