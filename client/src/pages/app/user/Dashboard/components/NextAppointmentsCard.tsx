@@ -9,7 +9,7 @@ import { useQuery } from "@tanstack/react-query";
 export function NextAppointmentsCard() {
   const { data: nextAppointmentsData, isFetching } = useQuery({
     queryKey: ["next-appointments"],
-    queryFn: () => getAppointment("nearby"),
+    queryFn: () => getAppointment({ filter: "nearby", status: "booked" }),
     staleTime: Infinity,
     refetchOnWindowFocus: false,
   });

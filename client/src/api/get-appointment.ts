@@ -29,16 +29,18 @@ export type getAppointmentFilter =
 
 export type getAppointmentStatus = "booked" | "completed" | "canceled";
 
-export async function getAppointment(
-  filter: getAppointmentFilter = "history",
-  status: getAppointmentStatus = "booked",
-) {
+interface GetAppointmentBody {
+  filter?: getAppointmentFilter;
+  status?: getAppointmentStatus;
+}
+
+export async function getAppointment({ filter, status }: GetAppointmentBody) {
   const response = await api.get<GetAppointmentResponse>(
     "/client/getAppointment",
     {
       params: {
-        filter,
-        status,
+        filter: filter ? filter : "",
+        status: status ? status : "",
       },
     },
   );

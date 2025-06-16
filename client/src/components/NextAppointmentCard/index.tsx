@@ -10,7 +10,7 @@ import { useRemainingTime } from "@/hooks/useRemainingTime";
 export function NextAppointmentCard() {
   const { data: nextAppointmentData } = useQuery({
     queryKey: ["next-appointment"],
-    queryFn: () => getAppointment("next"),
+    queryFn: () => getAppointment({ filter: "next", status: "booked" }),
     staleTime: Infinity,
     refetchOnWindowFocus: false,
   });

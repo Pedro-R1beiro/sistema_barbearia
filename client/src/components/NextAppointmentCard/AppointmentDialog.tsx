@@ -24,7 +24,7 @@ interface AppointmentDialogProps {
 export function AppointmentDialog({ appointmentId }: AppointmentDialogProps) {
   const { data: appointmentData } = useQuery({
     queryKey: ["appointments", appointmentId],
-    queryFn: () => getAppointment("next"),
+    queryFn: () => getAppointment({ filter: "next", status: "booked" }),
   });
 
   if (!appointmentData) return null;

@@ -16,7 +16,7 @@ export function NextAppointmentTimeCard() {
     isFetched,
   } = useQuery({
     queryKey: ["next-appointment"],
-    queryFn: () => getAppointment("next"),
+    queryFn: () => getAppointment({ filter: "next", status: "booked" }),
     staleTime: Infinity,
     refetchOnWindowFocus: false,
     enabled: false,
