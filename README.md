@@ -218,18 +218,10 @@ GET /backend/client/getAppointment
 /backend/client/getAppointment?filter=&status=
 ```
 ### Status:
-<<<<<<< Updated upstream
-- marcado
-- concluído
-- cancelado
-
-<sub>Caso queira adicionar mais de um status, separe-os por vírgula (Ex.: status=marcado,cancelado)</sub>
-=======
 - booked (Marcado)
 - completed (Concluído)
 - canceled (Cancelado)
 <sub>Caso queira adicionar mais de um status, separe-os por vírgula (Ex.: status=booked,canceled)</sub>
->>>>>>> Stashed changes
 
 ### Filtros:
 - today: Todos agendamentos para hoje
