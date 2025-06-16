@@ -221,6 +221,7 @@ GET /backend/client/getAppointment
 - booked (Marcado)
 - completed (Concluído)
 - canceled (Cancelado)
+
 <sub>Caso queira adicionar mais de um status, separe-os por vírgula (Ex.: status=booked,canceled)</sub>
 
 ### Filtros:
