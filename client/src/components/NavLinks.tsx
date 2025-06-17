@@ -9,12 +9,15 @@ import {
 } from "./ui/dropdown-menu";
 import { NavLink, type NavLinkInterface } from "./NavLink";
 import { faEllipsisVertical } from "@fortawesome/free-solid-svg-icons";
+import { useNavigate } from "react-router";
 
 interface NavLinksProps {
   navLinks: NavLinkInterface[];
 }
 
 export function NavLinks({ navLinks }: NavLinksProps) {
+  const navigate = useNavigate();
+
   return (
     <>
       <ul className="hidden gap-7 font-bold min-[900px]:flex">
@@ -40,7 +43,14 @@ export function NavLinks({ navLinks }: NavLinksProps) {
           <DropdownMenuLabel>Navegação</DropdownMenuLabel>
           <DropdownMenuSeparator />
           {navLinks.map((link) => (
-            <DropdownMenuItem key={link.link} className="w-full">
+            <DropdownMenuItem
+              onSelect={(e) => {
+                e.preventDefault();
+                navigate(link.link);
+              }}
+              key={link.link}
+              className="w-full"
+            >
               <NavLink
                 link={link.link}
                 text={link.text}

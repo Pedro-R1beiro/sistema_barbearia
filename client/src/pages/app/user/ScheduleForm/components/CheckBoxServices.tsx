@@ -48,7 +48,7 @@ export function SelectServices({ control }: UserScheduleFormServicesProps) {
             }
 
             return (
-              <Card className="h-full p-0">
+              <Card className="h-full p-2">
                 <CardContent className="scrollbar-custom max-h-50 overflow-auto p-4">
                   {serviceOptions &&
                     serviceOptions.map((service) => {
