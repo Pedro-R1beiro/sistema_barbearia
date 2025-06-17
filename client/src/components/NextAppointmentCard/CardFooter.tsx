@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { AppointmentDialog } from "./AppointmentDialog";
-import { CardFooter } from "@/components/ui/card";
+import { CardFooter as CardFooterUi } from "@/components/ui/card";
 import { isAxiosError, type AxiosError } from "axios";
 import { queryClient } from "@/lib/react-query";
 import type { NextAppointmentInterface } from "@/api/get-appointment";
@@ -53,7 +53,7 @@ function handleCancelAppointmentSuccess(id: number) {
   return;
 }
 
-export function AppointmentCardFooter({ id }: NextAppointmentProps) {
+export function CardFooter({ id }: NextAppointmentProps) {
   const { mutateAsync: cancelAppointmentFn, isPending } = useMutation({
     mutationFn: cancelAppointment,
     onSuccess: () => handleCancelAppointmentSuccess(id),
@@ -68,7 +68,7 @@ export function AppointmentCardFooter({ id }: NextAppointmentProps) {
   });
 
   return (
-    <CardFooter className="mt-6 md:mt-0 md:w-1/2 lg:mt-6 lg:w-full">
+    <CardFooterUi className="mt-6 md:mt-0 md:w-1/2 lg:mt-6 lg:w-full">
       <div className="w-full max-w-full space-y-5 md:flex md:flex-col md:justify-between md:gap-6 lg:gap-2">
         <Button className="w-full flex-1 py-5 font-bold md:w-auto md:py-3 lg:flex-none lg:py-5">
           Contatar barbeiro
@@ -83,6 +83,6 @@ export function AppointmentCardFooter({ id }: NextAppointmentProps) {
           {isPending ? "Cancelando..." : "Cancelar agendamento"}
         </Button>
       </div>
-    </CardFooter>
+    </CardFooterUi>
   );
 }

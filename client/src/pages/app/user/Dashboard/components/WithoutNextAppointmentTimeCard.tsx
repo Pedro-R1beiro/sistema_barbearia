@@ -4,7 +4,7 @@ import { faScissors } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useNavigate } from "react-router";
 
-export function WithoutNextAppointmentCard() {
+export function WithoutNextAppointmentTimeCard() {
   const navigate = useNavigate();
   return (
     <Card className="bg-custom-foreground text-background h-34 md:h-38 lg:w-72">

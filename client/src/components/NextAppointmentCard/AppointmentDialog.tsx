@@ -16,6 +16,7 @@ import {
 } from "@/components/ui/table";
 import { formatDateUtc } from "@/utils/formatDateUtc";
 import { useQuery } from "@tanstack/react-query";
+import { Skeleton } from "../ui/skeleton";
 
 interface AppointmentDialogProps {
   appointmentId: number;
@@ -27,7 +28,7 @@ export function AppointmentDialog({ appointmentId }: AppointmentDialogProps) {
     queryFn: () => getAppointment({ filter: "next", status: "booked" }),
   });
 
-  if (!appointmentData) return null;
+  if (!appointmentData) return <Skeleton className="h-8 w-full" />;
 
   const appointment = appointmentData.filter(
     (appointment) => appointment.id === appointmentId,

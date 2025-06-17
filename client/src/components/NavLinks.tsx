@@ -36,7 +36,7 @@ export function NavLinks({ navLinks }: NavLinksProps) {
           <FontAwesomeIcon icon={faEllipsisVertical} size="2x" />
           <span className="sr-only">Abrir Menu de Navegação</span>
         </DropdownMenuTrigger>
-        <DropdownMenuContent className="z-1000 mr-6 w-60 md:hidden">
+        <DropdownMenuContent className="z-1000 mr-6 w-60 min-[900px]:hidden">
           <DropdownMenuLabel>Navegação</DropdownMenuLabel>
           <DropdownMenuSeparator />
           {navLinks.map((link) => (

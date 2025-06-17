@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faScissors } from "@fortawesome/free-solid-svg-icons";
 import { useQuery } from "@tanstack/react-query";
 import { getAppointment } from "@/api/get-appointment";
-import { WithoutNextAppointmentCard } from "./WithoutNextAppointmentCard";
+import { WithoutNextAppointmentTimeCard } from "./WithoutNextAppointmentTimeCard";
 import { useRemainingTime } from "@/hooks/useRemainingTime";
 import { Skeleton } from "@/components/ui/skeleton";
 
@@ -34,7 +34,8 @@ export function NextAppointmentTimeCard() {
     startTime,
   });
 
-  if (!nextAppointmentData && isFetched) return <WithoutNextAppointmentCard />;
+  if (!nextAppointmentData && isFetched)
+    return <WithoutNextAppointmentTimeCard />;
 
   return (
     <>
