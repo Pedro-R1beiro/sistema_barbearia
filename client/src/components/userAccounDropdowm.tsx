@@ -10,9 +10,26 @@ import {
 } from "./ui/dropdown-menu";
 import { Cog, LogOut } from "lucide-react";
 import { useNavigate } from "react-router";
+import { useMutation } from "@tanstack/react-query";
+import { signOut } from "@/api/sign-out";
+import { toast } from "sonner";
 
 export function UserAccounDropdowm() {
   const navigate = useNavigate();
+  const { mutateAsync: signOutFn } = useMutation({
+    mutationFn: signOut,
+  });
+
+  function handleSignOut() {
+    try {
+      signOutFn();
+      navigate("/", { replace: true });
+    } catch (error) {
+      console.log(error);
+      toast.error("Houve um erro interno. Tente novamente mais tarde");
+    }
+  }
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger className="bg-custom-foreground flex cursor-pointer items-center gap-4 rounded-md p-2 px-4 font-bold">
@@ -26,7 +43,10 @@ export function UserAccounDropdowm() {
           <Cog />
           Configurações
         </DropdownMenuItem>
-        <DropdownMenuItem className="text-destructive hover:text-destructive/90 dark:hover:text-destructive/90">
+        <DropdownMenuItem
+          onSelect={handleSignOut}
+          className="text-destructive hover:text-destructive/90 dark:hover:text-destructive/90"
+        >
           <LogOut className="text-destructive" />
           Sair da conta
         </DropdownMenuItem>

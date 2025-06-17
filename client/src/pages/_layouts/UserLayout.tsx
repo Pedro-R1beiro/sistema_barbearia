@@ -1,7 +1,7 @@
 import { Header } from "@/components/Header";
 import type { NavLinkInterface } from "@/components/NavLink";
 import { NavLinks } from "@/components/NavLinks";
-import { UserAccounDropdowm } from "@/components/userAccounDropdowm";
+import { UserAccounDropdowm } from "@/components/UserAccounDropdowm";
 import { faBook, faCalendarDays } from "@fortawesome/free-solid-svg-icons";
 import { Outlet } from "react-router";
 
