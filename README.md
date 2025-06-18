@@ -133,7 +133,7 @@ PATCH /backend/client/chageInfo
   "name": ,
   "email": ,
   "phone": ,
-  "senha": // Deve ser a senha atual, para conseguir alterar as outras informações
+  "password": // Deve ser a senha atual, para conseguir alterar as outras informações
 }
 ```
 <sub>Pode ser apenas uma informação (Name ou email ou phone). Único parâmetro obrigatório é a senha atual e ao menos uma informação pra alterar.</sub>
