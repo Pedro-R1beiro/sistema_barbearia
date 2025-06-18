@@ -136,6 +136,7 @@ PATCH /backend/client/chageInfo
   "senha": // Deve ser a senha atual, para conseguir alterar as outras informações
 }
 ```
+<sub>Pode ser apenas uma informação (Name ou email ou phone). Único parâmetro obrigatório é a senha atual e ao menos uma informação pra alterar.</sub>
 
 ### Códigos http
 - 200: Dados Alterados
