@@ -41,7 +41,6 @@ export function SaleLayout() {
                 Cadastrar
               </Button>
             </div>
-
             <NavLinks navLinks={navLinks} />
           </nav>
         </Header>

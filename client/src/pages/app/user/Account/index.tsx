@@ -83,8 +83,9 @@ export function Account() {
           </CardContent>
         </Card>
       </div>
-
-      <NextAppointmentCard />
+      <div className="min-w-78">
+        <NextAppointmentCard />
+      </div>
     </div>
   );
 }
