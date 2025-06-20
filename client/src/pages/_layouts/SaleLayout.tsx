@@ -7,9 +7,8 @@ import {
   faPhone,
   faScissors,
 } from "@fortawesome/free-solid-svg-icons";
-import type { NavLinkInterface } from "@/components/NavLink";
 import { Button } from "@/components/ui/button";
-import { NavLinks } from "@/components/NavLinks";
+import { NavLinks, type NavLinkInterface } from "@/components/NavLinks";
 
 const navLinks: NavLinkInterface[] = [
   { link: "#home", text: "Ínicio", icon: faHouse, type: "anchorLink" },

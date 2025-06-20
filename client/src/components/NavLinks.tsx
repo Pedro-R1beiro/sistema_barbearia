@@ -7,26 +7,48 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
-import { NavLink, type NavLinkInterface } from "./NavLink";
-import { faEllipsisVertical } from "@fortawesome/free-solid-svg-icons";
+import {
+  faEllipsisVertical,
+  type IconLookup,
+} from "@fortawesome/free-solid-svg-icons";
+import { Link, useNavigate } from "react-router";
 
 interface NavLinksProps {
   navLinks: NavLinkInterface[];
 }
 
+export interface NavLinkInterface {
+  link: string;
+  text: string;
+  icon: IconLookup;
+  type: "reactLink" | "anchorLink";
+}
+
 export function NavLinks({ navLinks }: NavLinksProps) {
+  const navigate = useNavigate();
+
   return (
     <>
       <ul className="hidden gap-7 font-bold min-[900px]:flex">
         {navLinks.map((link) => (
           <li key={link.text} className="w-full">
-            <NavLink
-              key={link.link}
-              link={link.link}
-              text={link.text}
-              icon={link.icon}
-              type={link.type}
-            />
+            {link.type === "reactLink" ? (
+              <Link
+                to={link.link}
+                className="hover:bg-muted/10 w-full space-x-2.5 rounded-md p-2 whitespace-nowrap duration-100"
+              >
+                <FontAwesomeIcon icon={link.icon} />
+                <span>{link.text}</span>
+              </Link>
+            ) : (
+              <a
+                href={link.link}
+                className="hover:bg-muted/10 w-full space-x-2.5 rounded-md p-2 whitespace-nowrap duration-200"
+              >
+                <FontAwesomeIcon icon={link.icon} />
+                <span>{link.text}</span>
+              </a>
+            )}
           </li>
         ))}
       </ul>
@@ -40,14 +62,28 @@ export function NavLinks({ navLinks }: NavLinksProps) {
           <DropdownMenuLabel>Navegação</DropdownMenuLabel>
           <DropdownMenuSeparator />
           {navLinks.map((link) => (
-            <DropdownMenuItem key={link.link} className="w-full">
-              <NavLink
-                link={link.link}
-                text={link.text}
-                icon={link.icon}
-                type={link.type}
-              />
-            </DropdownMenuItem>
+            <>
+              {link.type === "reactLink" ? (
+                <DropdownMenuItem
+                  onClick={() => navigate(link.link)}
+                  key={link.link}
+                  className="hover:bg-muted/10 w-full space-x-2.5 rounded-md p-2 whitespace-nowrap duration-100"
+                >
+                  <FontAwesomeIcon icon={link.icon} />
+                  <span>{link.text}</span>
+                </DropdownMenuItem>
+              ) : (
+                <DropdownMenuItem asChild>
+                  <a
+                    href={link.link}
+                    className="hover:bg-muted/10 w-full space-x-2.5 rounded-md p-2 whitespace-nowrap duration-200"
+                  >
+                    <FontAwesomeIcon icon={link.icon} />
+                    <span>{link.text}</span>
+                  </a>
+                </DropdownMenuItem>
+              )}
+            </>
           ))}
         </DropdownMenuContent>
       </DropdownMenu>
