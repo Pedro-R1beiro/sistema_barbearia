@@ -3,8 +3,6 @@ import { AppointmentDialog } from "@/components/AppointmentDialog";
 import { AppointmentStatus } from "@/components/AppointmentStatus";
 import { Button } from "@/components/ui/button";
 import { TableCell, TableRow } from "@/components/ui/table";
-import { faTrash } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { formatDistanceToNow } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { useState } from "react";
@@ -31,19 +29,21 @@ export function AppointmentTableRow({ appointment }: AppointmentTableRowProps) {
         <AppointmentStatus status={appointment.status} />
       </TableCell>
       <TableCell className="bg-background w-[90px]">
+        {appointment.status === "booked" && (
+          <Button variant="destructive" className="w-full">
+            Cancelar
+          </Button>
+        )}
+      </TableCell>
+      <TableCell className="bg-background w-[90px] rounded-r-md text-right">
         <AppointmentDialog
           isOpenDetails={isOpenDetails}
           setIsOpenDetails={setIsOpenDetails}
-          className="min-w-full text-sm"
+          className="min-w-full font-medium"
           appointmentId={appointment.id}
         >
           ver
         </AppointmentDialog>
-      </TableCell>
-      <TableCell className="bg-background rounded-r-md text-right">
-        <Button variant="destructive" className="w-full">
-          <FontAwesomeIcon icon={faTrash} />
-        </Button>
       </TableCell>
     </TableRow>
   );
