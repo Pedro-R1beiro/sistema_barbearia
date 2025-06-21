@@ -15,11 +15,8 @@ export function RegisterLayout() {
 
   return (
     <>
-      <div className="mx-auto grid min-h-screen overflow-hidden lg:grid-cols-2">
-        <div
-          id="#"
-          className="relative flex min-h-[95dvh] flex-col items-center justify-center bg-white p-3 pt-70 pb-100 lg:col-1 lg:min-h-[100dvh] lg:max-w-180 lg:pt-70"
-        >
+      <div className="mx-auto grid min-h-screen max-w-full min-w-full overflow-x-hidden lg:grid-cols-2">
+        <div className="relative flex max-h-screen min-h-screen min-w-full flex-col items-center justify-center bg-white p-3 pt-70 pb-100 lg:col-1 lg:min-h-screen">
           <Outlet />
         </div>
         <div className="dark:text-foreground dark:bg-background bg-muted-foreground relative z-1000 mt-12 flex min-h-screen flex-col items-center justify-center p-3 pt-20 text-center lg:col-2 lg:mt-0">
@@ -65,6 +62,9 @@ export function RegisterLayout() {
             <p className="sr-only">Ir para o topo da página</p>
             <ArrowUp />
           </button>
+          <span className="mt-2 text-[0.75rem] lg:hidden">
+            Ir para o topo da página
+          </span>
         </div>
       </div>
     </>
