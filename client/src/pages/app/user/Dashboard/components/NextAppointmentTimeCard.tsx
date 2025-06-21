@@ -51,7 +51,7 @@ export function NextAppointmentTimeCard() {
           </div>
         </div>
       ) : (
-        <Card className="bg-custom-foreground text-background h-34 min-w-fit md:h-38 lg:w-65">
+        <Card className="bg-custom-foreground text-background h-34 min-w-fit md:h-38 lg:w-70">
           <CardContent className="px-4">
             <div className="flex items-start justify-between pr-2">
               {remainingTime.length > 0 ? (

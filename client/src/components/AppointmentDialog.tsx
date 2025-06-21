@@ -16,16 +16,24 @@ import {
 } from "@/components/ui/table";
 import { formatDateUtc } from "@/utils/formatDateUtc";
 import { useQuery } from "@tanstack/react-query";
-import { Skeleton } from "../ui/skeleton";
+import { Skeleton } from "./ui/skeleton";
+import type { ReactNode } from "react";
+import { cn } from "@/lib/utils";
 
 interface AppointmentDialogProps {
   appointmentId: number;
+  children: ReactNode;
+  className?: string;
 }
 
-export function AppointmentDialog({ appointmentId }: AppointmentDialogProps) {
+export function AppointmentDialog({
+  appointmentId,
+  children,
+  className,
+}: AppointmentDialogProps) {
   const { data: appointmentData } = useQuery({
     queryKey: ["appointments", appointmentId],
-    queryFn: () => getAppointment({ filter: "next", status: "booked" }),
+    queryFn: () => getAppointment({}),
   });
 
   if (!appointmentData) return <Skeleton className="h-8 w-full" />;
@@ -37,8 +45,13 @@ export function AppointmentDialog({ appointmentId }: AppointmentDialogProps) {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button className="w-full flex-1 py-5 font-bold md:w-auto md:py-3 lg:flex-none lg:py-5">
-          Ver mais informações
+        <Button
+          className={cn(
+            "w-full flex-1 py-5 font-bold md:w-auto md:py-3 lg:flex-none lg:py-5",
+            className,
+          )}
+        >
+          {children}
         </Button>
       </DialogTrigger>
       <DialogContent>

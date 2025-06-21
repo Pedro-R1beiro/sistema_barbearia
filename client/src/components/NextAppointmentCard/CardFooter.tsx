@@ -2,7 +2,7 @@ import { cancelAppointment } from "@/api/cancel-appointment";
 import { Button } from "@/components/ui/button";
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "sonner";
-import { AppointmentDialog } from "./AppointmentDialog";
+import { AppointmentDialog } from "../AppointmentDialog";
 import { CardFooter as CardFooterUi } from "@/components/ui/card";
 import { isAxiosError, type AxiosError } from "axios";
 import { queryClient } from "@/lib/react-query";
@@ -73,7 +73,9 @@ export function CardFooter({ id }: NextAppointmentProps) {
         <Button className="w-full flex-1 py-5 font-bold md:w-auto md:py-3 lg:flex-none lg:py-5">
           Contatar barbeiro
         </Button>
-        <AppointmentDialog appointmentId={id} />
+        <AppointmentDialog appointmentId={id}>
+          Ver mais informações
+        </AppointmentDialog>
         <Button
           disabled={isPending}
           onClick={() => cancelAppointmentFn({ id })}

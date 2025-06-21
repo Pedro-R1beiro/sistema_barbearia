@@ -1,4 +1,5 @@
 import { ContactButton } from "@/components/ContactButton";
+import { PrivacyPoliciesDialog } from "@/components/PrivacyPoliciesDialog";
 import { Button } from "@/components/ui/button";
 import {
   faGithub,
@@ -57,9 +58,9 @@ export default function Footer() {
           </Button>
           <p>
             Veja nossas{" "}
-            <a href="" className="underline">
+            <PrivacyPoliciesDialog className="cursor-pointer underline duration-300 hover:scale-102">
               políticas de privacidade.
-            </a>
+            </PrivacyPoliciesDialog>
           </p>
         </div>
 

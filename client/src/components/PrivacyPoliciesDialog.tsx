@@ -5,20 +5,25 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "./ui/dialog";
-import type { ReactNode } from "react";
+import type { ButtonHTMLAttributes, ReactNode } from "react";
 
-interface PrivacyPoliciesDialogProps {
+interface PrivacyPoliciesDialogProps
+  extends ButtonHTMLAttributes<HTMLButtonElement> {
   children: ReactNode;
   asChild?: boolean;
+  className: string;
 }
 
 export function PrivacyPoliciesDialog({
   children,
   asChild = false,
+  className,
 }: PrivacyPoliciesDialogProps) {
   return (
     <Dialog>
-      <DialogTrigger asChild={asChild}>{children}</DialogTrigger>
+      <DialogTrigger asChild={asChild} className={className}>
+        {children}
+      </DialogTrigger>
       <DialogContent className="z-100000 max-h-100 overflow-auto">
         <DialogHeader>
           <DialogTitle>
