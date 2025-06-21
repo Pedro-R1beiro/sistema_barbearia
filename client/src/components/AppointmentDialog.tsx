@@ -19,6 +19,7 @@ import { useQuery } from "@tanstack/react-query";
 import { Skeleton } from "./ui/skeleton";
 import type { ReactNode } from "react";
 import { cn } from "@/lib/utils";
+import { AppointmentDialogSkeleton } from "./AppointmentDialogSkeleton";
 
 interface AppointmentDialogProps {
   appointmentId: number;
@@ -31,9 +32,13 @@ export function AppointmentDialog({
   children,
   className,
 }: AppointmentDialogProps) {
-  const { data: appointmentData } = useQuery({
-    queryKey: ["appointments", appointmentId],
+  const { data: appointmentData, isFetching } = useQuery({
+    queryKey: [appointmentId, "appointments"],
     queryFn: () => getAppointment({}),
+    enabled: isOpenDetails,
+    staleTime: Infinity,
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
   });
 
   if (!appointmentData) return <Skeleton className="h-8 w-full" />;
@@ -43,7 +48,6 @@ export function AppointmentDialog({
   )[0];
 
   return (
-    <Dialog>
       <DialogTrigger asChild>
         <Button
           className={cn(
