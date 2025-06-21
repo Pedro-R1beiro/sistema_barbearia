@@ -1,6 +1,6 @@
 import { api } from "@/lib/axios";
 
-export type NextAppointmentInterface = {
+export type AppointmentInterface = {
   id: number;
   date: Date;
   created_at: {
@@ -17,7 +17,7 @@ export type NextAppointmentInterface = {
 };
 
 export interface GetAppointmentResponse {
-  message: NextAppointmentInterface[];
+  message: AppointmentInterface[];
 }
 
 export type getAppointmentFilter =
@@ -39,8 +39,8 @@ export async function getAppointment({ filter, status }: GetAppointmentBody) {
     "/client/getAppointment",
     {
       params: {
-        filter: filter ? filter : "",
-        status: status ? status : "",
+        filter: filter ?? "",
+        status: status ?? "",
       },
     },
   );

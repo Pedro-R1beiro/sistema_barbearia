@@ -6,7 +6,8 @@ import { AppointmentDialog } from "../AppointmentDialog";
 import { CardFooter as CardFooterUi } from "@/components/ui/card";
 import { isAxiosError, type AxiosError } from "axios";
 import { queryClient } from "@/lib/react-query";
-import type { NextAppointmentInterface } from "@/api/get-appointment";
+import type { AppointmentInterface } from "@/api/get-appointment";
+import { useState } from "react";
 
 interface NextAppointmentProps {
   id: number;
@@ -30,7 +31,7 @@ function handleCancelAppointmentSuccess(id: number) {
   });
 
   const nextAppointmentsData = queryClient.getQueriesData<
-    NextAppointmentInterface[]
+    AppointmentInterface[]
   >({
     queryKey: ["next-appointments"],
   });
@@ -40,13 +41,10 @@ function handleCancelAppointmentSuccess(id: number) {
   nextAppointmentsData.forEach(([cacheKey, cacheData]) => {
     if (!cacheData) return;
 
-    queryClient.setQueryData<NextAppointmentInterface[]>(
-      cacheKey,
-      (cacheData) => {
-        if (!cacheData) return [];
-        return cacheData.filter((appointment) => appointment.id !== id);
-      },
-    );
+    queryClient.setQueryData<AppointmentInterface[]>(cacheKey, (cacheData) => {
+      if (!cacheData) return [];
+      return cacheData.filter((appointment) => appointment.id !== id);
+    });
   });
 
   toast.success("Agendamento cancelado!");
@@ -54,6 +52,8 @@ function handleCancelAppointmentSuccess(id: number) {
 }
 
 export function CardFooter({ id }: NextAppointmentProps) {
+  const [isOpenDetails, setIsOpenDetails] = useState(false);
+
   const { mutateAsync: cancelAppointmentFn, isPending } = useMutation({
     mutationFn: cancelAppointment,
     onSuccess: () => handleCancelAppointmentSuccess(id),
@@ -73,7 +73,11 @@ export function CardFooter({ id }: NextAppointmentProps) {
         <Button className="w-full flex-1 py-5 font-bold md:w-auto md:py-3 lg:flex-none lg:py-5">
           Contatar barbeiro
         </Button>
-        <AppointmentDialog appointmentId={id}>
+        <AppointmentDialog
+          isOpenDetails={isOpenDetails}
+          setIsOpenDetails={setIsOpenDetails}
+          appointmentId={id}
+        >
           Ver mais informações
         </AppointmentDialog>
         <Button
