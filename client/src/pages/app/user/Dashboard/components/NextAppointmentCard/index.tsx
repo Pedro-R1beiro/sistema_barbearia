@@ -98,9 +98,9 @@ export function NextAppointmentCard() {
             </Card>
           ) : (
             <>
-              <Card className="h-140">
+              <Card className="h-86">
                 <CardHeader>
-                  <CardTitle className="text-xl font-bold md:text-2xl">
+                  <CardTitle className="text-xl font-bold">
                     Vc não tem horários marcados
                   </CardTitle>
                   <CardDescription>
