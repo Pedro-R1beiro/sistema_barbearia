@@ -19,13 +19,13 @@ export function AppointmentTableRow({ appointment }: AppointmentTableRowProps) {
       <TableCell className="bg-background rounded-l-md font-medium">
         {appointment.professionalName}
       </TableCell>
-      <TableCell className="bg-background">
+      <TableCell className="bg-background w-[90px]">
         {formatDistanceToNow(appointment.date, {
           addSuffix: true,
           locale: ptBR,
         })}
       </TableCell>
-      <TableCell className="bg-background">
+      <TableCell className="bg-background w-[90px]">
         <AppointmentStatus status={appointment.status} />
       </TableCell>
       <TableCell className="bg-background w-[90px]">

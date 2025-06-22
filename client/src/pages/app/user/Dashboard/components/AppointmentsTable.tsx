@@ -16,26 +16,28 @@ export function AppointmentsTable() {
   });
 
   return (
-    <div className="bg-custom-foreground text-background row-2 mt-8 max-h-[380px] overflow-auto rounded-md p-4">
-      <Table className="border-separate border-spacing-x-0 border-spacing-y-2">
-        <TableHeader>
-          <TableRow>
-            <TableHead className="bg-background rounded-l-md text-lg">
-              Barbeiro
-            </TableHead>
-            <TableHead className="bg-background text-lg">Data</TableHead>
-            <TableHead className="bg-background text-lg">Situação</TableHead>
-            <TableHead className="bg-background w-[90px] text-lg"></TableHead>
-            <TableHead className="bg-background w-[70px] rounded-r-md text-right text-lg"></TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody className="bg-foreground">
-          {appointmentData &&
-            appointmentData.map((appointment) => (
-              <AppointmentTableRow appointment={appointment} />
-            ))}
-        </TableBody>
-      </Table>
+    <div className="bg-custom-foreground/80 text-background row-2 max-h-full overflow-hidden rounded-md p-4">
+      <div className="max-h-132 overflow-auto">
+        <Table className="border-separate border-spacing-x-0 border-spacing-y-2">
+          <TableHeader>
+            <TableRow>
+              <TableHead className="bg-background rounded-l-md">
+                Barbeiro
+              </TableHead>
+              <TableHead className="bg-background w-[90px]">Data</TableHead>
+              <TableHead className="bg-background w-[90px]">Situação</TableHead>
+              <TableHead className="bg-background w-[90px]"></TableHead>
+              <TableHead className="bg-background w-[70px] rounded-r-md text-right"></TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody className="bg-foreground">
+            {appointmentData &&
+              appointmentData.map((appointment) => (
+                <AppointmentTableRow appointment={appointment} />
+              ))}
+          </TableBody>
+        </Table>
+      </div>
     </div>
   );
 }
