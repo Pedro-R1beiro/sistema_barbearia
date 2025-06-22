@@ -1,5 +1,5 @@
 import { api } from "@/lib/axios";
-import { formatDateRequest } from "@/utils/formatDateRequest";
+import { formatDateRequest } from "@/utils/format-date-request";
 
 interface RegisterAppointmentBody {
   startTime: string;

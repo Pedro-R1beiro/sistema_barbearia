@@ -14,7 +14,7 @@ import {
   TableHead,
   TableRow,
 } from "@/components/ui/table";
-import { formatDateUtc } from "@/utils/formatDateUtc";
+import { formatDateUtc } from "@/utils/format-date-utc";
 import { useQuery } from "@tanstack/react-query";
 import type { Dispatch, ReactNode, SetStateAction } from "react";
 import { cn } from "@/lib/utils";

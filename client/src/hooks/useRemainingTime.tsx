@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { intervalToDuration, isBefore } from "date-fns";
-import { parseDateTimeInTimeZone } from "@/utils/parseDateTimeInTimeZone";
+import { parseDateTimeInTimeZone } from "@/utils/parse-date-time-in-time-zone";
 
 interface UseRemainingTimeParams {
   startDate: Date | undefined;
@@ -32,11 +32,11 @@ export function useRemainingTime({
 
       if (duration.days) {
         setRemaining(
-          `${duration.days} ${duration.days === 1 ? "dia" : "dias"}${duration.hours ? ` e ${duration.hours} hora(s)` : ""}`,
+          `${duration.days} ${duration.days === 1 ? "dia" : "dias"}${duration.hours ? ` e ${duration.hours} h` : ""}`,
         );
       } else if (duration.hours) {
         setRemaining(
-          `${duration.hours} ${duration.hours === 1 ? "hora" : "horas"}${duration.minutes ? ` e ${duration.minutes} minuto(s)` : ""}`,
+          `${duration.hours} ${duration.hours === 1 ? "hora" : "horas"}${duration.minutes ? ` e ${duration.minutes} m` : ""}`,
         );
       } else if (duration.minutes) {
         setRemaining(
