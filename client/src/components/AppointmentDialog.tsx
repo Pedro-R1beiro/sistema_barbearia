@@ -55,7 +55,7 @@ export function AppointmentDialog({
       <DialogTrigger asChild>
         <Button
           className={cn(
-            "w-full flex-1 py-5 font-bold md:w-auto md:py-3 lg:flex-none lg:py-5",
+            "w-full flex-1 py-4 font-bold md:w-auto md:py-3 lg:flex-none lg:py-5",
             className,
           )}
         >

@@ -44,8 +44,8 @@ export function NextAppointmentsCard() {
                     {nextAppointmentsData.length} agendamento(s) para os
                     próximos dias.
                   </span>
-                  <Button variant="secondary" className="px-7 py-5.5">
-                    VER
+                  <Button variant="secondary" className="px-6 py-5">
+                    ver
                   </Button>
                 </div>
               </CardContent>

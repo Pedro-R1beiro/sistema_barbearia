@@ -6,13 +6,13 @@ interface AppointmentStatusProps {
 
 const AppointmentStatusMap: Record<getAppointmentStatus, string> = {
   booked: "marcado",
-  canceled: "Cancelado",
-  completed: "Concluído",
+  canceled: "cancelado",
+  completed: "concluído",
 };
 
 export function AppointmentStatus({ status }: AppointmentStatusProps) {
   return (
-    <div className="flex items-center gap-2">
+    <div className="flex items-center gap-2 text-sm">
       {status === "canceled" && (
         <span className="h-2 w-2 rounded-full bg-rose-400" />
       )}
