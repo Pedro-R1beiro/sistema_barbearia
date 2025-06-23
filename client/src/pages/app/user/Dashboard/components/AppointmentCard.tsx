@@ -6,13 +6,11 @@ import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { format } from "date-fns";
 import { useState } from "react";
 
-interface AppointmentCardGroupProps {
+interface AppointmentGroupProps {
   appointment: AppointmentInterface;
 }
 
-export function AppointmentCardGroup({
-  appointment,
-}: AppointmentCardGroupProps) {
+export function AppointmentCard({ appointment }: AppointmentGroupProps) {
   const [isOpenDetails, setIsOpenDetails] = useState(false);
 
   return (

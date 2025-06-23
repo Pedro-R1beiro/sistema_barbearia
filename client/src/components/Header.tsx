@@ -16,7 +16,7 @@ export function Header({ children, className }: HeaderProps) {
     >
       <button
         onClick={scrollToTop}
-        className="bg-background absolute left-0 h-full rounded-l-[0.40rem] rounded-r-[1.5rem] px-3 py-2"
+        className="bg-background absolute left-0 h-full rounded-l-[0.25rem] rounded-r-[1.5rem] px-3 py-2"
       >
         <div className="bg-foreground rounded-full p-2 py-[0.8rem] font-bold">
           logo

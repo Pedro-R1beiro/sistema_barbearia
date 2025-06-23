@@ -48,7 +48,7 @@ export function ForgotPasswordDialog() {
         toast.error("E-mail inválido");
         break;
       case 404:
-        toast.error("E-mail não encontrado/cadastrado", {
+        toast.error("E-mail não encontrado ou não cadastrado", {
           action: {
             label: "Criar conta",
             onClick: () => navigate("/sign-up"),
