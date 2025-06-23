@@ -11,6 +11,7 @@ import {
   Table,
   TableBody,
   TableCell,
+  TableFooter,
   TableHead,
   TableRow,
 } from "@/components/ui/table";
@@ -51,6 +52,10 @@ export function AppointmentDialog({
         (appointment) => appointment.id === appointmentId,
       )[0]
     : null;
+
+  const totalPrice = appointment?.services.reduce((acc, cur) => {
+    return acc + Number(cur.price);
+  }, 0);
 
   return (
     <Dialog onOpenChange={setIsOpenDetails} open={isOpenDetails}>
@@ -110,20 +115,33 @@ export function AppointmentDialog({
                     </TableCell>
                   </TableRow>
                   <TableRow>
-                    <TableHead>Serviço:</TableHead>
-                    <TableCell className="text-right">
-                      {appointment.serviceName}
-                    </TableCell>
-                  </TableRow>
-                  <TableRow>
                     <TableHead>Preço do serviço:</TableHead>
                     <TableCell className="text-right">
-                      R$ {appointment.servicePrice}
+                      R$ {totalPrice?.toFixed(2)}
                     </TableCell>
                   </TableRow>
                 </>
               )}
             </TableBody>
+            <TableFooter>
+              <TableRow>
+                <TableCell
+                  colSpan={2}
+                  className="max-w-[100%] overflow-hidden text-center font-medium break-words whitespace-pre-wrap"
+                >
+                  <span className="text-center font-semibold">Serviços: </span>
+
+                  <div className="inline-block pt-2 text-sm text-wrap">
+                    {appointment?.services.map((service, index) => (
+                      <span key={index} className="font-normal">
+                        {service.name} ({service.price})
+                        {index < appointment.services.length - 1 ? ", " : ""}
+                      </span>
+                    ))}
+                  </div>
+                </TableCell>
+              </TableRow>
+            </TableFooter>
           </Table>
         )}
       </DialogContent>

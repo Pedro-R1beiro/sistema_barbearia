@@ -9,11 +9,13 @@ export type AppointmentInterface = {
   };
   professionalName: string;
   clientName: string;
-  serviceName: string;
+  services: {
+    name: string;
+    price: number;
+  }[];
   startTime: string;
   status: getAppointmentStatus;
   endTime: string;
-  servicePrice: number;
 };
 
 export interface GetAppointmentResponse {

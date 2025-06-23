@@ -26,12 +26,12 @@ export function NextAppointmentCard() {
 
   const navigate = useNavigate();
 
-  const { date, startTime, servicePrice, id } = nextAppointmentData
+  const { date, startTime, services, id } = nextAppointmentData
     ? nextAppointmentData[0]
     : {
         date: new Date(),
         startTime: "00:00",
-        servicePrice: 0,
+        services: [],
         id: 0,
       };
   const remainingTime = useRemainingTime({
@@ -40,6 +40,9 @@ export function NextAppointmentCard() {
   });
 
   const formatedDate = formatDateRequest(date);
+  const totalPrice = services?.reduce((acc, cur) => {
+    return acc + Number(cur.price);
+  }, 0);
 
   return (
     <>
@@ -87,7 +90,7 @@ export function NextAppointmentCard() {
 
                     <div>
                       <span className="block text-2xl font-bold">Preço</span>
-                      <span>R$ {servicePrice}</span>
+                      <span>R$ {totalPrice.toFixed(2)}</span>
                     </div>
                   </div>
                   <div className="bg-background h-[0.09rem] w-full md:hidden" />

@@ -17,6 +17,10 @@ interface AppointmentGroupProps {
 export function AppointmentCard({ appointment }: AppointmentGroupProps) {
   const [isOpenDetails, setIsOpenDetails] = useState(false);
 
+  const totalPrice = appointment.services.reduce((acc, cur) => {
+    return acc + Number(cur.price);
+  }, 0);
+
   return (
     <Card
       className={cn(
@@ -30,7 +34,7 @@ export function AppointmentCard({ appointment }: AppointmentGroupProps) {
         className="absolute inset-0 z-0 bg-cover bg-center"
         style={{ backgroundImage: `url(${barberTable})` }}
       />
-      <div className="bg-background/85 absolute inset-0 z-10 backdrop-blur-[0.075rem]" />
+      <div className="bg-background/92 absolute inset-0 z-10 backdrop-blur-[0.075rem]" />
 
       <CardContent className="relative z-20 flex justify-between">
         <ul>
@@ -46,14 +50,14 @@ export function AppointmentCard({ appointment }: AppointmentGroupProps) {
           </li>
           <li>
             <span className="font-medium">preço:</span>{" "}
-            <span className="font-light">{appointment.servicePrice}</span>
+            <span className="font-light">R$ {totalPrice.toFixed(2)}</span>
           </li>
           <li>
             <span className="font-medium">Qtd. serviços:</span>{" "}
-            <span className="font-light">1</span>
+            <span className="font-light">{appointment.services.length}</span>
           </li>
         </ul>
-        <div className="flex flex-col gap-3">
+        <div className="flex flex-col items-end gap-3">
           <AppointmentStatus status={appointment.status} />
           {appointment.status === "booked" ? (
             <Button variant="destructive" size="sm">
