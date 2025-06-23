@@ -14,7 +14,7 @@ export function SignInLayout() {
   const navigate = useNavigate();
 
   return (
-    <div className="mx-auto grid min-h-screen max-w-full min-w-full overflow-x-hidden lg:grid-cols-2">
+    <div className="mx-auto grid min-h-screen max-w-full min-w-full overflow-x-hidden lg:max-h-screen lg:grid-cols-2 lg:overflow-hidden">
       <div className="relative flex max-h-screen min-h-screen min-w-full flex-col items-center justify-center bg-white p-3 pt-70 pb-100 lg:col-1 lg:min-h-screen">
         <Outlet />
       </div>
