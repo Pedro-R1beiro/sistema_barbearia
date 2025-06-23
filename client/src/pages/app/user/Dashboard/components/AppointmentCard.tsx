@@ -20,7 +20,7 @@ export function AppointmentCard({ appointment }: AppointmentGroupProps) {
   return (
     <Card
       className={cn(
-        "bg-background relative overflow-hidden",
+        "bg-background hover:scale- relative overflow-hidden duration-300 first:mt-0.5 md:min-w-95 lg:min-w-full",
         appointment.status === "booked" && "border-2 border-amber-400",
         appointment.status === "canceled" && "border-2 border-rose-400",
         appointment.status === "completed" && "border-2 border-teal-400",

@@ -10,11 +10,7 @@ import { useRemainingTime } from "@/hooks/useRemainingTime";
 import { Skeleton } from "@/components/ui/skeleton";
 
 export function NextAppointmentTimeCard() {
-  const {
-    data: nextAppointmentData,
-    isFetching,
-    isFetched,
-  } = useQuery({
+  const { data: nextAppointmentData, isFetching } = useQuery({
     queryKey: ["next-appointment"],
     queryFn: () => getAppointment({ filter: "next", status: "booked" }),
     staleTime: Infinity,
@@ -34,9 +30,6 @@ export function NextAppointmentTimeCard() {
     startTime,
   });
 
-  if (!nextAppointmentData && isFetched)
-    return <WithoutNextAppointmentTimeCard />;
-
   return (
     <>
       {isFetching ? (
@@ -51,37 +44,43 @@ export function NextAppointmentTimeCard() {
           </div>
         </div>
       ) : (
-        <Card className="bg-custom-foreground text-background h-34 min-w-fit md:h-38 lg:w-70">
-          <CardContent className="px-4">
-            <div className="flex items-start justify-between pr-2">
-              {remainingTime.length > 0 ? (
-                <span className="text-xl font-bold">{remainingTime}</span>
-              ) : (
-                <>
-                  <span className="text-xl font-bold md:hidden">
-                    Próximo Horário
-                  </span>
-                  <span className="hidden text-xl font-bold md:inline">
-                    Próximo Horá...
-                  </span>
-                </>
-              )}
-              <FontAwesomeIcon icon={faScissors} className="text-3xl" />
-            </div>
-            <div className="mt-3 flex items-center justify-between text-lg">
-              {remainingTime.length > 0 ? (
-                <span className="font-medium">
-                  Para seu próximo
-                  <br className="hidden md:block" /> horário.
-                </span>
-              ) : (
-                <span className="font-medium">Passou ou em andamento.</span>
-              )}
+        <>
+          {nextAppointmentData ? (
+            <Card className="bg-custom-foreground text-background h-34 min-w-fit md:h-38 lg:w-70">
+              <CardContent className="px-4">
+                <div className="flex items-start justify-between pr-2">
+                  {remainingTime.length > 0 ? (
+                    <span className="text-xl font-bold">{remainingTime}</span>
+                  ) : (
+                    <>
+                      <span className="text-xl font-bold md:hidden">
+                        Próximo Horário
+                      </span>
+                      <span className="hidden text-xl font-bold md:inline">
+                        Próximo Horá...
+                      </span>
+                    </>
+                  )}
+                  <FontAwesomeIcon icon={faScissors} className="text-3xl" />
+                </div>
+                <div className="mt-3 flex items-center justify-between text-lg">
+                  {remainingTime.length > 0 ? (
+                    <span className="font-medium">
+                      Para seu próximo
+                      <br className="hidden md:block" /> horário.
+                    </span>
+                  ) : (
+                    <span className="font-medium">Passou ou em andamento.</span>
+                  )}
 
-              <ContactButton icon={faWhatsapp} link="Whatsapp.client.api" />
-            </div>
-          </CardContent>
-        </Card>
+                  <ContactButton icon={faWhatsapp} link="Whatsapp.client.api" />
+                </div>
+              </CardContent>
+            </Card>
+          ) : (
+            <WithoutNextAppointmentTimeCard />
+          )}
+        </>
       )}
     </>
   );

@@ -97,32 +97,30 @@ export function NextAppointmentCard() {
               </div>
             </Card>
           ) : (
-            <>
-              <Card className="h-86">
-                <CardHeader>
-                  <CardTitle className="text-xl font-bold">
-                    Vc não tem horários marcados
-                  </CardTitle>
-                  <CardDescription>
-                    Vc pode marcar um novo agendamento ou entrar em contato com
-                    a barbearia!
-                  </CardDescription>
-                  <CardContent className="mt-12 p-0">
-                    <div className="flex flex-col gap-6">
-                      <Button
-                        onClick={() => navigate("/to-schedule")}
-                        className="w-full md:w-60"
-                      >
-                        Novo agendamento
-                      </Button>
-                      <Button variant="secondary" className="w-full md:w-60">
-                        Falar com a barbearia
-                      </Button>
-                    </div>
-                  </CardContent>
-                </CardHeader>
-              </Card>
-            </>
+            <Card className="h-86">
+              <CardHeader>
+                <CardTitle className="text-xl font-bold">
+                  Você não tem horários marcados
+                </CardTitle>
+                <CardDescription>
+                  Você pode marcar um novo agendamento ou entrar em contato com
+                  a barbearia!
+                </CardDescription>
+                <CardContent className="mt-12 p-0">
+                  <div className="flex flex-col gap-6">
+                    <Button
+                      onClick={() => navigate("/to-schedule")}
+                      className="w-full md:w-60"
+                    >
+                      Novo agendamento
+                    </Button>
+                    <Button variant="secondary" className="w-full md:w-60">
+                      Falar com a barbearia
+                    </Button>
+                  </div>
+                </CardContent>
+              </CardHeader>
+            </Card>
           )}
         </>
       )}
