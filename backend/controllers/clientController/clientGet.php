@@ -2,6 +2,7 @@
 
 require_once __DIR__ . '/../../bd.php';
 require_once __DIR__ . '/../../classes/appointment.php';
+require_once __DIR__ . '/../../classes/appointmentService.php';
 require_once __DIR__ . '/../../classes/service.php';
 require_once __DIR__ . '/../../classes/professional.php';
 require_once __DIR__ . '/../../classes/vacation.php';
@@ -17,6 +18,7 @@ class ClientGet
     public $conn;
 
     public $appo;
+    public $appoService;
     public $service;
     public $prof;
     public $vacat;
@@ -31,6 +33,7 @@ class ClientGet
         $this->conn = $bd->connect();
 
         $this->appo = new Appointment($this->conn);
+        $this->appoService = new AppointmentService($this->conn);
         $this->service = new Service($this->conn);
         $this->prof = new Professional($this->conn);
         $this->vacat = new Vacation($this->conn);
@@ -47,7 +50,7 @@ class ClientGet
                 'code' => 401,
                 'body' => [
                     'status' => 'error',
-                    'message' => 'Não autenticado'
+                    'message' => 'UNAUTHORIZED'
                 ]
             ];
         }
@@ -113,11 +116,19 @@ class ClientGet
 
             $appointment = $this->appo->get($filter, $status, null, $id);
             if ($appointment) {
-                foreach ($appointment as $i => $value) {
-                    $_dateTime = new DateTime($appointment[$i]['created_at']);
+                foreach ($appointment as $_appo => $_value) {
+                    $appointment[$_appo]['services'] = [];
+                    $appointmentServices = $this->appoService->getBYAppointment($_value['id']);
+                    foreach ($appointmentServices as $_service) {
+                        $appointment[$_appo]['services'][] = [
+                            'name' => $_service['serviceName'],
+                            'price' => $_service['servicePrice']
+                        ];
+                    }
+                    $_dateTime = new DateTime($appointment[$_appo]['created_at']);
                     $_dateTimeFormatted = $_dateTime->format('Y-m-d H:i:s');
                     list($_date, $_time) = explode(' ', $_dateTimeFormatted);
-                    $appointment[$i]['created_at'] = [
+                    $appointment[$_appo]['created_at'] = [
                         'date' => $_date,
                         'time' => $_time
                     ];

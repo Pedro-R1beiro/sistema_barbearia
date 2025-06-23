@@ -47,12 +47,9 @@ class Appointment
         ap.status,
         ap.created_at,
         p.name AS professionalName,
-        c.name AS clientName,
-        s.name AS serviceName,
-        s.price AS servicePrice
+        c.name AS clientName
         FROM appointments ap
         INNER JOIN professionals p ON ap.idProfessional = p.id
-        INNER JOIN services s ON ap.idService = s.id
         INNER JOIN clients c ON ap.idClient = c.id";
 
         $conditions = [];
@@ -163,32 +160,6 @@ class Appointment
         return false;
     }
 
-    public function getByService($idService)
-    {
-        if (!empty($idService) && is_numeric($idService)) {
-            $sql = "SELECT
-                        ap.date,
-                        ap.startTime,
-                        ap.endTime,
-                        s.name AS serviceName,
-                        p.name AS professionalName,
-                        c.name AS clientName
-                    FROM appointments ap
-                    INNER JOIN services s ON ap.idService = s.id
-                    INNER JOIN professionals p ON ap.idProfessional = p.id
-                    INNER JOIN clients c ON ap.idClient = c.id
-                    WHERE ap.idService = :idService
-                    ORDER BY ap.date, ap.startTime";
-            $stmt = $this->conn->prepare($sql);
-            $stmt->bindParam(':idService', $idService);
-
-            if ($stmt->execute()) {
-                return $stmt->fetchAll(PDO::FETCH_ASSOC); // Retorna compromissos para um serviço
-            }
-        }
-        return false;
-    }
-
     public function patch($id, $status)
     {
         if (empty($id) || empty($status) || !is_numeric($id)) {
@@ -213,21 +184,20 @@ class Appointment
         return false;
     }
 
-    public function post($date, $startTime, $endTime, $idService, $idProfessional, $idClient)
+    public function post($date, $startTime, $endTime, $idProfessional, $idClient)
     {
-        if (!empty($date) && !empty($startTime) && is_numeric($idService) && is_numeric($idProfessional) && is_numeric($idClient)) {
+        if (!empty($date) && !empty($startTime) && is_numeric($idProfessional) && is_numeric($idClient)) {
             $date = trim($date);
             $startTime = trim($startTime);
             $endTime  = trim($endTime);
 
-            $sql = "INSERT INTO appointments (date, startTime, endTime, idClient, idService, idProfessional) VALUES (:date, :startTime, :endTime, :idClient, :idService, :idProfessional)";
+            $sql = "INSERT INTO appointments (date, startTime, endTime, idClient, idProfessional) VALUES (:date, :startTime, :endTime, :idClient, :idProfessional)";
 
             $stmt = $this->conn->prepare($sql);
             $stmt->bindParam(':date', $date);
             $stmt->bindParam(':startTime', $startTime);
             $stmt->bindParam(':endTime', $endTime);
             $stmt->bindParam(':idClient', $idClient);
-            $stmt->bindParam(':idService', $idService);
             $stmt->bindParam(':idProfessional', $idProfessional);
 
             if ($stmt->execute()) {

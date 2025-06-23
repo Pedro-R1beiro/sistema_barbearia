@@ -35,7 +35,7 @@ class ClientDelete
                 'code' => 401,
                 'body' => [
                     'status' => 'error',
-                    'message' => 'Não autenticado'
+                    'message' => 'UNAUTHORIZED'
                 ]
             ];
         }
