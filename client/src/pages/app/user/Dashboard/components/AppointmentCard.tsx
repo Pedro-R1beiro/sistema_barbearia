@@ -6,6 +6,8 @@ import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { format } from "date-fns";
 import { useState } from "react";
 
+import barberTable from "@/assets/barber-table.svg";
+
 interface AppointmentGroupProps {
   appointment: AppointmentInterface;
 }
@@ -14,8 +16,14 @@ export function AppointmentCard({ appointment }: AppointmentGroupProps) {
   const [isOpenDetails, setIsOpenDetails] = useState(false);
 
   return (
-    <Card className="bg-background border-none">
-      <CardContent className="flex justify-between">
+    <Card className="bg-background relative overflow-hidden border-none">
+      <div
+        className="absolute inset-0 z-0 bg-cover bg-center"
+        style={{ backgroundImage: `url(${barberTable})` }}
+      />
+      <div className="bg-background/85 absolute inset-0 z-10 backdrop-blur-[0.075rem]" />
+
+      <CardContent className="relative z-20 flex justify-between">
         <ul>
           <li>
             <span className="font-medium">Data:</span>{" "}
@@ -53,7 +61,7 @@ export function AppointmentCard({ appointment }: AppointmentGroupProps) {
           )}
         </div>
       </CardContent>
-      <CardFooter className="min-w-full">
+      <CardFooter className="relative z-20 min-w-full">
         <AppointmentDialog
           appointmentId={appointment.id}
           isOpenDetails={isOpenDetails}

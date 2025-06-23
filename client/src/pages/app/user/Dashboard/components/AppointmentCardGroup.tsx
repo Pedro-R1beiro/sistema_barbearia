@@ -39,7 +39,10 @@ export function AppointmentsCardGroup() {
           <CardContent className="space-y-4 overflow-auto">
             {appointmentData &&
               appointmentData.map((appointment) => (
-                <AppointmentCard appointment={appointment} />
+                <AppointmentCard
+                  key={appointment.id}
+                  appointment={appointment}
+                />
               ))}
           </CardContent>
         )}

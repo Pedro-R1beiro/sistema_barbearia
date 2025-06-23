@@ -1,7 +1,7 @@
 import CardServices from "./CardServices";
 
 import manCuttingHair from "@/assets/man-cutting-hair.svg";
-import manCuttingBeard from "@/assets/man-cutting-beard.png";
+import manCuttingBeard from "@/assets/man-cutting-beard.svg";
 import moustacheIcon from "@/assets/moustache-icon.svg";
 
 import { Card, CardContent, CardFooter, CardTitle } from "@/components/ui/card";

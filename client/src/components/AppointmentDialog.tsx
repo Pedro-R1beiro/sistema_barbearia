@@ -88,7 +88,7 @@ export function AppointmentDialog({
                   <TableRow>
                     <TableHead>Data:</TableHead>
                     <TableCell className="text-right">
-                      {formatDateUtc(appointment.date, "dd 'de' MMMM Y")}
+                      {formatDateUtc(appointment.date, "dd 'de' MMMM y")}
                     </TableCell>
                   </TableRow>
                   <TableRow>
@@ -96,7 +96,7 @@ export function AppointmentDialog({
                     <TableCell className="text-right">
                       {formatDateUtc(
                         appointment.created_at.date,
-                        "dd 'de' MMMM Y",
+                        "dd 'de' MMMM y",
                       )}
                     </TableCell>
                   </TableRow>
