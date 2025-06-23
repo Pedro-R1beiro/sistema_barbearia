@@ -26,6 +26,7 @@ interface AppointmentDialogProps {
   className?: string;
   isOpenDetails: boolean;
   setIsOpenDetails: Dispatch<SetStateAction<boolean>>;
+  asChild?: boolean;
 }
 
 export function AppointmentDialog({
@@ -34,6 +35,7 @@ export function AppointmentDialog({
   className,
   isOpenDetails,
   setIsOpenDetails,
+  asChild = false,
 }: AppointmentDialogProps) {
   const { data: appointmentData, isFetching } = useQuery({
     queryKey: [appointmentId, "appointments"],
@@ -58,6 +60,7 @@ export function AppointmentDialog({
             "w-full flex-1 py-4 font-bold md:w-auto md:py-3 lg:flex-none lg:py-5",
             className,
           )}
+          asChild={asChild}
         >
           {children}
         </Button>

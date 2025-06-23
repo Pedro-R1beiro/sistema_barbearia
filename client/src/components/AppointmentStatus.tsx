@@ -17,7 +17,7 @@ export function AppointmentStatus({ status }: AppointmentStatusProps) {
         <span className="h-2 w-2 rounded-full bg-rose-400" />
       )}
       {status === "completed" && (
-        <span className="h-2 w-2 rounded-full bg-emerald-400" />
+        <span className="h-2 w-2 rounded-full bg-teal-400" />
       )}
       {status === "booked" && (
         <span className="h-2 w-2 rounded-full bg-amber-400" />
