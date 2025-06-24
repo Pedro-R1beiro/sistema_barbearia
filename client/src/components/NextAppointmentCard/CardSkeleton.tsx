@@ -1,13 +1,28 @@
+import { cn } from "@/lib/utils";
 import { Card, CardContent, CardFooter, CardHeader } from "../ui/card";
 import { Skeleton } from "../ui/skeleton";
 
-export function CardSkeleton() {
+interface CardSkeletonProps {
+  portraitModeOnLg: boolean;
+}
+
+export function CardSkeleton({ portraitModeOnLg }: CardSkeletonProps) {
   return (
     <Card className="shadow-2xl lg:min-w-85">
       <CardHeader>
-        <Skeleton className="h-12 w-60 max-w-full md:w-120 lg:w-60" />
+        <Skeleton
+          className={cn(
+            "h-9 w-60 max-w-full md:w-120",
+            portraitModeOnLg ? "lg:w-60" : "lg:w-75",
+          )}
+        />
       </CardHeader>
-      <div className="md:flex md:flex-row md:justify-between md:gap-6 lg:flex-col">
+      <div
+        className={cn(
+          "md:flex md:justify-between md:gap-6",
+          portraitModeOnLg && "lg:flex-col",
+        )}
+      >
         <CardContent className="flex flex-col gap-6">
           <div className="flex h-full flex-col gap-6 md:justify-between">
             <div>
@@ -31,9 +46,7 @@ export function CardSkeleton() {
               <Skeleton className="h-4 w-48" />
             </div>
           </div>
-          <div className="bg-background h-[0.09rem] w-full md:hidden lg:block" />
         </CardContent>
-        <div className="bg-background hidden min-h-full min-w-px md:block lg:hidden" />
         <CardFooter className="mt-6 md:mt-0 md:w-1/2 lg:mt-6 lg:w-full">
           <div className="w-full max-w-full space-y-5 md:flex md:flex-col md:justify-between md:gap-6 lg:gap-2">
             <Skeleton className="h-9 w-full" />

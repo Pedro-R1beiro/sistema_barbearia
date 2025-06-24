@@ -84,7 +84,7 @@ export function Account() {
         </Card>
       </div>
       <div className="min-w-78">
-        <NextAppointmentCard />
+        <NextAppointmentCard portraitModeOnLg />
       </div>
     </div>
   );

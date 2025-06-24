@@ -55,7 +55,7 @@ export function NextAppointmentCard({
   return (
     <>
       {isFetching ? (
-        <CardSkeleton />
+        <CardSkeleton portraitModeOnLg={portraitModeOnLg} />
       ) : (
         <>
           {nextAppointmentData ? (
