@@ -1,16 +1,18 @@
 import { api } from "@/lib/axios";
 
 interface RegisterAppointmentBody {
-  id: number;
+  appointmentId: number;
 }
 
-export async function cancelAppointment({ id }: RegisterAppointmentBody) {
+export async function cancelAppointment({
+  appointmentId,
+}: RegisterAppointmentBody) {
   await api.patch(
     "/client/cancelAppointment",
     {},
     {
       params: {
-        id,
+        id: appointmentId,
       },
     },
   );

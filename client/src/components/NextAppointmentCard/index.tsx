@@ -15,8 +15,15 @@ import { useRemainingTime } from "@/hooks/useRemainingTime";
 import { CardSkeleton } from "./CardSkeleton";
 import { Button } from "../ui/button";
 import { useNavigate } from "react-router";
+import { cn } from "@/lib/utils";
 
-export function NextAppointmentCard() {
+interface NextAppointmentCardProps {
+  portraitModeOnLg?: boolean;
+}
+
+export function NextAppointmentCard({
+  portraitModeOnLg = false,
+}: NextAppointmentCardProps) {
   const { data: nextAppointmentData, isFetching } = useQuery({
     queryKey: ["next-appointment"],
     queryFn: () => getAppointment({ filter: "next", status: "booked" }),
@@ -26,20 +33,24 @@ export function NextAppointmentCard() {
 
   const navigate = useNavigate();
 
-  const { date, startTime, servicePrice, id } = nextAppointmentData
+  const { date, startTime, services, id } = nextAppointmentData
     ? nextAppointmentData[0]
     : {
         date: new Date(),
         startTime: "00:00",
-        servicePrice: 0,
+        services: [],
         id: 0,
       };
+
   const remainingTime = useRemainingTime({
     startDate: new Date(date),
     startTime,
   });
 
   const formatedDate = formatDateRequest(date);
+  const totalPrice = services.reduce((acc, curr) => {
+    return acc + Number(curr.price);
+  }, 0);
 
   return (
     <>
@@ -50,28 +61,34 @@ export function NextAppointmentCard() {
           {nextAppointmentData ? (
             <Card className="shadow-2xl lg:min-w-85">
               <CardHeader>
-                <CardTitle className="text-xl font-bold md:text-2xl lg:text-xl">
+                <CardTitle
+                  className={cn(
+                    "text-xl font-bold md:text-2xl",
+                    portraitModeOnLg && "lg:text-xl",
+                  )}
+                >
                   Próximo Horário marcado
                 </CardTitle>
               </CardHeader>
-              <div className="md:flex md:flex-row md:justify-between md:gap-6 lg:flex-col">
+              <div
+                className={cn(
+                  "md:flex md:flex-row md:justify-between md:gap-6",
+                  portraitModeOnLg && "lg:flex-col",
+                )}
+              >
                 <CardContent className="flex flex-col gap-6">
                   <div className="flex h-full flex-col gap-6 md:justify-between">
                     <div>
                       <ul>
                         <li>
-                          <p>
-                            <span className="font-bold">Data</span>:{" "}
-                            {format(formatedDate, "PPPP", {
-                              locale: ptBR,
-                            })}
-                          </p>
+                          <span className="font-bold">Data</span>:{" "}
+                          {format(formatedDate, "PPPP", {
+                            locale: ptBR,
+                          })}
                         </li>
                         <li>
-                          <p>
-                            <span className="font-bold">Horário</span>:{" "}
-                            {startTime}
-                          </p>
+                          <span className="font-bold">Horário</span>:{" "}
+                          {startTime}
                         </li>
                       </ul>
                     </div>
@@ -87,13 +104,26 @@ export function NextAppointmentCard() {
 
                     <div>
                       <span className="block text-2xl font-bold">Preço</span>
-                      <span>R$ {servicePrice}</span>
+                      <span>R$ {totalPrice.toFixed(2)}</span>
                     </div>
                   </div>
-                  <div className="bg-background h-[0.09rem] w-full md:hidden lg:block" />
+                  <div
+                    className={cn(
+                      "bg-background h-[0.09rem] w-full md:hidden",
+                      portraitModeOnLg && "lg:block",
+                    )}
+                  />
                 </CardContent>
-                <div className="bg-background hidden min-h-full min-w-px md:block lg:hidden" />
-                <CardFooter id={id} />
+                <div
+                  className={cn(
+                    "bg-background hidden min-h-full min-w-px md:block",
+                    portraitModeOnLg && "lg:hidden",
+                  )}
+                />
+                <CardFooter
+                  appointmentId={id}
+                  portraitModeOnLg={portraitModeOnLg}
+                />
               </div>
             </Card>
           ) : (
