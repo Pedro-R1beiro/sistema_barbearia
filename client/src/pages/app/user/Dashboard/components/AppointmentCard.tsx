@@ -9,6 +9,7 @@ import { useState } from "react";
 import barberTable from "@/assets/barber-table.svg";
 import { cn } from "@/lib/utils";
 import { Archive, Search, Trash } from "lucide-react";
+import { useCancelAppointment } from "@/hooks/useCancelAppointment";
 
 interface AppointmentGroupProps {
   appointment: AppointmentInterface;
@@ -20,6 +21,10 @@ export function AppointmentCard({ appointment }: AppointmentGroupProps) {
   const totalPrice = appointment.services.reduce((acc, cur) => {
     return acc + Number(cur.price);
   }, 0);
+
+  const { cancelAppointmentFn, isPending } = useCancelAppointment(
+    appointment.id,
+  );
 
   return (
     <Card
@@ -60,8 +65,19 @@ export function AppointmentCard({ appointment }: AppointmentGroupProps) {
         <div className="flex flex-col items-end gap-3">
           <AppointmentStatus status={appointment.status} />
           {appointment.status === "booked" ? (
-            <Button variant="destructive" size="sm">
-              cancelar
+            <Button
+              variant="destructive"
+              size="sm"
+              disabled={isPending}
+              onClick={() =>
+                cancelAppointmentFn({ appointmentId: appointment.id })
+              }
+            >
+              {isPending ? (
+                <span className="border-background/60 h-3 w-3 animate-spin rounded-full border-2 border-b-transparent" />
+              ) : (
+                "cancelar"
+              )}
               <Trash />
             </Button>
           ) : (

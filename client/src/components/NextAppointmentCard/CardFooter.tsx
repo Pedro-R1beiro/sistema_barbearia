@@ -57,7 +57,17 @@ export function CardFooter({
           )}
           variant="customDestructive"
         >
-          {isPending ? "cancelando..." : "cancelar agendamento"} <Trash />
+          {isPending ? (
+            <>
+              cancelando
+              <span className="border-background/60 h-3 w-3 animate-spin rounded-full border-2 border-b-transparent" />
+            </>
+          ) : (
+            <>
+              cancelar agendamneto
+              <Trash />
+            </>
+          )}
         </Button>
       </div>
     </CardFooterUi>
