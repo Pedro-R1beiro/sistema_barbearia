@@ -7,9 +7,9 @@ import { format } from "date-fns";
 import { useState } from "react";
 
 import barberTable from "@/assets/barber-table.svg";
+import { useCancelAppointment } from "@/hooks/useCancelAppointment";
 import { cn } from "@/lib/utils";
 import { Archive, Search, Trash } from "lucide-react";
-import { useCancelAppointment } from "@/hooks/useCancelAppointment";
 
 interface AppointmentGroupProps {
   appointment: AppointmentInterface;

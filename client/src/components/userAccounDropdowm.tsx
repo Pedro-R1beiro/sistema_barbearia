@@ -1,18 +1,18 @@
+import { signOut } from "@/api/sign-out";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useMutation } from "@tanstack/react-query";
+import { Cog, LogOut } from "lucide-react";
+import { useNavigate } from "react-router";
+import { toast } from "sonner";
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuTrigger,
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
+  DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
-import { Cog, LogOut } from "lucide-react";
-import { useNavigate } from "react-router";
-import { useMutation } from "@tanstack/react-query";
-import { signOut } from "@/api/sign-out";
-import { toast } from "sonner";
 
 export function UserAccounDropdowm() {
   const navigate = useNavigate();

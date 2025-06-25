@@ -4,8 +4,8 @@ import barberShopImage from "@/assets/barber-shop.png";
 
 import { ContactButton } from "@/components/ContactButton";
 import { LinesWithOr } from "@/components/LinesWithOr";
-import { Button } from "@/components/ui/button";
 import { SeparationArrow } from "@/components/SeparationArrow";
+import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router";
 
 export function About() {

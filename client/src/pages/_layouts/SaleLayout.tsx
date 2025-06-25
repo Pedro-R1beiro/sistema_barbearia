@@ -1,14 +1,14 @@
 import { Header } from "@/components/Header";
-import { Outlet, useNavigate } from "react-router";
-import { Home } from "../Sale/components/Home";
+import { NavLinks, type NavLinkInterface } from "@/components/NavLinks";
+import { Button } from "@/components/ui/button";
 import {
   faBuilding,
   faHouse,
   faPhone,
   faScissors,
 } from "@fortawesome/free-solid-svg-icons";
-import { Button } from "@/components/ui/button";
-import { NavLinks, type NavLinkInterface } from "@/components/NavLinks";
+import { Outlet, useNavigate } from "react-router";
+import { Home } from "../Sale/components/Home";
 
 const navLinks: NavLinkInterface[] = [
   { link: "#home", text: "Ínicio", icon: faHouse, type: "anchorLink" },

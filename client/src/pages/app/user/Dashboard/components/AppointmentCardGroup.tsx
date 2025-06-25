@@ -6,9 +6,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { useQuery } from "@tanstack/react-query";
-import { AppointmentCard } from "./AppointmentCard";
-import { Skeleton } from "@/components/ui/skeleton";
 import {
   Select,
   SelectContent,
@@ -16,7 +13,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Skeleton } from "@/components/ui/skeleton";
+import { useQuery } from "@tanstack/react-query";
 import { Archive, Calendar, Check, X } from "lucide-react";
+
+import { AppointmentCard } from "./AppointmentCard";
 
 export function AppointmentsCardGroup() {
   const { data: appointmentData, isFetching } = useQuery({

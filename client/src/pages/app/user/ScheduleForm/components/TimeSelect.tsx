@@ -13,10 +13,10 @@ import {
   type BarberAvailabilityStatus,
 } from "@/api/get-available-time-slots";
 
+import { Skeleton } from "@/components/ui/skeleton";
 import { useQuery } from "@tanstack/react-query";
 import { Controller, type Control, type UseFormWatch } from "react-hook-form";
 import type { ScheduleFormData } from "..";
-import { Skeleton } from "@/components/ui/skeleton";
 
 interface UserScheduleFormTimeProps {
   control: Control<ScheduleFormData>;

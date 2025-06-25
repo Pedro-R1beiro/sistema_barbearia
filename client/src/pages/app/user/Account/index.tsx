@@ -1,4 +1,5 @@
 import { ContactButton } from "@/components/ContactButton";
+import { NextAppointmentCard } from "@/components/NextAppointmentCard";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -10,7 +11,6 @@ import {
 import { faInstagram, faWhatsapp } from "@fortawesome/free-brands-svg-icons";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { NextAppointmentCard } from "@/components/NextAppointmentCard";
 
 export function Account() {
   return (

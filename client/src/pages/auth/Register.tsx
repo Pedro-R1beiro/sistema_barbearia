@@ -3,13 +3,13 @@ import { useNavigate } from "react-router";
 
 import { z } from "zod";
 
-import { useForm } from "react-hook-form";
+import { signUp } from "@/api/sign-up";
+import { PrivacyPoliciesDialog } from "@/components/PrivacyPoliciesDialog";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
-import { signUp } from "@/api/sign-up";
-import { toast } from "sonner";
 import { isAxiosError, type AxiosError } from "axios";
-import { PrivacyPoliciesDialog } from "@/components/PrivacyPoliciesDialog";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 
 const registerSchema = z.object({
   name: z.string().min(2, "Mínimo de 2 caracteres"),

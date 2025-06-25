@@ -1,17 +1,17 @@
+import type { ButtonHTMLAttributes, ReactNode } from "react";
 import {
   Dialog,
-  DialogHeader,
   DialogContent,
+  DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from "./ui/dialog";
-import type { ButtonHTMLAttributes, ReactNode } from "react";
 
 interface PrivacyPoliciesDialogProps
   extends ButtonHTMLAttributes<HTMLButtonElement> {
   children: ReactNode;
   asChild?: boolean;
-  className: string;
+  className?: string;
 }
 
 export function PrivacyPoliciesDialog({

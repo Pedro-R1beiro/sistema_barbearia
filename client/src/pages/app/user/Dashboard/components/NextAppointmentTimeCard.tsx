@@ -1,13 +1,13 @@
-import { faWhatsapp } from "@fortawesome/free-brands-svg-icons";
+import { getAppointment } from "@/api/get-appointment";
 import { ContactButton } from "@/components/ContactButton";
 import { Card, CardContent } from "@/components/ui/card";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faScissors } from "@fortawesome/free-solid-svg-icons";
-import { useQuery } from "@tanstack/react-query";
-import { getAppointment } from "@/api/get-appointment";
-import { WithoutNextAppointmentTimeCard } from "./WithoutNextAppointmentTimeCard";
-import { useRemainingTime } from "@/hooks/useRemainingTime";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useRemainingTime } from "@/hooks/useRemainingTime";
+import { faWhatsapp } from "@fortawesome/free-brands-svg-icons";
+import { faScissors } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useQuery } from "@tanstack/react-query";
+import { WithoutNextAppointmentTimeCard } from "./WithoutNextAppointmentTimeCard";
 
 export function NextAppointmentTimeCard() {
   const { data: nextAppointmentData, isFetching } = useQuery({

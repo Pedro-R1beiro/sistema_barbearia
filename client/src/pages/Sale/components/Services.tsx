@@ -1,13 +1,13 @@
 import CardServices from "./CardServices";
 
-import manCuttingHair from "@/assets/man-cutting-hair.svg";
 import manCuttingBeard from "@/assets/man-cutting-beard.svg";
+import manCuttingHair from "@/assets/man-cutting-hair.svg";
 import moustacheIcon from "@/assets/moustache-icon.svg";
 
-import { Card, CardContent, CardFooter, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { LinesWithOr } from "@/components/LinesWithOr";
 import { ContactButton } from "@/components/ContactButton";
+import { LinesWithOr } from "@/components/LinesWithOr";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardFooter, CardTitle } from "@/components/ui/card";
 
 import { faInstagram, faWhatsapp } from "@fortawesome/free-brands-svg-icons";
 import { useNavigate } from "react-router";

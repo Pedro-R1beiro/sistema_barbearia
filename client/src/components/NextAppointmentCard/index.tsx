@@ -6,16 +6,16 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { useRemainingTime } from "@/hooks/useRemainingTime";
+import { cn } from "@/lib/utils";
 import { formatDateRequest } from "@/utils/format-date-request";
 import { useQuery } from "@tanstack/react-query";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
-import { CardFooter } from "./CardFooter";
-import { useRemainingTime } from "@/hooks/useRemainingTime";
-import { CardSkeleton } from "./CardSkeleton";
-import { Button } from "../ui/button";
 import { useNavigate } from "react-router";
-import { cn } from "@/lib/utils";
+import { Button } from "../ui/button";
+import { CardFooter } from "./CardFooter";
+import { CardSkeleton } from "./CardSkeleton";
 
 interface NextAppointmentCardProps {
   portraitModeOnLg?: boolean;

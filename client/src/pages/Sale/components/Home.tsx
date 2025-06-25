@@ -3,8 +3,8 @@ import { Button } from "@/components/ui/button";
 
 import moustacheIcon from "@/assets/moustache-icon.svg";
 
-import { faInstagram, faWhatsapp } from "@fortawesome/free-brands-svg-icons";
 import { SeparationArrow } from "@/components/SeparationArrow";
+import { faInstagram, faWhatsapp } from "@fortawesome/free-brands-svg-icons";
 
 import bg from "@/assets/sale-bg.svg";
 import { useNavigate } from "react-router";

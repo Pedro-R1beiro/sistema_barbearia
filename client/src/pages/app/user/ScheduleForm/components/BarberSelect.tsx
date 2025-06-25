@@ -1,3 +1,4 @@
+import { getAvailableTimeSlots } from "@/api/get-available-time-slots";
 import {
   Select,
   SelectContent,
@@ -7,11 +8,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Skeleton } from "@/components/ui/skeleton";
+import { useQuery } from "@tanstack/react-query";
 import { Controller, type Control, type UseFormWatch } from "react-hook-form";
 import type { ScheduleFormData } from "..";
-import { useQuery } from "@tanstack/react-query";
-import { getAvailableTimeSlots } from "@/api/get-available-time-slots";
-import { Skeleton } from "@/components/ui/skeleton";
 
 interface UserScheduleFormBarberProps {
   control: Control<ScheduleFormData>;

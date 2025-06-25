@@ -1,10 +1,10 @@
+import { AppointmentDialog } from "@/components/AppointmentDialog";
 import { Button } from "@/components/ui/button";
 import { CardFooter as CardFooterUi } from "@/components/ui/card";
-import { useState } from "react";
-import { Phone, Search, Trash } from "lucide-react";
-import { AppointmentDialog } from "@/components/AppointmentDialog";
 import { useCancelAppointment } from "@/hooks/useCancelAppointment";
 import { cn } from "@/lib/utils";
+import { Phone, Search, Trash } from "lucide-react";
+import { useState } from "react";
 
 interface NextAppointmentProps {
   appointmentId: number;

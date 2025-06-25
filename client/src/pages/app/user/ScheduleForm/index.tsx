@@ -1,17 +1,17 @@
 import { Button } from "@/components/ui/button";
 
+import { registerAppointment } from "@/api/register-appointment";
+import { Card, CardContent } from "@/components/ui/card";
 import { DatePicker } from "@/components/ui/date-picker";
-import { useForm } from "react-hook-form";
+import { queryClient } from "@/lib/react-query";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useMutation } from "@tanstack/react-query";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 import { z } from "zod";
+import { BarberSelect } from "./components/BarberSelect";
 import { SelectServices } from "./components/CheckBoxServices";
 import { TimeSelect } from "./components/TimeSelect";
-import { useMutation } from "@tanstack/react-query";
-import { Card, CardContent } from "@/components/ui/card";
-import { registerAppointment } from "@/api/register-appointment";
-import { toast } from "sonner";
-import { queryClient } from "@/lib/react-query";
-import { BarberSelect } from "./components/BarberSelect";
 
 const scheduleFormDataSchema = z.object({
   barber: z.string().min(1, "Selecione um barbeiro"),

@@ -1,4 +1,9 @@
+import {
+  faEllipsisVertical,
+  type IconLookup,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Link, useNavigate } from "react-router";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -7,11 +12,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
-import {
-  faEllipsisVertical,
-  type IconLookup,
-} from "@fortawesome/free-solid-svg-icons";
-import { Link, useNavigate } from "react-router";
 
 interface NavLinksProps {
   navLinks: NavLinkInterface[];
