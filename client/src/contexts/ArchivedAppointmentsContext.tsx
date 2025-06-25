@@ -26,18 +26,31 @@ export function ArchivedAppointmentsProvider({
   >([]);
 
   useEffect(() => {
-    const stored = localStorage.getItem(LOCALSTORAGEKEY);
-
-    if (stored) {
-      setArchivedAppointmentsId(JSON.parse(stored));
+    try {
+      const stored = localStorage.getItem(LOCALSTORAGEKEY);
+      if (stored) {
+        setArchivedAppointmentsId(JSON.parse(stored));
+      }
+    } catch (err) {
+      toast.error(
+        "Não foi possível filtrar agendamentos arquivados. Recarregue a página",
+      );
+      console.log(err);
     }
   }, []);
 
   useEffect(() => {
-    localStorage.setItem(
-      LOCALSTORAGEKEY,
-      JSON.stringify(archivedAppointmentsId),
-    );
+    try {
+      localStorage.setItem(
+        LOCALSTORAGEKEY,
+        JSON.stringify(archivedAppointmentsId),
+      );
+    } catch (err) {
+      toast.error(
+        "Não foi possível arquivar agendamento. Tente novamentre mais tarde!",
+      );
+      console.log(err);
+    }
   }, [archivedAppointmentsId]);
 
   function addAppointmentId(id: number) {
