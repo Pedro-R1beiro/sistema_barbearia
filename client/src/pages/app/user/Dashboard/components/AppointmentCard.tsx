@@ -118,7 +118,3 @@ export function AppointmentCard({ appointment }: AppointmentGroupProps) {
     </Card>
   );
 }
-
-{
-  /*  */
-}

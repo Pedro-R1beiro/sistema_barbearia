@@ -1,5 +1,14 @@
 import { api } from "@/lib/axios";
 
+export type AppointmentStatusType = "all" | "booked" | "completed" | "canceled";
+
+export type GetAppointmentFilter =
+  | "today"
+  | "nearby"
+  | "history"
+  | "next"
+  | "last";
+
 export type AppointmentInterface = {
   id: number;
   date: Date;
@@ -14,7 +23,7 @@ export type AppointmentInterface = {
     price: number;
   }[];
   startTime: string;
-  status: getAppointmentStatus;
+  status: AppointmentStatusType;
   endTime: string;
 };
 
@@ -22,18 +31,9 @@ export interface GetAppointmentResponse {
   message: AppointmentInterface[];
 }
 
-export type getAppointmentFilter =
-  | "today"
-  | "nearby"
-  | "history"
-  | "next"
-  | "last";
-
-export type getAppointmentStatus = "booked" | "completed" | "canceled";
-
 interface GetAppointmentBody {
-  filter?: getAppointmentFilter;
-  status?: getAppointmentStatus;
+  filter?: GetAppointmentFilter;
+  status?: AppointmentStatusType;
 }
 
 export async function getAppointment({ filter, status }: GetAppointmentBody) {
@@ -42,7 +42,7 @@ export async function getAppointment({ filter, status }: GetAppointmentBody) {
     {
       params: {
         filter: filter ?? "",
-        status: status ?? "",
+        status: status === "all" ? "" : status,
       },
     },
   );

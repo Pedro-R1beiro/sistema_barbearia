@@ -1,4 +1,7 @@
-import { getAppointment } from "@/api/get-appointment";
+import {
+  getAppointment,
+  type AppointmentStatusType,
+} from "@/api/get-appointment";
 import {
   Card,
   CardContent,
@@ -6,29 +9,26 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useQuery } from "@tanstack/react-query";
-import { Archive, Calendar, Check, X } from "lucide-react";
 
 import { AppointmentCard } from "./AppointmentCard";
+import { FilterAppointments } from "./FilterAppointments";
+import { useState } from "react";
 
 export function AppointmentsCardGroup() {
+  const [selectedFilter, setSelectedFilter] =
+    useState<AppointmentStatusType>("all");
+
   const { data: appointmentData, isFetching } = useQuery({
-    queryKey: ["appointments"],
-    queryFn: () => getAppointment({}),
+    queryKey: ["appointments", selectedFilter],
+    queryFn: () => getAppointment({ status: selectedFilter }),
     refetchOnWindowFocus: false,
     staleTime: Infinity,
   });
 
   return (
-    <Card className="max-h-132 w-full overflow-hidden">
+    <Card className="max-h-132 min-h-132 w-full overflow-hidden">
       <CardHeader>
         <CardTitle className="text-center text-xl">
           Histórico de agendamentos
@@ -41,26 +41,7 @@ export function AppointmentsCardGroup() {
         )}
         <div className="flex items-center justify-between">
           <p>Filtrar por:</p>
-          <Select>
-            <SelectTrigger>
-              <SelectValue placeholder="todos" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">todos</SelectItem>
-              <SelectItem value="booked">
-                marcado <Calendar />
-              </SelectItem>
-              <SelectItem value="canceled">
-                cancelado <X />
-              </SelectItem>
-              <SelectItem value="completed">
-                concluído <Check />
-              </SelectItem>
-              <SelectItem value="achived">
-                arquivado <Archive />
-              </SelectItem>
-            </SelectContent>
-          </Select>
+          <FilterAppointments setSelectedFilter={setSelectedFilter} />
         </div>
       </CardHeader>
       {isFetching ? (
@@ -69,7 +50,7 @@ export function AppointmentsCardGroup() {
           <Skeleton className="h-48 w-full" />
         </CardContent>
       ) : (
-        <CardContent className="items-center justify-center gap-6 space-y-6 overflow-auto md:flex md:flex-wrap md:space-y-0">
+        <CardContent className="items-center justify-center gap-6 space-y-6 overflow-auto pb-2 md:flex md:flex-wrap md:space-y-0">
           {appointmentData &&
             appointmentData.map((appointment) => (
               <AppointmentCard key={appointment.id} appointment={appointment} />
