@@ -10,7 +10,7 @@ function handleCancelAppointmentError(error: AxiosError) {
 
   switch (statusCode) {
     case 422:
-      toast.error("Agendamento já cancelado!");
+      toast.error("Agendamento já começou ou está no passado!");
       break;
     default:
       toast.error("Houve um erro interno. Tente novamente mais tarde!");

@@ -6,7 +6,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Archive, Calendar, Check, X } from "lucide-react";
+import { Calendar, Check, X } from "lucide-react";
 import { type Dispatch, type SetStateAction } from "react";
 
 interface FilterAppointmentsProps {
@@ -34,9 +34,6 @@ export function FilterAppointments({
         <SelectItem value="completed">
           concluído <Check />
         </SelectItem>
-        {/* <SelectItem value="achived">
-          arquivado <Archive />
-        </SelectItem> */}
       </SelectContent>
     </Select>
   );

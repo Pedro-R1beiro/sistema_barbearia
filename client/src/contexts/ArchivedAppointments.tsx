@@ -1,0 +1,72 @@
+import { createContext, useEffect, useState, type ReactNode } from "react";
+import { toast } from "sonner";
+
+interface ArchivedAppointmentsContextType {
+  archivedAppointmentsId: number[];
+
+  removeAppointmentId: (id: number) => void;
+  addAppointmentId: (id: number) => void;
+}
+
+export const ArchivedAppointmentsContext = createContext(
+  {} as ArchivedAppointmentsContextType,
+);
+
+interface ArchivedAppointmentsProviderProps {
+  children: ReactNode;
+}
+
+const LOCALSTORAGEKEY = "@barbershop:archived-appointments-1.0.0";
+
+export function ArchivedAppointmentsProvider({
+  children,
+}: ArchivedAppointmentsProviderProps) {
+  const [archivedAppointmentsId, setArchivedAppointmentsId] = useState<
+    number[]
+  >([]);
+
+  useEffect(() => {
+    const stored = localStorage.getItem(LOCALSTORAGEKEY);
+
+    if (stored) {
+      setArchivedAppointmentsId(JSON.parse(stored));
+    }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem(
+      LOCALSTORAGEKEY,
+      JSON.stringify(archivedAppointmentsId),
+    );
+  }, [archivedAppointmentsId]);
+
+  function addAppointmentId(id: number) {
+    setArchivedAppointmentsId((prev) => {
+      if (prev.includes(id)) {
+        toast.error("O agendamento já foi arquivado!");
+        return prev;
+      }
+      toast.success("O agendamento foi arquivado!", {
+        action: {
+          label: "ver arquivados",
+          onClick: () => {},
+        },
+      });
+      return [...prev, id];
+    });
+  }
+
+  function removeAppointmentId(id: number) {
+    setArchivedAppointmentsId((prev) =>
+      prev.filter((archivedId) => archivedId !== id),
+    );
+  }
+
+  return (
+    <ArchivedAppointmentsContext.Provider
+      value={{ archivedAppointmentsId, addAppointmentId, removeAppointmentId }}
+    >
+      {children}
+    </ArchivedAppointmentsContext.Provider>
+  );
+}

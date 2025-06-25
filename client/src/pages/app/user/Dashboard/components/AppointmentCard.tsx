@@ -4,12 +4,13 @@ import { AppointmentStatus } from "@/components/AppointmentStatus";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { format } from "date-fns";
-import { useState } from "react";
+import { useContext, useState } from "react";
 
 import barberTable from "@/assets/barber-table.svg";
 import { useCancelAppointment } from "@/hooks/useCancelAppointment";
 import { cn } from "@/lib/utils";
 import { Archive, Search, Trash } from "lucide-react";
+import { ArchivedAppointmentsContext } from "@/contexts/ArchivedAppointments";
 
 interface AppointmentGroupProps {
   appointment: AppointmentInterface;
@@ -17,6 +18,7 @@ interface AppointmentGroupProps {
 
 export function AppointmentCard({ appointment }: AppointmentGroupProps) {
   const [isOpenDetails, setIsOpenDetails] = useState(false);
+  const { addAppointmentId } = useContext(ArchivedAppointmentsContext);
 
   const totalPrice = appointment.services.reduce((acc, cur) => {
     return acc + Number(cur.price);
@@ -82,6 +84,7 @@ export function AppointmentCard({ appointment }: AppointmentGroupProps) {
             </Button>
           ) : (
             <Button
+              onClick={() => addAppointmentId(appointment.id)}
               size="sm"
               variant="outline"
               className="bg-background dark:bg-background text-muted-foreground border-1 dark:border-black"
