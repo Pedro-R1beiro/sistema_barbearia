@@ -9,7 +9,7 @@ import { useContext, useState } from "react";
 import barberTable from "@/assets/barber-table.svg";
 import { useCancelAppointment } from "@/hooks/useCancelAppointment";
 import { cn } from "@/lib/utils";
-import { Archive, Search, Trash } from "lucide-react";
+import { Archive, ArchiveRestore, Search, Trash } from "lucide-react";
 import { ArchivedAppointmentsContext } from "@/contexts/ArchivedAppointments";
 
 interface AppointmentGroupProps {
@@ -18,7 +18,8 @@ interface AppointmentGroupProps {
 
 export function AppointmentCard({ appointment }: AppointmentGroupProps) {
   const [isOpenDetails, setIsOpenDetails] = useState(false);
-  const { addAppointmentId } = useContext(ArchivedAppointmentsContext);
+  const { addAppointmentId, archivedAppointmentsId, removeAppointmentId } =
+    useContext(ArchivedAppointmentsContext);
 
   const totalPrice = appointment.services.reduce((acc, cur) => {
     return acc + Number(cur.price);
@@ -66,7 +67,7 @@ export function AppointmentCard({ appointment }: AppointmentGroupProps) {
         </ul>
         <div className="flex flex-col items-end gap-3">
           <AppointmentStatus status={appointment.status} />
-          {appointment.status === "booked" ? (
+          {appointment.status === "booked" && (
             <Button
               variant="destructive"
               size="sm"
@@ -82,14 +83,27 @@ export function AppointmentCard({ appointment }: AppointmentGroupProps) {
               )}
               <Trash />
             </Button>
-          ) : (
+          )}
+          {appointment.status !== "booked" &&
+            !archivedAppointmentsId.includes(appointment.id) && (
+              <Button
+                onClick={() => addAppointmentId(appointment.id)}
+                size="sm"
+                variant="outline"
+                className="bg-background dark:bg-background text-muted-foreground border-1 dark:border-black"
+              >
+                arquivar <Archive />
+              </Button>
+            )}
+
+          {archivedAppointmentsId.includes(appointment.id) && (
             <Button
-              onClick={() => addAppointmentId(appointment.id)}
+              onClick={() => removeAppointmentId(appointment.id)}
               size="sm"
               variant="outline"
               className="bg-background dark:bg-background text-muted-foreground border-1 dark:border-black"
             >
-              arquivar <Archive />
+              restaurar <ArchiveRestore />
             </Button>
           )}
         </div>

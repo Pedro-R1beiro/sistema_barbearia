@@ -18,18 +18,25 @@ import { useContext, useState } from "react";
 import { ArchivedAppointmentsContext } from "@/contexts/ArchivedAppointments";
 
 export function AppointmentsCardGroup() {
-  const [selectedFilter, setSelectedFilter] =
-    useState<AppointmentStatusType>("all");
+  const [selectedFilter, setSelectedFilter] = useState<
+    AppointmentStatusType | "archiveds"
+  >("all");
 
   const { data: appointmentData, isFetching } = useQuery({
     queryKey: ["appointments", selectedFilter],
-    queryFn: () => getAppointment({ status: selectedFilter }),
+    queryFn: () =>
+      getAppointment({
+        status: selectedFilter === "archiveds" ? "all" : selectedFilter,
+      }),
     refetchOnWindowFocus: false,
     staleTime: Infinity,
   });
 
   const { archivedAppointmentsId } = useContext(ArchivedAppointmentsContext);
   const appointments = appointmentData?.filter((appointment) => {
+    if (selectedFilter === "archiveds") {
+      return archivedAppointmentsId.includes(appointment.id);
+    }
     return !archivedAppointmentsId.includes(appointment.id);
   });
 
@@ -45,7 +52,7 @@ export function AppointmentsCardGroup() {
             Os agendamentos marcados não podem ser arquivados
           </CardDescription>
         )}
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between font-semibold">
           <p>Filtrar por:</p>
           <FilterAppointments setSelectedFilter={setSelectedFilter} />
         </div>
@@ -61,6 +68,13 @@ export function AppointmentsCardGroup() {
             appointments.map((appointment) => (
               <AppointmentCard key={appointment.id} appointment={appointment} />
             ))}
+          {appointments && appointments?.length <= 0 && (
+            <CardDescription className="text-center">
+              Olhe os agendamentos arquivados <br />
+              na{" "}
+              <span className="font-bold">opção de filtros. Logo acima!</span>
+            </CardDescription>
+          )}
         </CardContent>
       )}
     </Card>
