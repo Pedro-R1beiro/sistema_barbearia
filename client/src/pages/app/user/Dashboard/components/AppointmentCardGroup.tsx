@@ -14,7 +14,8 @@ import { useQuery } from "@tanstack/react-query";
 
 import { AppointmentCard } from "./AppointmentCard";
 import { FilterAppointments } from "./FilterAppointments";
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { ArchivedAppointmentsContext } from "@/contexts/ArchivedAppointments";
 
 export function AppointmentsCardGroup() {
   const [selectedFilter, setSelectedFilter] =
@@ -25,6 +26,11 @@ export function AppointmentsCardGroup() {
     queryFn: () => getAppointment({ status: selectedFilter }),
     refetchOnWindowFocus: false,
     staleTime: Infinity,
+  });
+
+  const { archivedAppointmentsId } = useContext(ArchivedAppointmentsContext);
+  const appointments = appointmentData?.filter((appointment) => {
+    return !archivedAppointmentsId.includes(appointment.id);
   });
 
   return (
@@ -51,8 +57,8 @@ export function AppointmentsCardGroup() {
         </CardContent>
       ) : (
         <CardContent className="items-center justify-center gap-6 space-y-6 overflow-auto pb-2 md:flex md:flex-wrap md:space-y-0">
-          {appointmentData &&
-            appointmentData.map((appointment) => (
+          {appointments &&
+            appointments.map((appointment) => (
               <AppointmentCard key={appointment.id} appointment={appointment} />
             ))}
         </CardContent>
