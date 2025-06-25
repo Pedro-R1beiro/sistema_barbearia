@@ -64,7 +64,7 @@ export function CardFooter({
             </>
           ) : (
             <>
-              cancelar agendamneto
+              cancelar agendamento
               <Trash />
             </>
           )}

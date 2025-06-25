@@ -9,11 +9,21 @@ import {
 import { useQuery } from "@tanstack/react-query";
 import { AppointmentCard } from "./AppointmentCard";
 import { Skeleton } from "@/components/ui/skeleton";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Archive, Calendar, Check, X } from "lucide-react";
 
 export function AppointmentsCardGroup() {
   const { data: appointmentData, isFetching } = useQuery({
     queryKey: ["appointments"],
     queryFn: () => getAppointment({}),
+    refetchOnWindowFocus: false,
+    staleTime: Infinity,
   });
 
   return (
@@ -28,6 +38,29 @@ export function AppointmentsCardGroup() {
             Os agendamentos marcados não podem ser arquivados
           </CardDescription>
         )}
+        <div className="flex items-center justify-between">
+          <p>Filtrar por:</p>
+          <Select>
+            <SelectTrigger>
+              <SelectValue placeholder="todos" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">todos</SelectItem>
+              <SelectItem value="booked">
+                marcado <Calendar />
+              </SelectItem>
+              <SelectItem value="canceled">
+                cancelado <X />
+              </SelectItem>
+              <SelectItem value="completed">
+                concluído <Check />
+              </SelectItem>
+              <SelectItem value="achived">
+                arquivado <Archive />
+              </SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
       </CardHeader>
       {isFetching ? (
         <CardContent className="space-y-4 pb-8">
