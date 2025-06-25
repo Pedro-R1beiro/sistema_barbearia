@@ -10,7 +10,7 @@ import barberTable from "@/assets/barber-table.svg";
 import { useCancelAppointment } from "@/hooks/useCancelAppointment";
 import { cn } from "@/lib/utils";
 import { Archive, ArchiveRestore, Search, Trash } from "lucide-react";
-import { ArchivedAppointmentsContext } from "@/contexts/ArchivedAppointments";
+import { ArchivedAppointmentsContext } from "@/contexts/ArchivedAppointmentsContext";
 
 interface AppointmentGroupProps {
   appointment: AppointmentInterface;
