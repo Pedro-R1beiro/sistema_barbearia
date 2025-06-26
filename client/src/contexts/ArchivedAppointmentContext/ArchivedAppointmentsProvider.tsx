@@ -1,16 +1,6 @@
-import { createContext, useEffect, useState, type ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import { toast } from "sonner";
-
-interface ArchivedAppointmentsContextType {
-  archivedAppointmentsId: number[];
-
-  removeAppointmentId: (id: number) => void;
-  addAppointmentId: (id: number) => void;
-}
-
-export const ArchivedAppointmentsContext = createContext(
-  {} as ArchivedAppointmentsContextType,
-);
+import { ArchivedAppointmentsContext } from ".";
 
 interface ArchivedAppointmentsProviderProps {
   children: ReactNode;
