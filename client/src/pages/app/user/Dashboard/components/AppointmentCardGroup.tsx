@@ -16,6 +16,7 @@ import { AppointmentCard } from "./AppointmentCard";
 import { FilterAppointments } from "./FilterAppointments";
 import { useContext, useState } from "react";
 import { ArchivedAppointmentsContext } from "@/contexts/ArchivedAppointmentContext";
+import { AnimatePresence } from "motion/react";
 
 export function AppointmentsCardGroup() {
   const [selectedFilter, setSelectedFilter] = useState<
@@ -64,10 +65,15 @@ export function AppointmentsCardGroup() {
         </CardContent>
       ) : (
         <CardContent className="items-center justify-center gap-6 space-y-6 overflow-auto pb-2 md:flex md:flex-wrap md:space-y-0">
-          {appointments &&
-            appointments.map((appointment) => (
-              <AppointmentCard key={appointment.id} appointment={appointment} />
-            ))}
+          <AnimatePresence mode="popLayout">
+            {appointments &&
+              appointments.map((appointment) => (
+                <AppointmentCard
+                  key={appointment.id}
+                  appointment={appointment}
+                />
+              ))}
+          </AnimatePresence>
           {appointments && appointments?.length <= 0 && (
             <CardDescription className="text-center">
               Olhe os agendamentos arquivados <br />

@@ -3,11 +3,18 @@ import { Card, CardContent } from "@/components/ui/card";
 import { faScissors } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useNavigate } from "react-router";
+import { motion } from "motion/react";
+
+const MotionCard = motion(Card);
 
 export function WithoutNextAppointmentTimeCard() {
   const navigate = useNavigate();
   return (
-    <Card className="bg-custom-foreground text-background h-34 md:h-38 lg:w-72">
+    <MotionCard
+      initial={{ scale: 0 }}
+      animate={{ scale: 1 }}
+      className="bg-custom-foreground text-background h-34 md:h-38 lg:w-72"
+    >
       <CardContent className="px-4">
         <div className="flex items-start justify-between pr-2">
           <span className="text-xl font-bold">Agende</span>
@@ -25,6 +32,6 @@ export function WithoutNextAppointmentTimeCard() {
           </Button>
         </div>
       </CardContent>
-    </Card>
+    </MotionCard>
   );
 }

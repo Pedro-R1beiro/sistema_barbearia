@@ -6,6 +6,9 @@ import { faCalendarDays } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useQuery } from "@tanstack/react-query";
 import { WithoutNextAppointmentsCard } from "./WithoutNextAppointmentsCard";
+import { motion } from "motion/react";
+
+const MotionCard = motion(Card);
 
 export function NextAppointmentsCard() {
   const { data: nextAppointmentsData, isFetching } = useQuery({
@@ -18,7 +21,7 @@ export function NextAppointmentsCard() {
   return (
     <>
       {isFetching ? (
-        <div className="bg-custom-foreground h-34 flex-1 items-center space-y-10 space-x-4 rounded-md p-4 px-4 py-4 md:h-38">
+        <div className="bg-custom-foreground h-34 flex-1 items-center space-y-10 space-x-4 rounded-xl p-4 px-4 py-4 md:h-38">
           <div className="flex w-full items-center justify-between gap-4">
             <Skeleton className="h-8 w-[250px]" />
             <Skeleton className="h-8 w-8 rounded-full" />
@@ -31,7 +34,11 @@ export function NextAppointmentsCard() {
       ) : (
         <>
           {nextAppointmentsData ? (
-            <Card className="bg-custom-foreground text-background h-34 md:h-38 md:flex-1">
+            <MotionCard
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              className="bg-custom-foreground text-background h-34 md:h-38 md:flex-1"
+            >
               <CardContent className="px-4">
                 <div className="flex items-start justify-between pr-2">
                   <CardTitle className="text-xl font-bold">
@@ -49,7 +56,7 @@ export function NextAppointmentsCard() {
                   </Button>
                 </div>
               </CardContent>
-            </Card>
+            </MotionCard>
           ) : (
             <WithoutNextAppointmentsCard />
           )}

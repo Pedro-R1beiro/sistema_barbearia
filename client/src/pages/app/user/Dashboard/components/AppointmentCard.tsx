@@ -12,6 +12,10 @@ import { cn } from "@/lib/utils";
 import { Archive, ArchiveRestore, Search, Trash } from "lucide-react";
 import { ArchivedAppointmentsContext } from "@/contexts/ArchivedAppointmentContext";
 
+import { motion } from "motion/react";
+
+const MotionCard = motion(Card);
+
 interface AppointmentGroupProps {
   appointment: AppointmentInterface;
 }
@@ -21,6 +25,8 @@ export function AppointmentCard({ appointment }: AppointmentGroupProps) {
   const { addAppointmentId, archivedAppointmentsId, removeAppointmentId } =
     useContext(ArchivedAppointmentsContext);
 
+  const [isVisible, setIsvisible] = useState(true);
+
   const totalPrice = appointment.services.reduce((acc, cur) => {
     return acc + Number(cur.price);
   }, 0);
@@ -29,8 +35,10 @@ export function AppointmentCard({ appointment }: AppointmentGroupProps) {
     appointment.id,
   );
 
-  return (
-    <Card
+  return isVisible ? (
+    <MotionCard
+      exit={{ x: -50, opacity: 0 }}
+      transition={{ duration: 0.25 }}
       className={cn(
         "bg-background relative overflow-hidden duration-300 first:mt-0.5 hover:scale-102 md:min-w-95 lg:min-w-full",
         appointment.status === "booked" && "border-2 border-amber-400",
@@ -72,9 +80,10 @@ export function AppointmentCard({ appointment }: AppointmentGroupProps) {
               variant="destructive"
               size="sm"
               disabled={isPending}
-              onClick={() =>
-                cancelAppointmentFn({ appointmentId: appointment.id })
-              }
+              onClick={() => {
+                setIsvisible(false);
+                cancelAppointmentFn({ appointmentId: appointment.id });
+              }}
             >
               {isPending ? (
                 <span className="border-background/60 h-3 w-3 animate-spin rounded-full border-2 border-b-transparent" />
@@ -132,6 +141,6 @@ export function AppointmentCard({ appointment }: AppointmentGroupProps) {
           </Button>
         </AppointmentDialog>
       </CardFooter>
-    </Card>
-  );
+    </MotionCard>
+  ) : null;
 }
