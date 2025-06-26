@@ -17,6 +17,9 @@ import { FilterAppointments } from "./FilterAppointments";
 import { useContext, useState } from "react";
 import { ArchivedAppointmentsContext } from "@/contexts/ArchivedAppointmentContext";
 import { AnimatePresence } from "motion/react";
+import { motion } from "motion/react";
+
+const MotionCard = motion(Card);
 
 export function AppointmentsCardGroup() {
   const [selectedFilter, setSelectedFilter] = useState<
@@ -42,7 +45,11 @@ export function AppointmentsCardGroup() {
   });
 
   return (
-    <Card className="max-h-132 min-h-132 w-full overflow-hidden">
+    <MotionCard
+      initial={{ y: 20 }}
+      animate={{ y: 0 }}
+      className="max-h-132 min-h-132 w-full overflow-hidden"
+    >
       <CardHeader>
         <CardTitle className="text-center text-xl">
           Histórico de agendamentos
@@ -59,9 +66,9 @@ export function AppointmentsCardGroup() {
         </div>
       </CardHeader>
       {isFetching ? (
-        <CardContent className="space-y-4 pb-8">
-          <Skeleton className="h-48 w-full" />
-          <Skeleton className="h-48 w-full" />
+        <CardContent className="space-y-4 pt-3 pb-8">
+          <Skeleton className="h-44 w-full" />
+          <Skeleton className="h-44 w-full" />
         </CardContent>
       ) : (
         <CardContent className="items-center justify-center gap-6 space-y-6 overflow-auto pb-2 md:flex md:flex-wrap md:space-y-0">
@@ -83,6 +90,6 @@ export function AppointmentsCardGroup() {
           )}
         </CardContent>
       )}
-    </Card>
+    </MotionCard>
   );
 }
