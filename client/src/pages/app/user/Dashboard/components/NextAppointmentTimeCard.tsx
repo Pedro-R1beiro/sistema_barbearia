@@ -52,7 +52,7 @@ export function NextAppointmentTimeCard() {
             <MotionCard
               initial={{ scale: 0 }}
               animate={{ scale: 1 }}
-              transition={{ duration: 0.4 }}
+              transition={{ duration: 0.2 }}
               className="bg-custom-foreground text-background h-34 min-w-fit md:h-38 lg:w-70"
             >
               <CardContent className="px-4">

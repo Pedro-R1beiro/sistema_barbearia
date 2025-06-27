@@ -55,9 +55,10 @@ export function AppointmentsCardGroup() {
           Histórico de agendamentos
         </CardTitle>
         {!appointmentData && !isFetching && (
-          <CardDescription className="text-center">
-            Você não tem agendamentos guardados. Verifique os arquivados. obs:
-            Os agendamentos marcados não podem ser arquivados
+          <CardDescription>
+            Sem agendamentos.{" "}
+            <span className="font-bold">Verifique os arquivados</span> Obs:
+            agendamentos marcados não podem ser arquivados
           </CardDescription>
         )}
         <div className="flex items-center justify-between font-semibold">
