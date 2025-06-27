@@ -67,9 +67,9 @@ export function AppointmentsCardGroup() {
         </div>
       </CardHeader>
       {isFetching ? (
-        <CardContent className="space-y-4 pt-3 pb-8">
-          <Skeleton className="h-44 w-full" />
-          <Skeleton className="h-44 w-full" />
+        <CardContent className="flex flex-wrap items-center justify-center gap-6 pt-3 pb-8 md:min-w-95 lg:flex-col">
+          <Skeleton className="h-40 w-1/3 lg:min-w-full" />
+          <Skeleton className="h-40 w-1/3 lg:min-w-full" />
         </CardContent>
       ) : (
         <CardContent className="items-center justify-center gap-6 space-y-6 overflow-auto pb-2 md:flex md:flex-wrap md:space-y-0">

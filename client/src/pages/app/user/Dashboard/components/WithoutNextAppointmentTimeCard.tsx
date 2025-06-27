@@ -13,7 +13,7 @@ export function WithoutNextAppointmentTimeCard() {
     <MotionCard
       initial={{ scale: 0 }}
       animate={{ scale: 1 }}
-      className="bg-custom-foreground text-background h-34 md:h-38 lg:w-72"
+      className="bg-custom-foreground text-background h-34 md:h-38 md:w-86 lg:w-72"
     >
       <CardContent className="px-4">
         <div className="flex items-start justify-between pr-2">

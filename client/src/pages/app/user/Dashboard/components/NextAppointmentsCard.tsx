@@ -23,11 +23,11 @@ export function NextAppointmentsCard() {
       {isFetching ? (
         <div className="bg-custom-foreground h-34 flex-1 items-center space-y-10 space-x-4 rounded-xl p-4 px-4 py-4 md:h-38">
           <div className="flex w-full items-center justify-between gap-4">
-            <Skeleton className="h-8 w-[250px]" />
+            <Skeleton className="h-8 w-[120px]" />
             <Skeleton className="h-8 w-8 rounded-full" />
           </div>
           <div className="flex w-full items-center justify-between gap-4">
-            <Skeleton className="h-8 w-[250px]" />
+            <Skeleton className="h-8 w-[150px]" />
             <Skeleton className="h-8 w-16 rounded-md" />
           </div>
         </div>
