@@ -29,20 +29,21 @@ export function CardFooter({
     >
       <div
         className={cn(
-          "w-full max-w-full md:flex md:flex-col md:justify-between md:gap-6",
-          portraitModeOnLg ? "space-y-5 lg:gap-2" : "space-y-2",
+          "w-full max-w-full space-y-5 md:flex md:flex-col md:justify-between md:gap-6",
+          portraitModeOnLg ? "lg:gap-2" : "lg:space-y-2",
         )}
       >
         <AppointmentDialog
           isOpenDetails={isOpenDetails}
           setIsOpenDetails={setIsOpenDetails}
           appointmentId={appointmentId}
+          className="font-medium"
         >
           ver detalhes <Search />
         </AppointmentDialog>
         <Button
           className={cn(
-            "w-full flex-1 py-5 font-bold md:w-auto md:py-3",
+            "w-full flex-1 py-5 font-medium md:w-auto md:py-3",
             portraitModeOnLg ? "lg:flex-none lg:py-0" : "lg:flex-none lg:py-5",
           )}
         >
@@ -52,7 +53,7 @@ export function CardFooter({
           disabled={isPending}
           onClick={() => cancelAppointmentFn({ appointmentId })}
           className={cn(
-            "w-full flex-1 py-5 font-bold md:w-auto md:py-3",
+            "w-full flex-1 py-5 font-medium md:w-auto md:py-3",
             portraitModeOnLg ? "lg:flex-none lg:py-0" : "lg:flex-none lg:py-5",
           )}
           variant="customDestructive"

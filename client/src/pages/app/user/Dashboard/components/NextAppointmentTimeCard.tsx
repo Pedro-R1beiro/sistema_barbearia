@@ -53,7 +53,7 @@ export function NextAppointmentTimeCard() {
               initial={{ scale: 0 }}
               animate={{ scale: 1 }}
               transition={{ duration: 0.2 }}
-              className="bg-custom-foreground text-background h-34 min-w-fit md:h-38 lg:w-70"
+              className="bg-custom-foreground text-background h-34 min-w-fit md:h-38 md:min-w-90 lg:min-w-60"
             >
               <CardContent className="px-4">
                 <div className="flex items-start justify-between pr-2">
@@ -61,12 +61,7 @@ export function NextAppointmentTimeCard() {
                     <span className="text-xl font-bold">{remainingTime}</span>
                   ) : (
                     <>
-                      <span className="text-xl font-bold md:hidden">
-                        Próximo Horário
-                      </span>
-                      <span className="hidden text-xl font-bold md:inline">
-                        Próximo Horá...
-                      </span>
+                      <span className="text-xl font-bold">Próximo Horário</span>
                     </>
                   )}
                   <FontAwesomeIcon icon={faScissors} className="text-3xl" />
@@ -78,7 +73,9 @@ export function NextAppointmentTimeCard() {
                       <br className="hidden md:block" /> horário.
                     </span>
                   ) : (
-                    <span className="font-medium">Passou ou em andamento.</span>
+                    <span className="font-medium">
+                      Passou ou <br /> em andamento.
+                    </span>
                   )}
 
                   <ContactButton icon={faWhatsapp} link="Whatsapp.client.api" />

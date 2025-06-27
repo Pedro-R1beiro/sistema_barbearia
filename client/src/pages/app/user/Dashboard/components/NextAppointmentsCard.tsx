@@ -43,7 +43,7 @@ export function NextAppointmentsCard() {
               <CardContent className="px-4">
                 <div className="flex items-start justify-between pr-2">
                   <CardTitle className="text-xl font-bold">
-                    Próximos agendamentos
+                    Agendamentos
                   </CardTitle>
                   <FontAwesomeIcon icon={faCalendarDays} className="text-3xl" />
                 </div>
