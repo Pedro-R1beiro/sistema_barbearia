@@ -4,7 +4,7 @@ class Database
     private $host = "localhost";
     private $dbname = "barbershop_system";
     private $username = "root";
-    private $password = "";
+    private $password = "kiaq7900";
     public $conn;
 
     public function connect() {

@@ -1,17 +1,17 @@
 <?php
 // Habilita CORS para qualquer origem — você pode trocar o * por um domínio específico
-header("Access-Control-Allow-Origin: *");
+
+header("Access-Control-Allow-Origin: http://localhost:5173");
+
+header("Access-Control-Allow-Credentials: true");
 header("Access-Control-Allow-Headers: Content-Type, Authorization");
+
 header("Access-Control-Allow-Methods: GET, POST, PATCH, DELETE, OPTIONS");
 
-// Se for uma requisição de pré-vôo (OPTIONS), responda imediatamente
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+    header("Content-Length: 0");
     http_response_code(200);
-    echo json_encode([
-        'status' => 'success',
-        'message' => 'Requisição aceita'
-    ]);
-    exit;
+    exit;
 }
 
 // require_once __DIR__ . '/../controllers/professionalController.php';
@@ -21,7 +21,7 @@ require_once __DIR__ . '/../controllers/clientController/clientPost.php';
 require_once __DIR__ . '/../controllers/clientController/clientPatch.php';
 require_once __DIR__ . '/../controllers/clientController/clientDelete.php';
 
-$basePath = '/sistema_barbearia_2.0/backend/';
+$basePath = '/sistema_barbearia/backend/';
 $requestUri = str_replace($basePath, '', $_SERVER['REQUEST_URI']);
 $requestUri = trim(parse_url($requestUri, PHP_URL_PATH), '/');
 

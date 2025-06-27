@@ -1,5 +1,5 @@
 RewriteEngine On
-RewriteBase /sistema_barbearia_2.0/backend/
+RewriteBase /sistema_barbearia/backend/
 
 # Redireciona tudo para index.php, exceto arquivos e pastas reais
 RewriteCond %{REQUEST_FILENAME} !-f

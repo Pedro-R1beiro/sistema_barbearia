@@ -18,8 +18,8 @@ class EmailSender {
         $this->mail->isSMTP();
         $this->mail->Host = 'sandbox.smtp.mailtrap.io';
         $this->mail->SMTPAuth = true;
-        $this->mail->Username = '06259d999d81f3';
-        $this->mail->Password = '6cd99d63e29fc1';
+        $this->mail->Username = '9236d426257ba1';
+        $this->mail->Password = 'b14c1c810ff044';
         $this->mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
         $this->mail->Port = 2525;
     }
