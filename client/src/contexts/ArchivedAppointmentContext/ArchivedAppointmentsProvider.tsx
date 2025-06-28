@@ -14,6 +14,7 @@ export function ArchivedAppointmentsProvider({
   const [archivedAppointmentsId, setArchivedAppointmentsId] = useState<
     number[]
   >([]);
+  const [isInitialized, setIsInitialized] = useState(false);
 
   useEffect(() => {
     try {
@@ -26,10 +27,13 @@ export function ArchivedAppointmentsProvider({
         "Não foi possível filtrar agendamentos arquivados. Recarregue a página",
       );
       console.log(err);
+    } finally {
+      setIsInitialized(true);
     }
   }, []);
 
   useEffect(() => {
+    if (!isInitialized) return;
     try {
       localStorage.setItem(
         LOCALSTORAGEKEY,
@@ -41,7 +45,7 @@ export function ArchivedAppointmentsProvider({
       );
       console.log(err);
     }
-  }, [archivedAppointmentsId]);
+  }, [archivedAppointmentsId, isInitialized]);
 
   function addAppointmentId(id: number) {
     setArchivedAppointmentsId((prev) => {
