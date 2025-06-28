@@ -53,7 +53,7 @@ export function NextAppointmentTimeCard() {
               initial={{ scale: 0 }}
               animate={{ scale: 1 }}
               transition={{ duration: 0.2 }}
-              className="bg-custom-foreground text-background h-34 min-w-fit md:h-38 md:min-w-90 lg:min-w-60"
+              className="bg-custom-foreground text-background h-34 min-w-fit md:h-38 md:min-w-90 lg:min-w-70"
             >
               <CardContent className="px-4">
                 <div className="flex items-start justify-between pr-2">

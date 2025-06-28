@@ -3,7 +3,7 @@ import {
   type IconLookup,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Link, useNavigate } from "react-router";
+import { Link, useLocation, useNavigate } from "react-router";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -12,6 +12,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
+import { cn } from "@/lib/utils";
 
 interface NavLinksProps {
   navLinks: NavLinkInterface[];
@@ -26,6 +27,7 @@ export interface NavLinkInterface {
 
 export function NavLinks({ navLinks }: NavLinksProps) {
   const navigate = useNavigate();
+  const { pathname } = useLocation();
 
   return (
     <>
@@ -34,8 +36,12 @@ export function NavLinks({ navLinks }: NavLinksProps) {
           <li key={link.text} className="w-full">
             {link.type === "reactLink" ? (
               <Link
+                data-currenty={pathname === link.link}
                 to={link.link}
-                className="hover:bg-muted/10 w-full space-x-2.5 rounded-md p-2 whitespace-nowrap duration-100"
+                className={cn(
+                  "hover:bg-muted/10 w-full space-x-2.5 rounded-md p-2 whitespace-nowrap duration-200",
+                  "data-[currenty=true]:bg-muted/10",
+                )}
               >
                 <FontAwesomeIcon icon={link.icon} />
                 <span>{link.text}</span>
@@ -43,7 +49,10 @@ export function NavLinks({ navLinks }: NavLinksProps) {
             ) : (
               <a
                 href={link.link}
-                className="hover:bg-muted/10 w-full space-x-2.5 rounded-md p-2 whitespace-nowrap duration-200"
+                className={cn(
+                  "hover:bg-muted/10 w-full space-x-2.5 rounded-md p-2 whitespace-nowrap duration-200",
+                  "data-[currenty=true]:bg-muted/10",
+                )}
               >
                 <FontAwesomeIcon icon={link.icon} />
                 <span>{link.text}</span>
