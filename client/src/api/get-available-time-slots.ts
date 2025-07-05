@@ -8,7 +8,7 @@ export type BarberAvailabilityStatus =
   | "fully_booked"
   | "available";
 
-interface getAvailableTimeSlotsResponse {
+interface GetAvailableTimeSlotsResponse {
   message: {
     id: number;
     name: string;
@@ -31,7 +31,7 @@ export async function getAvailableTimeSlots({
   const formatService = service.join(",");
   const formatedDate = formatDateRequest(date);
 
-  const response = await api.get<getAvailableTimeSlotsResponse>(
+  const response = await api.get<GetAvailableTimeSlotsResponse>(
     "/client/availableTimeSlots",
     {
       params: {

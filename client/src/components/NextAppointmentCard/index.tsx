@@ -16,10 +16,13 @@ import { useNavigate } from "react-router";
 import { Button } from "../ui/button";
 import { CardFooter } from "./CardFooter";
 import { CardSkeleton } from "./CardSkeleton";
+import { motion } from "motion/react";
 
 interface NextAppointmentCardProps {
   portraitModeOnLg?: boolean;
 }
+
+const MotionCard = motion(Card);
 
 export function NextAppointmentCard({
   portraitModeOnLg = false,
@@ -59,7 +62,11 @@ export function NextAppointmentCard({
       ) : (
         <>
           {nextAppointmentData ? (
-            <Card className="shadow-2xl lg:min-w-85">
+            <MotionCard
+              initial={{ y: 80 }}
+              animate={{ y: 0 }}
+              className="shadow-2xl lg:min-w-85"
+            >
               <CardHeader>
                 <CardTitle
                   className={cn(
@@ -125,10 +132,10 @@ export function NextAppointmentCard({
                   portraitModeOnLg={portraitModeOnLg}
                 />
               </div>
-            </Card>
+            </MotionCard>
           ) : (
             <>
-              <Card>
+              <MotionCard>
                 <CardHeader>
                   <CardTitle className="text-xl font-bold md:text-2xl lg:text-xl">
                     Vc não tem horários marcados
@@ -154,7 +161,7 @@ export function NextAppointmentCard({
                     </div>
                   </CardContent>
                 </CardHeader>
-              </Card>
+              </MotionCard>
             </>
           )}
         </>

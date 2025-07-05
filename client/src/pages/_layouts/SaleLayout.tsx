@@ -21,7 +21,7 @@ export function SaleLayout() {
   const navigate = useNavigate();
   return (
     <>
-      <div className="fixed top-5 left-1/2 z-100 w-full max-w-6xl translate-x-[-50%] px-4">
+      <div className="fixed top-5 left-1/2 z-100 w-full max-w-[1152px] translate-x-[-50%] px-4">
         <Header>
           <nav className="flex w-full items-center justify-end gap-4 md:justify-between md:pl-30">
             <div className="flex gap-4">

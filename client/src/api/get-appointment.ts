@@ -31,12 +31,15 @@ export interface GetAppointmentResponse {
   message: AppointmentInterface[];
 }
 
-interface GetAppointmentBody {
+interface GetAppointmentQueries {
   filter?: GetAppointmentFilter;
   status?: AppointmentStatusType;
 }
 
-export async function getAppointment({ filter, status }: GetAppointmentBody) {
+export async function getAppointment({
+  filter,
+  status,
+}: GetAppointmentQueries) {
   const response = await api.get<GetAppointmentResponse>(
     "/client/getAppointment",
     {

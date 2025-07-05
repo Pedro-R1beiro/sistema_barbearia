@@ -35,8 +35,6 @@ export function AppointmentCard({ appointment }: AppointmentGroupProps) {
 
   return (
     <MotionCard
-      initial={{ scale: 0.9 }}
-      animate={{ scale: 1 }}
       exit={{ x: -50, opacity: 0 }}
       className={cn(
         "bg-background relative overflow-hidden duration-300 first:mt-0.5 hover:scale-102 md:min-w-95 lg:min-w-full",
