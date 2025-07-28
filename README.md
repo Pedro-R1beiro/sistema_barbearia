@@ -414,11 +414,11 @@ GET /backend/client/accountInformation
 
 ### Mensagem em caso de sucesso:
 ```json
-"message": [
+"message": {
         "name": "User Name",
         "email": "user@gmail.com",
         "phone": "(xx) xxxxx-xxxx"
-]
+}
 ```
 
 ### Códigos http
