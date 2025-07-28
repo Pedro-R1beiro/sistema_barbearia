@@ -25,6 +25,7 @@ Para testar o CORS, basta acessar qualquer rota dentro da API (Até mesmo uma qu
 |[Validar Email](#validar-email-client)|[Cancelar Agendamento](#cancelar-agendamento-client)|
 |[Deletar Conta](#deletar-conta-client)|[Selecionar Serviços Disponíveis](#selecionar-serviços-disponíveis-client)|
 |[Alterar Informações](#alterar-informações-client)|
+|[Informações da Conta](#informação-da-conta-client)|
 |[Alterar Senha](#alterar-senha-client)|
 |[Enviar Email de Recuperação](#enviar-email-de-recuperação-client)|
 |[Recuperar Senha](#recuperar-senha-client)|
@@ -396,6 +397,27 @@ GET /backend/client/getServices
             "duration": 45,
             "active": 1
         },
+]
+```
+
+### Códigos http
+- 200: Serviços encontrados
+- 204: Nenhum serviço encontrado
+- 500: Erro interno
+
+## Informações da Conta (Client)
+
+### Caminho
+```http
+GET /backend/client/accountInformation
+```
+
+### Mensagem em caso de sucesso:
+```json
+"message": [
+        "name": "User Name",
+        "email": "user@gmail.com",
+        "phone": "(xx) xxxxx-xxxx"
 ]
 ```
 
