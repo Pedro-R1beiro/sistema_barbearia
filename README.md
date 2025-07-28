@@ -422,6 +422,5 @@ GET /backend/client/accountInformation
 ```
 
 ### Códigos http
-- 200: Serviços encontrados
-- 204: Nenhum serviço encontrado
+- 200: Informações da Conta
 - 500: Erro interno
