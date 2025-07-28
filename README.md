@@ -25,7 +25,7 @@ Para testar o CORS, basta acessar qualquer rota dentro da API (Até mesmo uma qu
 |[Validar Email](#validar-email-client)|[Cancelar Agendamento](#cancelar-agendamento-client)|
 |[Deletar Conta](#deletar-conta-client)|[Selecionar Serviços Disponíveis](#selecionar-serviços-disponíveis-client)|
 |[Alterar Informações](#alterar-informações-client)|
-|[Informações da Conta](#informação-da-conta-client)|
+|[Informações da Conta](#informações-da-conta-client)|
 |[Alterar Senha](#alterar-senha-client)|
 |[Enviar Email de Recuperação](#enviar-email-de-recuperação-client)|
 |[Recuperar Senha](#recuperar-senha-client)|
