@@ -1,6 +1,6 @@
 <?php 
 
-namespace App\Actions\Client\Patch;
+namespace App\Controllers\Client\Appointment;
 
 use App\Models\Appointment;
 
@@ -14,10 +14,10 @@ class CancelAppointment {
         $this->appo = $appo;
     }
 
-    public function handle($data, $idUser)
+    public function handle($data)
     {
         try {
-            $idClient = $idUser;
+            $idClient = $data['id_user'] ?? null;
 
             if (empty($data['id']) || !is_numeric(trim($data['id']))) {
                 return [

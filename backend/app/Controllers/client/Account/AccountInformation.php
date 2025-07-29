@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Actions\Client\Get;
+namespace App\Controllers\Client\Account;
 
 use App\Models\Client;
 
@@ -15,9 +15,11 @@ class AccountInformation {
         $this->client = $client;
     }
 
-    public function handle(int $idUser)
+    public function handle($data)
     {
         try {
+            $idUser = $data['id_user'] ?? null;
+
             $accountInfo = $this->client->getById($idUser);
             if ($accountInfo && count($accountInfo) > 0) {
                 return [

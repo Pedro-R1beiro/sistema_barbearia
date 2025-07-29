@@ -1,55 +1,115 @@
 <?php
 
-use App\Controllers\Client\ClientDelete;
-use App\Controllers\Client\ClientGet;
-use App\Controllers\Client\ClientPatch;
-use App\Controllers\Client\ClientPost;
-
+use App\Controllers\Client\AccountController;
+use App\Controllers\Client\AppointmentController;
+use App\Controllers\Client\AuthController;
+use App\Services\Authenticate;
 use Routes\Router;
 
 $router = new Router;
 
-$controllers = [
-    'DELETE' => new ClientDelete,
-    'GET' => new ClientGet,
-    'PATCH' => new ClientPatch,
-    'POST' => new ClientPost
+$controllersList = [
+    'AuthController' => new AuthController,
+    'AccountController' => new AccountController,
+    'AppointmentController' => new AppointmentController
 ];
 
 $routes = [
-    'DELETE' => [
-        'delete'
+    'AuthController' => [
+        'PATCH' => [
+            'resetPassword' => [
+                'requires_cookie' => false,
+                'requires_id' => false
+            ],
+            'validateEmail' => [
+                'requires_cookie' => false,
+                'requires_id' => false
+            ]
+        ],
+        'POST' => [
+            'login' => [
+                'requires_cookie' => false,
+                'requires_id' => false
+            ],
+            'logout' => [
+                'requires_cookie' => true,
+                'requires_id' => false
+            ],
+            'sendRecoveryEmail' => [
+                'requires_cookie' => false,
+                'requires_id' => false
+            ],
+            'signup' => [
+                'requires_cookie' => false,
+                'requires_id' => false
+            ]
+        ]
     ],
-    'GET' => [
-        'accountInformation',
-        'availableTimeSlots',
-        'getAppointment',
-        'getServices'
+    'AccountController' => [
+        'DELETE' => [
+            'delete' => [
+                'requires_cookie' => true,
+                'requires_id' => true
+            ]
+        ],
+        'GET' => [
+            'accountInformation' => [
+                'requires_cookie' => true,
+                'requires_id' => true
+            ]
+        ],
+        'PATCH' => [
+            'changeInfo' => [
+                'requires_cookie' => true,
+                'requires_id' => true
+            ],
+            'changePassword' => [
+                'requires_cookie' => true,
+                'requires_id' => true
+            ]
+        ]
     ],
-    'PATCH' => [
-        'cancelAppointment',
-        'changeInfo',
-        'changePassword',
-        'resetPassword',
-        'validateEmail'
-    ],
-    'POST' => [
-        'login',
-        'logout',
-        'registerAppointment',
-        'sendRecoveryEmail',
-        'signup'
+    'AppointmentController' => [
+        'GET' => [
+            'availableTimeSlots' => [
+                'requires_cookie' => true,
+                'requires_id' => true
+            ],
+            'getAppointment' => [
+                'requires_cookie' => true,
+                'requires_id' => true
+            ],
+            'getServices' => [
+                'requires_cookie' => true,
+                'requires_id' => false
+            ]
+        ],
+        'PATCH' => [
+            'cancelAppointment' => [
+                'requires_cookie' => true,
+                'requires_id' => true
+            ]
+        ],
+        'POST' => [
+            'registerAppointment' => [
+                'requires_cookie' => true,
+                'requires_id' => true
+            ]
+        ]
     ]
 ];
 
-function addRoute($methodHttp, $uri, $controller, $methodName)
+function addRoute($methodHttp, $uri, $controller, $methodName, $routeConfig)
 {
     global $router;
+    global $routes;
 
     $fullUri = 'client/' . $uri;
 
-    $router->add($methodHttp, $fullUri, function () use ($controller, $methodName) {
-        $data = $_SERVER['REQUEST_METHOD'] === 'GET' ? $_GET : json_decode(file_get_contents("php://input"), true);
+    $router->add($methodHttp, $fullUri, function () use ($controller, $methodName, $routeConfig) {
+        $data = $_SERVER['REQUEST_METHOD'] === 'GET'
+            ? $_GET
+            : json_decode(file_get_contents("php://input"), true);
 
         if ($methodName === 'cancelAppointment') {
             if (!isset($data['id']) && isset($_GET['id'])) {
@@ -57,13 +117,35 @@ function addRoute($methodHttp, $uri, $controller, $methodName)
             }
         }
 
+        $auth = new Authenticate('client');
+
+        if ($routeConfig['requires_cookie']) {
+            $authResult = $auth->ensureAuth();
+
+            if (!isset($authResult['id'])) {
+                return [
+                    'code' => 401,
+                    'body' => [
+                        'status' => 'error',
+                        'message' => 'Não autenticado'
+                    ]
+                ];
+            }
+
+            if ($routeConfig['requires_id']) {
+                $data['id_user'] = $authResult['id'];
+            }
+        }
+
         return $controller->$methodName($data);
     });
 }
 
-foreach ($routes as $methodHttp => $routeList) {
-    $controller = $controllers[$methodHttp];
-    foreach ($routeList as $methodName) {
-        addRoute($methodHttp, $methodName, $controller, $methodName);
+foreach ($routes as $controller => $methods) {
+    $controllerInstance = $controllersList[$controller];
+    foreach ($methods as $httpMethod => $routesPerMethod) {
+        foreach ($routesPerMethod as $routeName => $config) {
+            addRoute($httpMethod, $routeName, $controllerInstance, $routeName, $config);
+        }
     }
 }

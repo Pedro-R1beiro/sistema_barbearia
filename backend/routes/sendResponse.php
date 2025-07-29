@@ -23,6 +23,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS' ) {
 }
 
 $response = $router->dispacth($_SERVER['REQUEST_METHOD'], $_SERVER['REQUEST_URI']);
-sendResponse($response['body'], $response['code']);
+sendResponse(data: $response['body'], httpCode: $response['code']);
 
 ?>

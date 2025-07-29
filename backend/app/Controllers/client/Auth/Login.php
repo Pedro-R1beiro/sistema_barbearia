@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Actions\Client\Post;
+namespace App\Controllers\Client\Auth;
 
 use App\Models\Client;
 use App\Services\Authenticate;

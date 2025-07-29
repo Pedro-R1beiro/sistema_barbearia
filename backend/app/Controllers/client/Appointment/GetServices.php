@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Actions\Client\Get;
+namespace App\Controllers\Client\Appointment;
 
 use App\Models\Service;
 

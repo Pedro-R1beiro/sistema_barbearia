@@ -7,10 +7,14 @@ class Router
     private $routes = [];
     private $basePath;
 
+    public function __construct()
+    {
+        $this->basePath = $_ENV['APP_BASE_PATH'];
+    }
+
     public function add($method, $uri, $handler)
     {
         $this->routes[$method][$uri] = $handler;
-        $this->basePath = $_ENV['APP_BASE_PATH'];
     }
 
     public function dispacth($method, $uri)

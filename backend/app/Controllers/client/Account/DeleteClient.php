@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Actions\Client\Delete;
+namespace App\Controllers\Client\Account;
 
 use App\Models\Client;
 use App\Models\Appointment;
@@ -18,10 +18,10 @@ class DeleteClient
         $this->appo = $appo;
     }
 
-    public function handle($idUser)
+    public function handle($data)
     {
         try {
-            $id = $idUser;
+            $id = $data['id_user'];
 
             $account = $this->client->getById($id);
             if (!$account) {

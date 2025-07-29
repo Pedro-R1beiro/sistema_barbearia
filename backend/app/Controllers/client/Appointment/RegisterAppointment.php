@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Actions\Client\Post;
+namespace App\Controllers\Client\Appointment;
 
 use App\Models\Appointment;
 use App\Models\AppointmentService;
@@ -35,10 +35,10 @@ class RegisterAppointment
         $this->appoService = $appoService;
     }
 
-    public function handle($data, $idUser)
+    public function handle($data)
     {
         try {
-            $id = $idUser;
+            $id = $data['id_user'] ?? null;
             
             if (empty($data['date']) || empty($data['service'] || empty($data['idProfessional']) || empty($data['startTime']))) {
                 return [

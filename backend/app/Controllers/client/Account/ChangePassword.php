@@ -1,12 +1,12 @@
 <?php 
 
-namespace App\Actions\Client\Patch;
+namespace App\Controllers\Client\Account;
 
 use App\Models\Client;
 
 use Exception;
 
-class ChangeInfo {
+class ChangePassword {
     public $client;
 
     public function __construct(Client $client)
@@ -14,10 +14,10 @@ class ChangeInfo {
         $this->client = $client;
     }
 
-    public function handle($data, $idUser) 
+    public function handle($data)
     {
         try {
-            $id = $idUser;
+            $id = $data['id_user'] ?? null;
             $account = $this->client->getById($id);
             if (!$account) {
                 return [
@@ -29,52 +29,30 @@ class ChangeInfo {
                 ];
             }
 
-            if (empty($data['name']) && empty($data['email']) && empty($data['phone'])) {
+            if (empty($data['currentPassword']) || empty($data['newPassword'])) {
                 return [
                     'code' => 400,
                     'body' => [
                         'status' => 'error',
-                        'message' => 'Nenhum dado novo foi informado'
+                        'message' => 'Informe a nova senha e a senha atual para continuar'
                     ]
                 ];
             }
 
-            $name = !empty($data['name']) ? trim($data['name']) : null;
-            $email = !empty($data['email']) ? trim($data['email']) : null;
-            $phone = !empty($data['phone']) ? trim($data['phone']) : null;
+            $currentPass = trim($data['currentPassword']);
+            $newPass = trim($data['newPassword']);
 
-            if ($name !== null && (strlen($name) < 3 || strlen($name) > 30)) {
+            if (strlen($currentPass) < 8 || strlen($currentPass) > 30 || strlen($newPass) < 8 || strlen($newPass) > 30) {
                 return [
                     'code' => 400,
                     'body' => [
                         'status' => 'error',
-                        'message' => 'Nome deve conter entre 3 e 30 caracteres'
+                        'message' => 'As senhas devem conter entre 8 e 30 caracteres'
                     ]
                 ];
             }
 
-            if ($email !== null && (!filter_var($email, FILTER_VALIDATE_EMAIL) || strlen($email) > 50)) {
-                return [
-                    'code' => 400,
-                    'body' => [
-                        'status' => 'error',
-                        'message' => 'Email inválido ou maior que 50 caracteres'
-                    ]
-                ];
-            }
-
-            if (empty($data['password'])) {
-                return [
-                    'code' => 400,
-                    'body' => [
-                        'status' => 'error',
-                        'message' => 'Senha atual não foi informada'
-                    ]
-                ];
-            }
-
-            $password = trim($data['password']);
-            if (!password_verify($password, $account['password'])) {
+            if (!password_verify($currentPass, $account['password'])) {
                 return [
                     'code' => 400,
                     'body' => [
@@ -84,18 +62,14 @@ class ChangeInfo {
                 ];
             }
 
-            $values = [
-                'name' => $name,
-                'email' => $email,
-                'phone' => $phone
-            ];
+            $value = ['password' => $newPass];
 
-            if ($this->client->patch($id, $values)) {
+            if ($this->client->patch($id, $value)) {
                 return [
                     'code' => 200,
                     'body' => [
                         'status' => 'success',
-                        'message' => 'Dados alterados com sucesso'
+                        'message' => 'Senha alterada com sucesso'
                     ]
                 ];
             }

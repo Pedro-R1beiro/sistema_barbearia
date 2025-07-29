@@ -1,12 +1,12 @@
 <?php 
 
-namespace App\Actions\Client\Patch;
+namespace App\Controllers\Client\Auth;
 
 use App\Models\Client;
 
 use Exception;
 
-class ChangePassword {
+class ResetPassword {
     public $client;
 
     public function __construct(Client $client)
@@ -14,57 +14,46 @@ class ChangePassword {
         $this->client = $client;
     }
 
-    public function handle($data, $idUser)
+    public function handle($data)
     {
         try {
-            $id = $idUser;
-            $account = $this->client->getById($id);
+            if (empty($data['code']) || empty($data['newPassword'])) {
+                return [
+                    'code' => 400,
+                    'body' => [
+                        'status' => 'error',
+                        'message' => 'Dados necessários não foram informados'
+                    ]
+                ];
+            }
+
+            $code = trim($data['code']);
+            $newPass = trim($data['newPassword']);
+
+            $account = $this->client->getByCode($code);
             if (!$account) {
                 return [
                     'code' => 404,
                     'body' => [
                         'status' => 'error',
-                        'message' => 'Nenhuma conta encontrada com este Id'
+                        'message' => 'Nenhuma conta encontrada com este código'
                     ]
                 ];
             }
 
-            if (empty($data['currentPassword']) || empty($data['newPassword'])) {
+            if (password_verify($newPass, $account['password'])) {
                 return [
                     'code' => 400,
                     'body' => [
                         'status' => 'error',
-                        'message' => 'Informe a nova senha e a senha atual para continuar'
-                    ]
-                ];
-            }
-
-            $currentPass = trim($data['currentPassword']);
-            $newPass = trim($data['newPassword']);
-
-            if (strlen($currentPass) < 8 || strlen($currentPass) > 30 || strlen($newPass) < 8 || strlen($newPass) > 30) {
-                return [
-                    'code' => 400,
-                    'body' => [
-                        'status' => 'error',
-                        'message' => 'As senhas devem conter entre 8 e 30 caracteres'
-                    ]
-                ];
-            }
-
-            if (!password_verify($currentPass, $account['password'])) {
-                return [
-                    'code' => 400,
-                    'body' => [
-                        'status' => 'error',
-                        'message' => 'Senha incorreta'
+                        'message' => 'A nova senha não pode ser igual à atual'
                     ]
                 ];
             }
 
             $value = ['password' => $newPass];
 
-            if ($this->client->patch($id, $value)) {
+            if ($this->client->patch($account['id'], $value)) {
                 return [
                     'code' => 200,
                     'body' => [

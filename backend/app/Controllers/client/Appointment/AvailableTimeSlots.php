@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Actions\Client\Get;
+namespace App\Controllers\Client\Appointment;
 
 use App\Models\Service;
 use App\Models\Professional;
@@ -32,10 +32,10 @@ class AvailableTimeSlots
         $this->appo = $appo;
     }
 
-    public function handle($data, $idUser)
+    public function handle($data)
     {
         try {
-            $id = $idUser;
+            $id = $data['id_user'] ?? null;
 
             if (empty($data['date']) || empty($data['service'])) {
                 return [

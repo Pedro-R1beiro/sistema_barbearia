@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Actions\Client\Get;
+namespace App\Controllers\Client\Appointment;
 
 use App\Models\Appointment;
 use App\Models\AppointmentService;
@@ -19,10 +19,10 @@ class GetAppointment
         $this->appoService = $appoService;
     }
 
-    public function handle($idUser, $data = null)
+    public function handle($data)
     {
         try {
-            $id = $idUser;
+            $id = $data['id_user'] ?? null;
 
             $filter = !empty($data['filter']) ? trim($data['filter']) : 'all';
             if (!in_array($filter, ['today', 'nearby', 'history', 'next', 'last', 'all'])) {

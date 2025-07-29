@@ -1,12 +1,12 @@
 <?php 
 
-namespace App\Actions\Client\Patch;
+namespace App\Controllers\Client\Auth;
 
 use App\Models\Client;
 
 use Exception;
 
-class ResetPassword {
+class ValidateEmail {
     public $client;
 
     public function __construct(Client $client)
@@ -17,20 +17,19 @@ class ResetPassword {
     public function handle($data)
     {
         try {
-            if (empty($data['code']) || empty($data['newPassword'])) {
+            if (empty($data['code'])) {
                 return [
                     'code' => 400,
                     'body' => [
                         'status' => 'error',
-                        'message' => 'Dados necessários não foram informados'
+                        'message' => 'Sem código para verificar'
                     ]
                 ];
             }
 
             $code = trim($data['code']);
-            $newPass = trim($data['newPassword']);
-
             $account = $this->client->getByCode($code);
+
             if (!$account) {
                 return [
                     'code' => 404,
@@ -41,24 +40,25 @@ class ResetPassword {
                 ];
             }
 
-            if (password_verify($newPass, $account['password'])) {
-                return [
-                    'code' => 400,
-                    'body' => [
-                        'status' => 'error',
-                        'message' => 'A nova senha não pode ser igual à atual'
-                    ]
-                ];
-            }
-
-            $value = ['password' => $newPass];
-
-            if ($this->client->patch($account['id'], $value)) {
+            if ($account['verified'] == 1) {
                 return [
                     'code' => 200,
                     'body' => [
                         'status' => 'success',
-                        'message' => 'Senha alterada com sucesso'
+                        'message' => 'Este e-mail já foi verificado'
+                    ]
+                ];
+            }
+
+            $value = ['verified' => 1];
+            $validateEmail = $this->client->patch($account['id'], $value);
+
+            if ($validateEmail) {
+                return [
+                    'code' => 200,
+                    'body' => [
+                        'status' => 'success',
+                        'message' => 'E-mail validado com sucesso'
                     ]
                 ];
             }

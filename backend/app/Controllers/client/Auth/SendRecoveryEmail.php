@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Actions\Client\Post;
+namespace App\Controllers\Client\Auth;
 
 use App\Models\Client;
 use App\Services\EmailSender;
@@ -17,10 +17,10 @@ class SendRecoveryEmail
         $this->emailSender = $emailSender;
     }
 
-    public function handle($data = null, $idUser = null)
+    public function handle($data)
     {
         try {
-            if (empty($data['email']) && empty($idUser)) {
+            if (empty($data['email']) && empty($data['id_user'])) {
                 return [
                     'code' => 400,
                     'body' => [
@@ -54,7 +54,7 @@ class SendRecoveryEmail
                 $code = $account['code'];
                 $name = $account['name'];
             } else {
-                $id = $idUser;
+                $id = $data['id_user'] ?? null;
                 $account = $this->client->getById($id);
                 if (!$account) {
                     return [

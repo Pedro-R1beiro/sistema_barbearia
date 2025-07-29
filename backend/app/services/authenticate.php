@@ -17,7 +17,7 @@ class Authenticate
         $this->cookieName = 'auth_token_' . $type;
     }
 
-    public function getUser()
+    private function getUser()
     {
         if (!isset($_COOKIE[$this->cookieName])) {
             return null;
@@ -62,7 +62,7 @@ class Authenticate
                 'expires' => time() + (60 * 60 * 24 * $duration),
                 'path' => '/',
                 'httponly' => true,
-                'secure' => true,
+                'secure' => false,
                 'samesite' => 'Lax'
             ]);
             return true;
