@@ -71,9 +71,16 @@ export function ScheduleForm() {
 
   return (
     <div className="w-full space-y-12 pb-16 lg:pt-10">
-      <h1 className="text-center text-xl font-bold sm:text-2xl">
-        Adicionar um novo agendamento
-      </h1>
+      <div className="space-y-1 text-center">
+        <h1 className="text-xl font-bold sm:text-2xl">
+          Adicionar um novo agendamento
+        </h1>
+        <p className="text-muted-foreground font-semibold">
+          Selecione uma data e um serviço para ver os horários e barbeiros
+          disponíveis
+        </p>
+      </div>
+
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="min-w-full space-y-7 pb-8 lg:flex lg:max-w-2xl lg:flex-1 lg:items-start lg:justify-center lg:gap-15"
@@ -114,10 +121,7 @@ export function ScheduleForm() {
           ) : (
             <Card className="p-2.5">
               <CardContent className="px-2">
-                <p>
-                  Selecione horário e data para ver os profissionais
-                  disponíveis.
-                </p>
+                <p>Selecione horário e data</p>
               </CardContent>
             </Card>
           )}
@@ -135,7 +139,7 @@ export function ScheduleForm() {
           ) : (
             <Card className="p-2.5">
               <CardContent className="px-2">
-                <p>Selecione um barbeiro para ver os horários disponiveis.</p>
+                <p>Selecione um barbeiro.</p>
               </CardContent>
             </Card>
           )}

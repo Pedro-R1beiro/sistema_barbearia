@@ -1,3 +1,4 @@
+import { accountInformation } from "@/api/account-informations";
 import { ContactButton } from "@/components/ContactButton";
 import { NextAppointmentCard } from "@/components/NextAppointmentCard";
 import { Button } from "@/components/ui/button";
@@ -11,8 +12,15 @@ import {
 import { faInstagram, faWhatsapp } from "@fortawesome/free-brands-svg-icons";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useQuery } from "@tanstack/react-query";
 
 export function Account() {
+  const { data: accountDetails } = useQuery({
+    queryKey: ["account-information"],
+    queryFn: accountInformation,
+  });
+
+  console.log(accountDetails);
   return (
     <div className="gap-16 space-y-10 lg:flex lg:items-stretch lg:space-y-0">
       <div className="w-full space-y-10 md:flex md:gap-6 md:space-y-0 lg:flex-row-reverse">
@@ -26,15 +34,15 @@ export function Account() {
           <CardContent className="space-y-4 text-lg">
             <div>
               <span className="block font-bold">Seu nome</span>
-              Usuário Nome dos Santos
+              {accountDetails?.name}
             </div>
             <div>
               <span className="block font-bold">Seu e-mail</span>
-              7YyGZ@example.com
+              {accountDetails?.email}
             </div>
             <div>
               <span className="block font-bold">Seu número</span>
-              (79) 9 9999-9999
+              {accountDetails?.phone}
             </div>
 
             <div className="bg-background h-[0.09rem] w-full border-b" />
