@@ -4,11 +4,12 @@ import { useNavigate } from "react-router";
 import { z } from "zod";
 
 import { signUp } from "@/api/sign-up";
+import IMask from "imask";
 import { PrivacyPoliciesDialog } from "@/components/PrivacyPoliciesDialog";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import { isAxiosError, type AxiosError } from "axios";
-import { useForm } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 import { toast } from "sonner";
 
 const registerSchema = z.object({
@@ -72,6 +73,7 @@ export function Register() {
   }
 
   const {
+    control,
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
@@ -108,7 +110,6 @@ export function Register() {
               {errors.name.message}
             </span>
           )}
-
           <label htmlFor="email" className="mt-6">
             Seu e-mail
           </label>
@@ -124,7 +125,6 @@ export function Register() {
               {errors.email.message}
             </span>
           )}
-
           <label htmlFor="password" className="mt-6">
             Sua senha
           </label>
@@ -140,23 +140,33 @@ export function Register() {
               {errors.password.message}
             </span>
           )}
-
           <label htmlFor="phone" className="mt-6">
             Seu número
           </label>
-          <input
-            id="phone"
-            type="tel"
-            {...register("phone")}
-            placeholder="(00) 00000-0000"
-            className="bg-muted dark:bg-muted-foreground/20 rounded-md p-2.5 placeholder:text-[0.75rem]"
+          <Controller
+            name="phone"
+            control={control}
+            defaultValue=""
+            render={({ field }) => (
+              <input
+                {...field}
+                ref={(ref) => {
+                  if (ref) {
+                    IMask(ref, {
+                      mask: "(00) 00000-0000",
+                    });
+                  }
+                }}
+                placeholder="(00) 00000-0000"
+                className="bg-muted dark:bg-muted-foreground/20 rounded-md p-2.5 placeholder:text-[0.75rem]"
+              />
+            )}
           />
           {errors.phone && (
             <span className="absolute top-93 left-3 text-sm text-rose-500">
               {errors.phone.message}
             </span>
           )}
-
           <Button
             disabled={isSubmitting}
             type="submit"
@@ -164,7 +174,6 @@ export function Register() {
           >
             Entrar
           </Button>
-
           <p className="text-sm font-medium">
             Ao cadastrar, concordo com os{" "}
             <PrivacyPoliciesDialog>
