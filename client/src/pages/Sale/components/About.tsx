@@ -1,71 +1,149 @@
-import { faInstagram, faWhatsapp } from "@fortawesome/free-brands-svg-icons";
-
-import barberShopImage from "@/assets/barber-shop.png";
-
-import { ContactButton } from "@/components/ContactButton";
-import { LinesWithOr } from "@/components/LinesWithOr";
-import { SeparationArrow } from "@/components/SeparationArrow";
-import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router";
+import { Title } from "./Title";
+import { Button } from "@/components/ui/button";
+import { motion, useInView } from "motion/react";
+import { ContactButton } from "@/components/ContactButton";
+import { faInstagram, faWhatsapp } from "@fortawesome/free-brands-svg-icons";
+import { useRef } from "react";
+
+import barbersImg from "@/assets/barbers.svg";
+import dashboardPreview from "@/assets/dashboard-preview.svg";
+import BarberShopExample from "@/assets/barber-example.svg";
+
+import { Card } from "./Card";
+import { Separator } from "@/components/ui/separator";
+
+const MotionButton = motion(Button);
 
 export function About() {
   const navigate = useNavigate();
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, amount: 0.5 });
+
+  function hidden(y = 30, opacity = 0) {
+    return { opacity, y };
+  }
+
+  function visible(y = 0, opacity = 1) {
+    return { opacity, y };
+  }
 
   return (
-    <>
-      <section
-        id="about"
-        className="mt-10 h-screen md:flex md:flex-row-reverse md:items-center md:gap-12"
-      >
-        <div className="space-y-4 text-center md:flex md:flex-col md:items-end">
-          <h1 className="text-center text-4xl font-bold tracking-tight md:text-right">
-            BARBER SHOP
-          </h1>
-          <p className="text-[1.75rem] md:text-right">
-            Agende na barbearia que transforma você
-          </p>
-          <div className="mt-8 space-y-10 text-justify md:mt-4 md:text-right">
-            <p>
-              Bem-vindo à nossa barbearia, onde tradição se encontra com
-              modernidade, Nossos barbeiros garantem habilidades, cortes e
-              barbas impecáveis.
-            </p>
-
-            <p>
-              Para garantir uma melhor experiência, disnoponibilizamos um
-              sistema de agendamento simples e rápido:{" "}
-            </p>
-          </div>
-          <div className="flex w-full flex-col items-center justify-center md:max-w-[26rem] md:items-end">
-            <Button
-              onClick={() => navigate("/sign-up")}
-              className="bg-foreground text-md mt-4 w-full p-6 font-bold"
-            >
-              Agende seu horário
-            </Button>
-            <div className="mt-4 flex w-full flex-col items-center">
-              <LinesWithOr />
-
-              <div className="mt-3 flex items-center justify-center gap-3 md:w-100/168">
-                <ContactButton link="instagram.com" icon={faInstagram} />
-                <ContactButton link="whatsapp.api.client" icon={faWhatsapp} />
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <img
-          src={barberShopImage}
-          alt=""
-          className="mx-auto mt-8 md:mt-0 md:mb-10 md:h-140"
+    <section
+      ref={ref}
+      id="about"
+      className="bg-foreground/40 dark:bg-background/0 flex h-screen flex-col items-center bg-cover bg-center bg-no-repeat px-4 pt-10 md:mt-0 md:gap-12 md:pb-0"
+    >
+      <Title
+        title="Nossa barbearia"
+        text="Nosso trabalho é garantir que suas expectativas sejam atendidas."
+      />
+      <div className="mt-12 flex w-full items-center gap-6">
+        <motion.div
+          animate={isInView ? { filter: "blur(0px)" } : { filter: "blur(4px)" }}
+          transition={{
+            ease: "easeOut",
+            opacity: {
+              duration: 2 * 0.8,
+            },
+          }}
+          style={{ backgroundImage: `url(${BarberShopExample})` }}
+          className="min-h-[126px] min-w-[126px] rounded-full border-2 border-amber-400 bg-cover bg-center"
         />
-        <span className="mt-10 block md:hidden">
-          <SeparationArrow />
-        </span>
-      </section>
-      <span className="hidden md:block">
-        <SeparationArrow />
-      </span>
-    </>
+        <div>
+          <motion.h2
+            animate={
+              isInView ? { filter: "blur(0px)" } : { filter: "blur(4px)" }
+            }
+            transition={{
+              ease: "easeOut",
+              opacity: {
+                duration: 2 * 0.8,
+              },
+            }}
+            className="text-lg font-bold"
+          >
+            Onde estamos
+          </motion.h2>
+          <motion.address
+            animate={
+              isInView ? { filter: "blur(0px)" } : { filter: "blur(4px)" }
+            }
+            transition={{
+              ease: "easeOut",
+              opacity: {
+                duration: 2 * 0.8,
+              },
+            }}
+          >
+            Localizados no endereço rua A, Bairro exemplo.
+          </motion.address>
+        </div>
+      </div>
+
+      <div className="mt-12 space-y-6">
+        <Card
+          imgPath={barbersImg}
+          title="Nossos barbeiros"
+          text="Profissionais capacitado que garantem trabalhos impecáveis."
+        />
+        <Card
+          imgPath={dashboardPreview}
+          title="Agendamento rápido"
+          text="Um sistema simples e rápido para você gerenciar e marcar horários."
+        />
+      </div>
+
+      <div className="mt-14 flex w-[240px] flex-col gap-3">
+        <MotionButton
+          initial={hidden(30, 0)}
+          animate={isInView ? visible(0, 1) : hidden(30, 0)}
+          transition={{
+            ease: "easeOut",
+            opacity: {
+              duration: 2 * 0.8,
+            },
+          }}
+          onClick={() => navigate("/sign-up")}
+          className="border-background bg-foreground font-semibold"
+        >
+          Agende seu horário
+        </MotionButton>
+        <MotionButton
+          initial={hidden(30, 0)}
+          animate={isInView ? visible(0, 1) : hidden(30, 0)}
+          transition={{
+            duration: 0.4,
+            ease: "easeOut",
+            delay: 0.2,
+          }}
+          onClick={() => navigate("/sign-in")}
+          variant="secondary"
+          className="border-1 border-black py-4.5 font-semibold"
+        >
+          Gerenciar meus horários
+        </MotionButton>
+      </div>
+
+      <div className="mt-4 flex w-[240px] items-center gap-4">
+        <Separator className="flex-1" />
+        <span className="text-sm">ou</span>
+        <Separator className="flex-1" />
+      </div>
+
+      <motion.div
+        initial={{ opacity: 0, y: 70 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{
+          duration: 0.6,
+          ease: "easeOut",
+          delay: 0.4,
+        }}
+        className="mt-4.5 flex gap-3"
+      >
+        <ContactButton link="" icon={faInstagram} />
+        <ContactButton link="" icon={faWhatsapp} />
+      </motion.div>
+    </section>
   );
 }

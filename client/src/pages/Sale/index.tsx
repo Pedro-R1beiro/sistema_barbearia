@@ -1,14 +1,14 @@
-import { RevealOnScroll } from "@/components/RevealOnScroll";
 import { About } from "./components/About";
 import Footer from "./components/Footer";
-import Services from "./components/Services";
+import { Services } from "./components/Services";
+import { Home } from "./components/Home";
 
 export function Sale() {
   return (
     <>
-      {[<About />, <Services />].map((component, index) => (
-        <RevealOnScroll key={index}>{component}</RevealOnScroll>
-      ))}
+      <Home />
+      <About />
+      <Services />
       <Footer />
     </>
   );

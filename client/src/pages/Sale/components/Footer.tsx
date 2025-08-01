@@ -16,7 +16,7 @@ export default function Footer() {
   return (
     <footer
       id="contact"
-      className="bg-muted absolute left-8 mt-20 w-full space-y-10 rounded-t-lg p-8 max-[69.50rem]:left-0 md:flex md:max-w-[67.75rem] md:p-12"
+      className="bg-muted absolute left-8 mt-20 hidden w-full space-y-10 rounded-t-lg p-8 max-[69.50rem]:left-0 md:flex md:max-w-[67.75rem] md:p-12"
     >
       <ul className="flex min-w-100/230 flex-col items-center justify-between gap-6 md:min-w-100/260 md:items-start md:justify-start">
         <li>
@@ -66,7 +66,8 @@ export default function Footer() {
 
         <div className="absolute bottom-0 left-2 flex w-full flex-col items-center">
           <p className="flexflex-col items-center text-center">
-            &copy; 2025 Barber Shop. Todos os direitos reservados.
+            &copy; 2025 Barber Shop. <br className="sm:hidden" /> Todos os
+            direitos reservados.
           </p>
           <span className="mt-6 flex items-center gap-2 text-center md:mt-0">
             Desenvolvido por Pedro Ribeiro

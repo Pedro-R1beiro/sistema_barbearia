@@ -8,7 +8,6 @@ import {
   faScissors,
 } from "@fortawesome/free-solid-svg-icons";
 import { Outlet, useNavigate } from "react-router";
-import { Home } from "../Sale/components/Home";
 
 const navLinks: NavLinkInterface[] = [
   { link: "#home", text: "Ínicio", icon: faHouse, type: "anchorLink" },
@@ -44,8 +43,7 @@ export function SaleLayout() {
           </nav>
         </Header>
       </div>
-      <Home />
-      <div className="relative mx-auto max-w-6xl px-4 pt-6">
+      <div className="relative mx-auto max-w-[1152px]">
         <Outlet />
       </div>
     </>
