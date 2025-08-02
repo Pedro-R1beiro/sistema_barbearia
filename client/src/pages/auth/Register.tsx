@@ -1,16 +1,15 @@
-import { Button } from "@/components/ui/button";
+import { Controller, useForm } from "react-hook-form";
 import { useNavigate } from "react-router";
 
-import { z } from "zod";
-
 import { signUp } from "@/api/sign-up";
-import IMask from "imask";
 import { PrivacyPoliciesDialog } from "@/components/PrivacyPoliciesDialog";
+import { Button } from "@/components/ui/button";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
-import { isAxiosError, type AxiosError } from "axios";
-import { useForm, Controller } from "react-hook-form";
+import { type AxiosError, isAxiosError } from "axios";
+import IMask from "imask";
 import { toast } from "sonner";
+import { z } from "zod";
 
 const registerSchema = z.object({
   name: z.string().min(2, "Mínimo de 2 caracteres"),

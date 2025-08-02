@@ -1,3 +1,6 @@
+import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router";
+
 import { sendRecoveryEmail } from "@/api/send-recovery-email";
 import { Button } from "@/components/ui/button";
 import {
@@ -13,8 +16,6 @@ import { Label } from "@/components/ui/label";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import { AxiosError, isAxiosError } from "axios";
-import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router";
 import { toast } from "sonner";
 import { z } from "zod";
 

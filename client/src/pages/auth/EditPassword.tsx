@@ -1,3 +1,7 @@
+import { useEffect } from "react";
+import { useForm } from "react-hook-form";
+import { useNavigate, useSearchParams } from "react-router";
+
 import { resetPassword } from "@/api/reset-password";
 import { LinesWithOr } from "@/components/LinesWithOr";
 import { Button } from "@/components/ui/button";
@@ -6,9 +10,6 @@ import { Label } from "@/components/ui/label";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import { AxiosError, isAxiosError } from "axios";
-import { useEffect } from "react";
-import { useForm } from "react-hook-form";
-import { useNavigate, useSearchParams } from "react-router";
 import { toast } from "sonner";
 import { z } from "zod";
 

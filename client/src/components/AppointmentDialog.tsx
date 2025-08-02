@@ -1,3 +1,6 @@
+import type { Dispatch, ReactNode, SetStateAction } from "react";
+
+import { AppointmentDialogSkeleton } from "./AppointmentDialogSkeleton";
 import { getAppointment } from "@/api/get-appointment";
 import { Button } from "@/components/ui/button";
 import {
@@ -18,8 +21,6 @@ import {
 import { cn } from "@/lib/utils";
 import { formatDateUtc } from "@/utils/format-date-utc";
 import { useQuery } from "@tanstack/react-query";
-import type { Dispatch, ReactNode, SetStateAction } from "react";
-import { AppointmentDialogSkeleton } from "./AppointmentDialogSkeleton";
 
 interface AppointmentDialogProps {
   appointmentId: number;

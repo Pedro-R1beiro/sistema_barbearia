@@ -1,6 +1,6 @@
 import type { IconLookup } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { cva, type VariantProps } from "class-variance-authority";
+import { type VariantProps, cva } from "class-variance-authority";
 
 const contactButtonStyles = cva(
   "flex max-w-11.5 items-center justify-center rounded-full p-2 px-2.5 hover:-translate-y-1 duration-200",

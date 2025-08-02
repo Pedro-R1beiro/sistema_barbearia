@@ -1,3 +1,4 @@
+import { WithoutNextAppointmentsCard } from "./WithoutNextAppointmentsCard";
 import { getAppointment } from "@/api/get-appointment";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
@@ -5,7 +6,6 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { faCalendarDays } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useQuery } from "@tanstack/react-query";
-import { WithoutNextAppointmentsCard } from "./WithoutNextAppointmentsCard";
 import { motion } from "motion/react";
 
 const MotionCard = motion(Card);

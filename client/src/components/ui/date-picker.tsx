@@ -1,10 +1,7 @@
 "use client";
 
-import { format, subDays } from "date-fns";
-import { ptBR } from "date-fns/locale";
-import { CalendarIcon } from "lucide-react";
+import { type Control, Controller } from "react-hook-form";
 
-import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import {
@@ -12,8 +9,11 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { Controller, type Control } from "react-hook-form";
+import { cn } from "@/lib/utils";
 import type { ScheduleFormData } from "@/pages/app/user/ScheduleForm";
+import { format, subDays } from "date-fns";
+import { ptBR } from "date-fns/locale";
+import { CalendarIcon } from "lucide-react";
 
 interface DatePickerProps {
   control: Control<ScheduleFormData>;

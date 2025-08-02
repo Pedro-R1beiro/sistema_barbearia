@@ -1,18 +1,17 @@
-import { ContactButton } from "@/components/ContactButton";
-import { Button } from "@/components/ui/button";
-
-import { faInstagram, faWhatsapp } from "@fortawesome/free-brands-svg-icons";
-
-import bg from "@/assets/sale-bg.svg";
 import { useNavigate } from "react-router";
+
+import { Title } from "./Title";
+import bg from "@/assets/sale-bg.svg";
+import { ContactButton } from "@/components/ContactButton";
 import { MiniCard } from "@/components/MiniCard";
+import { Button } from "@/components/ui/button";
+import { faInstagram, faWhatsapp } from "@fortawesome/free-brands-svg-icons";
 import {
   faCalendar,
   faClock,
   faScissors,
 } from "@fortawesome/free-solid-svg-icons";
 import { motion } from "motion/react";
-import { Title } from "./Title";
 
 const MotionButton = motion(Button);
 

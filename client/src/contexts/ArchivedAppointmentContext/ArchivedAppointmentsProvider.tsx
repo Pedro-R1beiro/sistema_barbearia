@@ -1,6 +1,7 @@
-import { useEffect, useState, type ReactNode } from "react";
-import { toast } from "sonner";
+import { type ReactNode, useEffect, useState } from "react";
+
 import { ArchivedAppointmentsContext } from ".";
+import { toast } from "sonner";
 
 interface ArchivedAppointmentsProviderProps {
   children: ReactNode;

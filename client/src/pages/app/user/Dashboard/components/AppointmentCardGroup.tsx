@@ -1,6 +1,10 @@
+import { useContext, useState } from "react";
+
+import { AppointmentCard } from "./AppointmentCard";
+import { FilterAppointments } from "./FilterAppointments";
 import {
-  getAppointment,
   type AppointmentStatusType,
+  getAppointment,
 } from "@/api/get-appointment";
 import {
   Card,
@@ -10,12 +14,8 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
-import { useQuery } from "@tanstack/react-query";
-
-import { AppointmentCard } from "./AppointmentCard";
-import { FilterAppointments } from "./FilterAppointments";
-import { useContext, useState } from "react";
 import { ArchivedAppointmentsContext } from "@/contexts/ArchivedAppointmentContext";
+import { useQuery } from "@tanstack/react-query";
 import { AnimatePresence } from "motion/react";
 import { motion } from "motion/react";
 

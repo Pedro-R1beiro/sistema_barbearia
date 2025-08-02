@@ -1,3 +1,5 @@
+import { type Dispatch, type SetStateAction } from "react";
+
 import type { AppointmentStatusType } from "@/api/get-appointment";
 import {
   Select,
@@ -7,7 +9,6 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Archive, Calendar, Check, X } from "lucide-react";
-import { type Dispatch, type SetStateAction } from "react";
 
 interface FilterAppointmentsProps {
   setSelectedFilter: Dispatch<

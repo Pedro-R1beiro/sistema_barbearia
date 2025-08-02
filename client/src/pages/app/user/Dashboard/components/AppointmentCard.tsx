@@ -1,17 +1,16 @@
+import { useContext, useState } from "react";
+
 import type { AppointmentInterface } from "@/api/get-appointment";
+import barberTable from "@/assets/barber-table.svg";
 import { AppointmentDialog } from "@/components/AppointmentDialog";
 import { AppointmentStatus } from "@/components/AppointmentStatus";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
-import { format } from "date-fns";
-import { useContext, useState } from "react";
-
-import barberTable from "@/assets/barber-table.svg";
+import { ArchivedAppointmentsContext } from "@/contexts/ArchivedAppointmentContext";
 import { useCancelAppointment } from "@/hooks/useCancelAppointment";
 import { cn } from "@/lib/utils";
+import { format } from "date-fns";
 import { Archive, ArchiveRestore, Search, Trash } from "lucide-react";
-import { ArchivedAppointmentsContext } from "@/contexts/ArchivedAppointmentContext";
-
 import { motion } from "motion/react";
 
 const MotionCard = motion(Card);

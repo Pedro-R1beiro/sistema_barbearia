@@ -1,14 +1,14 @@
-import { Button } from "@/components/ui/button";
+import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router";
 
+import { ForgotPasswordDialog } from "./ForgotPasswordDialog";
 import { signIn } from "@/api/sign-in";
+import { Button } from "@/components/ui/button";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import { AxiosError, isAxiosError } from "axios";
-import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
-import { ForgotPasswordDialog } from "./ForgotPasswordDialog";
 
 const signInSchema = z.object({
   email: z.string().email("E-mail inválido"),

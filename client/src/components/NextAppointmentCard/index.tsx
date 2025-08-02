@@ -1,3 +1,8 @@
+import { useNavigate } from "react-router";
+
+import { Button } from "../ui/button";
+import { CardFooter } from "./CardFooter";
+import { CardSkeleton } from "./CardSkeleton";
 import { getAppointment } from "@/api/get-appointment";
 import {
   Card,
@@ -12,10 +17,6 @@ import { formatDateRequest } from "@/utils/format-date-request";
 import { useQuery } from "@tanstack/react-query";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
-import { useNavigate } from "react-router";
-import { Button } from "../ui/button";
-import { CardFooter } from "./CardFooter";
-import { CardSkeleton } from "./CardSkeleton";
 import { motion } from "motion/react";
 
 interface NextAppointmentCardProps {

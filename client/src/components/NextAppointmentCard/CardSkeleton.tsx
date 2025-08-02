@@ -1,6 +1,6 @@
-import { cn } from "@/lib/utils";
 import { Card, CardContent, CardFooter, CardHeader } from "../ui/card";
 import { Skeleton } from "../ui/skeleton";
+import { cn } from "@/lib/utils";
 
 interface CardSkeletonProps {
   portraitModeOnLg: boolean;

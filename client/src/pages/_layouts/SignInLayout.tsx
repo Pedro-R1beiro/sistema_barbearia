@@ -1,3 +1,5 @@
+import { Outlet, useNavigate } from "react-router";
+
 import { ContactButton } from "@/components/ContactButton";
 import { Button } from "@/components/ui/button";
 import { scrollToTop } from "@/utils/scroll-to-top";
@@ -8,7 +10,6 @@ import {
   faWhatsapp,
 } from "@fortawesome/free-brands-svg-icons";
 import { ArrowUp } from "lucide-react";
-import { Outlet, useNavigate } from "react-router";
 
 export function SignInLayout() {
   const navigate = useNavigate();

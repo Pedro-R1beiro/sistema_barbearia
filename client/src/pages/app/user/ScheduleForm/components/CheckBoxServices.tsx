@@ -1,10 +1,11 @@
+import { type Control, Controller } from "react-hook-form";
+
+import type { ScheduleFormData } from "..";
 import { getServices } from "@/api/get-services";
 import { Card, CardContent } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useQuery } from "@tanstack/react-query";
-import { Controller, type Control } from "react-hook-form";
-import type { ScheduleFormData } from "..";
 
 interface UserScheduleFormServicesProps {
   control: Control<ScheduleFormData>;

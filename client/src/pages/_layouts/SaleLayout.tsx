@@ -1,5 +1,7 @@
+import { Outlet, useNavigate } from "react-router";
+
 import { Header } from "@/components/Header";
-import { NavLinks, type NavLinkInterface } from "@/components/NavLinks";
+import { type NavLinkInterface, NavLinks } from "@/components/NavLinks";
 import { Button } from "@/components/ui/button";
 import {
   faBuilding,
@@ -7,7 +9,6 @@ import {
   faPhone,
   faScissors,
 } from "@fortawesome/free-solid-svg-icons";
-import { Outlet, useNavigate } from "react-router";
 
 const navLinks: NavLinkInterface[] = [
   { link: "#home", text: "Ínicio", icon: faHouse, type: "anchorLink" },
@@ -43,7 +44,7 @@ export function SaleLayout() {
           </nav>
         </Header>
       </div>
-      <div className="relative mx-auto max-w-[1152px]">
+      <div className="relative">
         <Outlet />
       </div>
     </>

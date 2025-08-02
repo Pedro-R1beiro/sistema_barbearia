@@ -1,8 +1,9 @@
+import { Outlet } from "react-router";
+
 import { Header } from "@/components/Header";
-import { NavLinks, type NavLinkInterface } from "@/components/NavLinks";
+import { type NavLinkInterface, NavLinks } from "@/components/NavLinks";
 import { UserAccounDropdowm } from "@/components/UserAccounDropdowm";
 import { faBook, faCalendarDays } from "@fortawesome/free-solid-svg-icons";
-import { Outlet } from "react-router";
 
 const navLinks: NavLinkInterface[] = [
   {

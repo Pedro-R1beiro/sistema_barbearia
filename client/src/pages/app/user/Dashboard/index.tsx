@@ -1,7 +1,7 @@
-import { NextAppointmentCard } from "@/components/NextAppointmentCard";
 import { AppointmentsCardGroup } from "./components/AppointmentCardGroup";
 import { NextAppointmentTimeCard } from "./components/NextAppointmentTimeCard";
 import { NextAppointmentsCard } from "./components/NextAppointmentsCard";
+import { NextAppointmentCard } from "@/components/NextAppointmentCard";
 
 export function Dashboard() {
   return (

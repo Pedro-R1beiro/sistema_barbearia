@@ -2,7 +2,7 @@ import { cancelAppointment } from "@/api/cancel-appointment";
 import type { AppointmentInterface } from "@/api/get-appointment";
 import { queryClient } from "@/lib/react-query";
 import { useMutation } from "@tanstack/react-query";
-import { isAxiosError, type AxiosError } from "axios";
+import { type AxiosError, isAxiosError } from "axios";
 import { toast } from "sonner";
 
 function handleCancelAppointmentError(error: AxiosError) {

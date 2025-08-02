@@ -1,12 +1,13 @@
+import { useRef } from "react";
+
+import { motion, useInView } from "motion/react";
+
 interface CardProps {
   imgPath: string;
   title: string;
   text: string;
   imgAlt?: string;
 }
-
-import { motion, useInView } from "motion/react";
-import { useRef } from "react";
 
 export function Card({ imgPath, title, text }: CardProps) {
   const ref = useRef(null);

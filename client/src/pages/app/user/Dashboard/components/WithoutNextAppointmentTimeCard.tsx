@@ -1,8 +1,9 @@
+import { useNavigate } from "react-router";
+
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { faScissors } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useNavigate } from "react-router";
 import { motion } from "motion/react";
 
 const MotionCard = motion(Card);

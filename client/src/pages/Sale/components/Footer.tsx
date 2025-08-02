@@ -1,3 +1,5 @@
+import { useNavigate } from "react-router";
+
 import { ContactButton } from "@/components/ContactButton";
 import { PrivacyPoliciesDialog } from "@/components/PrivacyPoliciesDialog";
 import { Button } from "@/components/ui/button";
@@ -8,7 +10,6 @@ import {
   faWhatsapp,
 } from "@fortawesome/free-brands-svg-icons";
 import { faEnvelope } from "@fortawesome/free-regular-svg-icons";
-import { useNavigate } from "react-router";
 
 export default function Footer() {
   const navigate = useNavigate();

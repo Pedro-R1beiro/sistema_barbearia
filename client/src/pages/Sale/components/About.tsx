@@ -1,17 +1,16 @@
-import { useNavigate } from "react-router";
-import { Title } from "./Title";
-import { Button } from "@/components/ui/button";
-import { motion, useInView } from "motion/react";
-import { ContactButton } from "@/components/ContactButton";
-import { faInstagram, faWhatsapp } from "@fortawesome/free-brands-svg-icons";
 import { useRef } from "react";
-
-import barbersImg from "@/assets/barbers.svg";
-import dashboardPreview from "@/assets/dashboard-preview.svg";
-import BarberShopExample from "@/assets/barber-example.svg";
+import { useNavigate } from "react-router";
 
 import { Card } from "./Card";
+import { Title } from "./Title";
+import BarberShopExample from "@/assets/barber-example.svg";
+import barbersImg from "@/assets/barbers.svg";
+import dashboardPreview from "@/assets/dashboard-preview.svg";
+import { ContactButton } from "@/components/ContactButton";
+import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
+import { faInstagram, faWhatsapp } from "@fortawesome/free-brands-svg-icons";
+import { motion, useInView } from "motion/react";
 
 const MotionButton = motion(Button);
 
@@ -81,7 +80,7 @@ export function About() {
         </div>
       </div>
 
-      <div className="mt-12 space-y-6">
+      <div className="mt-12 space-y-10">
         <Card
           imgPath={barbersImg}
           title="Nossos barbeiros"
@@ -94,7 +93,7 @@ export function About() {
         />
       </div>
 
-      <div className="mt-14 flex w-[240px] flex-col gap-3">
+      <div className="mt-12 flex w-[240px] flex-col gap-3">
         <MotionButton
           initial={hidden(30, 0)}
           animate={isInView ? visible(0, 1) : hidden(30, 0)}
@@ -125,7 +124,7 @@ export function About() {
         </MotionButton>
       </div>
 
-      <div className="mt-4 flex w-[240px] items-center gap-4">
+      <div className="mt-5 mb-1 flex w-[240px] items-center gap-4">
         <Separator className="flex-1" />
         <span className="text-sm">ou</span>
         <Separator className="flex-1" />

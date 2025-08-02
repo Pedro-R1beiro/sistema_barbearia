@@ -1,10 +1,5 @@
-import { signOut } from "@/api/sign-out";
-import { faUser } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useMutation, useQuery } from "@tanstack/react-query";
-import { Cog, LogOut } from "lucide-react";
 import { useNavigate } from "react-router";
-import { toast } from "sonner";
+
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -14,6 +9,12 @@ import {
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
 import { accountInformation } from "@/api/account-informations";
+import { signOut } from "@/api/sign-out";
+import { faUser } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { Cog, LogOut } from "lucide-react";
+import { toast } from "sonner";
 
 export function UserAccounDropdowm() {
   const navigate = useNavigate();
