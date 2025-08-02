@@ -7,7 +7,7 @@ export function Sale() {
   return (
     <>
       <Home />
-      <div className="mx-auto max-w-[1152px]">
+      <div className="mx-auto max-w-[1152px] px-4 pb-20">
         <About />
         <Services />
         <Footer />

@@ -31,7 +31,7 @@ export function About() {
     <section
       ref={ref}
       id="about"
-      className="bg-foreground/40 dark:bg-background/0 flex h-screen flex-col items-center bg-cover bg-center bg-no-repeat px-4 pt-10 md:mt-0 md:gap-12 md:pb-0"
+      className="bg-foreground/40 dark:bg-background/0 flex flex-col items-center bg-cover bg-center bg-no-repeat pt-12 md:mt-0 md:gap-12 md:pb-0"
     >
       <Title
         title="Nossa barbearia"
@@ -80,7 +80,7 @@ export function About() {
         </div>
       </div>
 
-      <div className="mt-12 space-y-10">
+      <div className="mt-16 space-y-10">
         <Card
           imgPath={barbersImg}
           title="Nossos barbeiros"

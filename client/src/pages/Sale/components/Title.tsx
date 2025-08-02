@@ -29,7 +29,7 @@ export function Title({ title, text }: { title: string; text: string }) {
       </motion.h1>
 
       <motion.p
-        className="max-w-[315px] text-lg font-light"
+        className="max-w-[315px] text-lg font-light mx-auto"
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, amount: 0.5 }}
