@@ -85,7 +85,7 @@ export function ForgotPasswordDialog() {
           <DialogTitle>Esqueci minha senha</DialogTitle>
           <DialogDescription>
             Após informar seu e-mail, enviaremos um link de recuperação de senha
-            pelo e-mail.
+            por ele.
           </DialogDescription>
         </DialogHeader>
         <form

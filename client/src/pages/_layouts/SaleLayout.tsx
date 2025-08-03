@@ -27,17 +27,18 @@ export function SaleLayout() {
             <div className="flex gap-4">
               <Button
                 onClick={() => navigate("/sign-in")}
-                className="px-6 py-5.5 font-bold"
-                variant="secondary"
+                className=" font-bold bg-amber-400 text-foreground dark:text-background hover:bg-amber-500/90"
+                size="sm"
               >
-                Entrar
+                entrar
               </Button>
               <Button
-                variant="ghost"
-                onClick={() => navigate("/sign-up")}
-                className="dark:text-background dark:hover:bg-foreground py-5.5 font-bold md:px-6"
+                onClick={() => navigate("/sign-in")}
+                className=" font-bold"
+                variant="secondary"
+                size="sm"
               >
-                Cadastrar
+                cadastrar
               </Button>
             </div>
             <NavLinks navLinks={navLinks} />

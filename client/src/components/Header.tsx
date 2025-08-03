@@ -1,5 +1,5 @@
+import { cn } from "@/lib/utils";
 import { scrollToTop } from "@/utils/scroll-to-top";
-import { twMerge } from "tailwind-merge";
 
 interface HeaderProps {
   children?: React.ReactNode;
@@ -9,18 +9,16 @@ interface HeaderProps {
 export function Header({ children, className }: HeaderProps) {
   return (
     <header
-      className={twMerge(
-        "bg-accent-foreground/70 text-background relative flex max-w-[1152px] min-w-full items-center justify-end rounded-md px-4 py-3 shadow-xs backdrop-blur-sm",
+      className={cn(
+        "bg-sidebar-accent border-2 relative border-card rounded-md p-2",
         className,
       )}
     >
       <button
         onClick={scrollToTop}
-        className="bg-background absolute left-0 h-full rounded-l-[0.25rem] rounded-r-[1.5rem] px-3 py-2"
+        className="absolute top-1/2 bg-sidebar-accent -translate-y-1/2 -left-2.5 border-card border-10 p-2 py-3 rounded-full"
       >
-        <div className="bg-foreground rounded-full p-2 py-[0.8rem] font-bold">
-          logo
-        </div>
+        logo
       </button>
       {children}
     </header>

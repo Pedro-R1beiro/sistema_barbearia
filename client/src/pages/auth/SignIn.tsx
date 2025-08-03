@@ -89,7 +89,7 @@ export function SignIn() {
             id="email"
             type="email"
             {...register("email")}
-            placeholder="example@gmail.com"
+            placeholder="examplo@gmail.com"
             className="bg-muted dark:bg-muted-foreground/20 rounded-md p-2.5 placeholder:text-[0.75rem]"
           />
           {errors.email && (

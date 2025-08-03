@@ -80,7 +80,7 @@ export function About() {
         </div>
       </div>
 
-      <div className="mt-16 space-y-10">
+      <div className="mt-16 space-y-14">
         <Card
           imgPath={barbersImg}
           title="Nossos barbeiros"

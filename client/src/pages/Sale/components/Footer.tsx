@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router";
 
+import { Title } from "./Title";
 import { ContactButton } from "@/components/ContactButton";
 import { PrivacyPoliciesDialog } from "@/components/PrivacyPoliciesDialog";
 import { Button } from "@/components/ui/button";
@@ -17,9 +18,13 @@ export default function Footer() {
   return (
     <footer
       id="contact"
-      className="bg-muted absolute left-8 mt-20 hidden w-full space-y-10 rounded-t-lg p-8 max-[69.50rem]:left-0 md:flex md:max-w-[67.75rem] md:p-12"
+      className="bg-muted absolute left-8 mt-20 w-full space-y-10 rounded-t-lg p-8 max-[69.50rem]:left-0 md:flex md:max-w-[67.75rem] md:p-12"
     >
-      <ul className="flex min-w-100/230 flex-col items-center justify-between gap-6 md:min-w-100/260 md:items-start md:justify-start">
+      <Title
+        title="Entre em contato"
+        text="Fale diretamente com nosso estabelecimento"
+      />
+      <ul className="flex min-w-100/230 mt-16 flex-col items-center justify-between gap-6 md:min-w-100/260 md:items-start md:justify-start">
         <li>
           <div className="flex flex-col items-center gap-6 md:flex-row">
             <ContactButton link="instagram.com" icon={faInstagram} />
