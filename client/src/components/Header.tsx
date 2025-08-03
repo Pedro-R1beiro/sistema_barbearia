@@ -10,7 +10,7 @@ export function Header({ children, className }: HeaderProps) {
   return (
     <header
       className={cn(
-        "bg-sidebar-accent border-2 relative border-card rounded-md p-2",
+        "bg-sidebar-accent border-2 relative border-card rounded-r-md rounded-l-4xl px-2 py-3.5",
         className,
       )}
     >

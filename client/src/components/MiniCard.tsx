@@ -1,7 +1,9 @@
+import { useRef } from "react";
+
 import { cn } from "@/lib/utils";
 import type { IconLookup } from "@fortawesome/free-brands-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { motion } from "motion/react";
+import { motion, useInView } from "motion/react";
 
 interface MiniCardProps {
   firstTitle: string;
@@ -20,10 +22,12 @@ export function MiniCard({
   delay = 1,
   transition = 1,
 }: MiniCardProps) {
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: false, amount: 0.5 });
   return (
     <motion.div
-      initial={{ opacity: 0, y: 30 }}
-      animate={{ opacity: 1, y: 0 }}
+      ref={ref}
+      animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
       transition={{
         ease: "easeOut",
         delay: delay,

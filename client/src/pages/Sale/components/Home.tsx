@@ -22,7 +22,7 @@ export function Home() {
     <section
       style={{ backgroundImage: `url(${bg})` }}
       id="home"
-      className="bg-foreground/40 dark:bg-background/0 flex h-screen flex-col items-center bg-cover bg-center bg-no-repeat px-4 pt-35 md:mt-0 md:gap-12 md:pb-0"
+      className="bg-foreground/40 dark:bg-background/0 min-h-screen flex flex-col items-center bg-cover bg-center bg-no-repeat px-4 pt-[40%] md:mt-0 md:gap-12 md:pb-0"
     >
       <Title
         title="@Sua barbearia"
@@ -73,7 +73,7 @@ export function Home() {
         <ContactButton link="" icon={faWhatsapp} />
       </motion.div>
 
-      <div className="mt-auto mb-6 flex w-full max-w-[372px] items-center justify-between">
+      <div className="mt-30 mb-6 flex w-full max-w-[372px] items-center justify-between">
         <MiniCard
           firstTitle="A melhor"
           lastTitle="barberia"

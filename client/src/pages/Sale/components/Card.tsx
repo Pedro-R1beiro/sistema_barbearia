@@ -11,7 +11,7 @@ interface CardProps {
 
 export function Card({ imgPath, title, text }: CardProps) {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, amount: 0.5 });
+  const isInView = useInView(ref, { once: false, amount: 0.5 });
   return (
     <div className="space-y-4" ref={ref}>
       <motion.div
