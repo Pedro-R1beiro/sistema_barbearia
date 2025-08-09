@@ -21,7 +21,7 @@ export function CardServicesButton({
     <div className="flex justify-between ">
       <Button
         onClick={() => navigate("/sign-up")}
-        className="w-[154px] [&:hover>svg]:translate-x-1"
+        className="w-[154px] [&:hover>svg]:translate-x-2 md:w-[200px]"
         size={size}
       >
         Agende o seu

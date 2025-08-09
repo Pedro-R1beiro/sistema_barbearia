@@ -3,8 +3,8 @@ import { useNavigate } from "react-router";
 import { Title } from "./Title";
 import bg from "@/assets/sale-bg.svg";
 import { ContactButton } from "@/components/ContactButton";
-import { MiniCard } from "@/components/MiniCard";
 import { Button } from "@/components/ui/button";
+import { MiniCard } from "@/pages/Sale/components/MiniCard";
 import { faInstagram, faWhatsapp } from "@fortawesome/free-brands-svg-icons";
 import {
   faCalendar,
@@ -22,14 +22,14 @@ export function Home() {
     <section
       style={{ backgroundImage: `url(${bg})` }}
       id="home"
-      className="bg-foreground/40 dark:bg-background/0 min-h-screen flex flex-col items-center bg-cover bg-center bg-no-repeat px-4 pt-[40%] md:mt-0 md:gap-12 md:pb-0"
+      className="bg-foreground/40 md:max-h-screen dark:bg-background/0 min-h-screen flex flex-col items-center bg-cover bg-center bg-no-repeat px-4 md:mt-0 md:gap-12 md:pb-0 pt-40"
     >
       <Title
         title="@Sua barbearia"
         text="Agende seu horário e cuide do que faz você quem você é."
       />
 
-      <div className="mt-14 flex w-[240px] flex-col gap-3">
+      <div className="mt-14 md:mt-4 flex w-[240px] md:w-[300px] flex-col gap-3">
         <MotionButton
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
@@ -67,13 +67,13 @@ export function Home() {
           ease: "easeOut",
           delay: 0.4,
         }}
-        className="mt-4.5 flex gap-3"
+        className="mt-4.5 flex gap-3 md:-mt-6"
       >
         <ContactButton link="" icon={faInstagram} />
         <ContactButton link="" icon={faWhatsapp} />
       </motion.div>
 
-      <div className="mt-30 mb-6 flex w-full max-w-[372px] items-center justify-between">
+      <div className="mt-30 mb-6 flex w-full max-w-[372px] md:max-w-[432px] items-center justify-between">
         <MiniCard
           firstTitle="A melhor"
           lastTitle="barberia"

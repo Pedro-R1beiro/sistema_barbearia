@@ -6,7 +6,7 @@ export function Title({ title, text }: { title: string; text: string }) {
       <span className="sr-only">{title}</span>
 
       <motion.h1
-        className="mb-1 text-2xl font-bold"
+        className="mb-1 text-2xl font-bold md:mb-1.5"
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, amount: 0.5 }}
@@ -29,7 +29,7 @@ export function Title({ title, text }: { title: string; text: string }) {
       </motion.h1>
 
       <motion.p
-        className="max-w-[315px] text-lg font-light mx-auto"
+        className="max-w-[350px] text-lg font-light mx-auto md:text-xl"
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, amount: 0.5 }}

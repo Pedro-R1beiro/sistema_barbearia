@@ -10,6 +10,7 @@ import { ContactButton } from "@/components/ContactButton";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { faInstagram, faWhatsapp } from "@fortawesome/free-brands-svg-icons";
+import { faLocation } from "@fortawesome/free-solid-svg-icons";
 import { motion, useInView } from "motion/react";
 
 const MotionButton = motion(Button);
@@ -37,48 +38,16 @@ export function About() {
         title="Nossa barbearia"
         text="Nosso trabalho é garantir que suas expectativas sejam atendidas."
       />
-      <div className="mt-12 flex w-full items-center gap-6">
-        <motion.div
-          animate={isInView ? { filter: "blur(0px)" } : { filter: "blur(2px)" }}
-          transition={{
-            ease: "easeOut",
-            duration: 2,
-          }}
-          style={{ backgroundImage: `url(${BarberShopExample})` }}
-          className="min-h-[126px] min-w-[126px] rounded-full border-2 border-amber-400 bg-cover bg-center"
+      <div className="mt-12 md:mt-2 flex w-full items-center justify-center gap-6 mx-auto">
+        <Card
+          icon={faLocation}
+          imgPath={BarberShopExample}
+          title="Nossa localização"
+          text="Rua A, Bairro Exemplos em Cidade dos exemplos número 32."
         />
-        <div>
-          <motion.h2
-            animate={
-              isInView ? { filter: "blur(0px)" } : { filter: "blur(4px)" }
-            }
-            transition={{
-              ease: "easeOut",
-              opacity: {
-                duration: 2 * 0.8,
-              },
-            }}
-            className="text-lg font-bold"
-          >
-            Onde estamos
-          </motion.h2>
-          <motion.address
-            animate={
-              isInView ? { filter: "blur(0px)" } : { filter: "blur(4px)" }
-            }
-            transition={{
-              ease: "easeOut",
-              opacity: {
-                duration: 2 * 0.8,
-              },
-            }}
-          >
-            Localizados no endereço rua A, Bairro exemplo.
-          </motion.address>
-        </div>
       </div>
 
-      <div className="mt-20 space-y-16">
+      <div className="mt-20 md:mt-6 flex flex-wrap gap-12 items-center max-w-full justify-center mx-auto">
         <Card
           imgPath={barbersImg}
           title="Nossos barbeiros"
@@ -91,7 +60,7 @@ export function About() {
         />
       </div>
 
-      <div className="mt-16 flex w-[240px] flex-col gap-3">
+      <div className="mt-16 flex w-[240px] md:w-[300px] flex-col gap-3 md:mt-6">
         <MotionButton
           initial={hidden(30, 0)}
           animate={isInView ? visible(0, 1) : hidden(30, 0)}
@@ -122,7 +91,7 @@ export function About() {
         </MotionButton>
       </div>
 
-      <div className="mt-5 mb-1 flex w-[240px] items-center gap-4">
+      <div className="mt-5 mb-1 flex w-[240px] md:w-[300px] items-center gap-4 md:-mt-8">
         <Separator className="flex-1" />
         <span className="text-sm">ou</span>
         <Separator className="flex-1" />
@@ -136,7 +105,7 @@ export function About() {
           ease: "easeOut",
           delay: 0.4,
         }}
-        className="mt-4.5 flex gap-3"
+        className="mt-4.5 flex gap-3 md:-mt-8"
       >
         <ContactButton link="" icon={faInstagram} />
         <ContactButton link="" icon={faWhatsapp} />

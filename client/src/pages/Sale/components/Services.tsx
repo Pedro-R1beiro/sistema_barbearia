@@ -23,14 +23,14 @@ export function Services() {
       ref={ref}
       animate={isInView ? { y: 0, opacity: 1 } : { y: 80, opacity: 0 }}
       transition={{ duration: 0.6, ease: "easeOut" }}
-      className="pt-14 mt-8 border-t-1 rounded-t-4xl border-muted-foreground max-w-[1152px] mx-auto"
+      className="pt-14 mt-8 border-t-1 rounded-t-4xl md:border-0 border-muted-foreground max-w-[1152px] mx-auto"
       id="services"
     >
       <Title
         title="Nossos serviços"
         text="Nossos melhores serviços. Focados em tradicionais e modernos."
       />
-      <div className="mt-12 space-y-8">
+      <div className="mt-12 md:mt-20 space-y-8 md:space-y-2 mx-auto w-[420px] md:w-[1000px] md:gap-8 max-w-full md:flex md:flex-wrap md:justify-center">
         <CardServices.Root index={1} image={cutting}>
           <CardServices.Content
             title="Cortes"

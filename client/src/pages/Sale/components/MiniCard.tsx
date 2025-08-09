@@ -27,6 +27,7 @@ export function MiniCard({
   return (
     <motion.div
       ref={ref}
+      initial={{ opacity: 0, y: 30 }}
       animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
       transition={{
         ease: "easeOut",
@@ -36,7 +37,7 @@ export function MiniCard({
         },
       }}
       className={cn(
-        "bg-foreground text-background flex w-[105px] flex-col gap-1 rounded-md p-2 px-3.5 pt-3.5 duration-300 hover:scale-106",
+        "bg-foreground text-background flex w-[105px] md:w-[125px] flex-col gap-1 rounded-md p-2 px-3.5 pt-3.5 duration-300 hover:scale-106",
         classname,
       )}
     >
