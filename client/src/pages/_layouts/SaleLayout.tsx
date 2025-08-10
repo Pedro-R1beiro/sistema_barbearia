@@ -45,7 +45,7 @@ export function SaleLayout() {
           </nav>
         </Header>
       </div>
-      <div className="relative]">
+      <div className="relative">
         <Outlet />
       </div>
     </>

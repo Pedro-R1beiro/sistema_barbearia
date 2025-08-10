@@ -16,14 +16,14 @@ export function Services() {
   ];
 
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: false, amount: 0.1 });
+  const isInView = useInView(ref, { once: false, amount: 0.08 });
 
   return (
     <motion.section
       ref={ref}
       animate={isInView ? { y: 0, opacity: 1 } : { y: 80, opacity: 0 }}
       transition={{ duration: 0.6, ease: "easeOut" }}
-      className="pt-14 mt-8 border-t-1 rounded-t-4xl md:border-0 border-muted-foreground max-w-[1152px] mx-auto"
+      className="pt-12 mt-8 border-t-1 rounded-t-4xl md:border-0 border-muted-foreground max-w-[1152px] mx-auto"
       id="services"
     >
       <Title
