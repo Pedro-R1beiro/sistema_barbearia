@@ -4,26 +4,12 @@ import { useNavigate } from "react-router";
 import { signUp } from "@/api/sign-up";
 import { PrivacyPoliciesDialog } from "@/components/PrivacyPoliciesDialog";
 import { Button } from "@/components/ui/button";
+import { type RegisterData, registerSchema } from "@/schemas/sign-up";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import { type AxiosError, isAxiosError } from "axios";
 import IMask from "imask";
 import { toast } from "sonner";
-import { z } from "zod";
-
-const registerSchema = z.object({
-  name: z.string().min(2, "Mínimo de 2 caracteres"),
-  email: z.string().email("E-mail inválido"),
-  password: z.string().min(8, "Mínimo de 8 caracteres"),
-  phone: z
-    .string()
-    .transform((val) => val.replace(/\D/g, ""))
-    .refine((val) => val.length >= 10 && val.length <= 11, {
-      message: "Telefone deve ter entre 10 e 11 dígitos",
-    }),
-});
-
-type RegisterData = z.infer<typeof registerSchema>;
 
 function signUpError(err: AxiosError) {
   const code = err.response?.status;

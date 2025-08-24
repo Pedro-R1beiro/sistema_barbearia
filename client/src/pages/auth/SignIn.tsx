@@ -4,16 +4,11 @@ import { useNavigate } from "react-router";
 import { ForgotPasswordDialog } from "./ForgotPasswordDialog";
 import { signIn } from "@/api/sign-in";
 import { Button } from "@/components/ui/button";
+import { type SignInData, signInSchema } from "@/schemas/sign-in";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import { AxiosError, isAxiosError } from "axios";
 import { toast } from "sonner";
-import { z } from "zod";
-
-const signInSchema = z.object({
-  email: z.string().email("E-mail inválido"),
-  password: z.string(),
-});
 
 function signInError(err: AxiosError) {
   const code = err.response?.status;
@@ -34,8 +29,6 @@ function signInError(err: AxiosError) {
     }
   }
 }
-
-type SignInData = z.infer<typeof signInSchema>;
 
 export function SignIn() {
   const navigate = useNavigate();
