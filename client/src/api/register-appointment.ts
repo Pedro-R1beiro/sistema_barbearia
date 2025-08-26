@@ -1,7 +1,7 @@
 import { api } from "@/lib/axios";
 import { formatDateRequest } from "@/utils/format-date-request";
 
-interface RegisterAppointmentBody {
+export interface RegisterAppointmentBody {
   startTime: string;
   date: Date;
   idProfessional: number;

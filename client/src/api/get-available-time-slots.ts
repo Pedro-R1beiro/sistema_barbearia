@@ -21,14 +21,14 @@ interface GetAvailableTimeSlotsResponse {
 
 interface getAvailableTimeSlotsQuery {
   date: Date;
-  service: number[];
+  services: number[];
 }
 
 export async function getAvailableTimeSlots({
   date,
-  service,
+  services,
 }: getAvailableTimeSlotsQuery) {
-  const formatService = service.join(",");
+  const formatService = services.join(",");
   const formatedDate = formatDateRequest(date);
 
   const response = await api.get<GetAvailableTimeSlotsResponse>(
