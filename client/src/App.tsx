@@ -1,7 +1,7 @@
 import { RouterProvider } from "react-router";
 
 import { ThemeProvider } from "./components/themes/ThemeProvider";
-import { ArchivedAppointmentsProvider } from "./contexts/ArchivedAppointmentContext/ArchivedAppointmentsProvider";
+import { ArchivedAppointmentsProvider } from "./contexts/ArchivedAppointmentContext/Provider";
 import { queryClient } from "./lib/react-query";
 import { router } from "./router";
 import { QueryClientProvider } from "@tanstack/react-query";

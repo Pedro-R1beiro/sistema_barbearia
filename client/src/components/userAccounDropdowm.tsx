@@ -8,11 +8,10 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
-import { accountInformation } from "@/api/account-informations";
 import { signOut } from "@/api/sign-out";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { Cog, LogOut } from "lucide-react";
 import { toast } from "sonner";
 
@@ -20,11 +19,6 @@ export function UserAccounDropdowm() {
   const navigate = useNavigate();
   const { mutateAsync: signOutFn } = useMutation({
     mutationFn: signOut,
-  });
-
-  const { data: accountDetails } = useQuery({
-    queryKey: ["account-information"],
-    queryFn: accountInformation,
   });
 
   function handleSignOut() {
@@ -39,9 +33,9 @@ export function UserAccounDropdowm() {
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger className="bg-custom-foreground flex cursor-pointer items-center gap-4 rounded-md p-2 px-4 font-bold">
+      <DropdownMenuTrigger className="flex cursor-pointer text-neutral-400 border-sidebar border-2 hover:bg-sidebar duration-200 hover:text-foreground text-sm items-center gap-3 rounded-md py-2 px-5 font-bold">
         <FontAwesomeIcon icon={faUser} className="text-lg" />
-        <span>{accountDetails?.name}</span>
+        <span>usuário</span>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="z-1000">
         <DropdownMenuLabel>Conta</DropdownMenuLabel>
