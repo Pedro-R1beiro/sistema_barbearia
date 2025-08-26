@@ -1,82 +1,71 @@
-import { type Control, Controller } from "react-hook-form";
+import { Controller, useFieldArray, useFormContext } from "react-hook-form";
 
-import type { ScheduleFormData } from "..";
-import { getServices } from "@/api/get-services";
 import { Card, CardContent } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Skeleton } from "@/components/ui/skeleton";
-import { useQuery } from "@tanstack/react-query";
+import { cn } from "@/lib/utils";
+import type { ScheduleFormData } from "@/schemas/schedule-form";
+import { formatPrice } from "@/utils/format-price";
 
-interface UserScheduleFormServicesProps {
-  control: Control<ScheduleFormData>;
-}
-
-export function SelectServices({ control }: UserScheduleFormServicesProps) {
-  const { data: serviceOptions, isFetching } = useQuery({
-    queryKey: ["services"],
-    queryFn: getServices,
-    staleTime: Infinity,
-    refetchOnWindowFocus: false,
-    refetchOnMount: false,
+export function CheckBoxServices({ isLoading }: { isLoading: boolean }) {
+  const {
+    control,
+    formState: { errors },
+  } = useFormContext<ScheduleFormData>();
+  const { fields } = useFieldArray({
+    control,
+    name: "services",
   });
 
   return (
-    <>
-      {isFetching ? (
-        <Card className="py-3">
+    <div className="w-full space-y-1.5">
+      <h3 className="font-semibold">Selecione os serviços</h3>
+      <Card
+        className={cn(
+          "gap-0 py-2 max-h-[174px] overflow-y-auto",
+          errors.services && "border border-destructive",
+        )}
+      >
+        {isLoading ? (
           <CardContent className="space-y-3 p-3">
             <Skeleton className="h-6 w-full" />
             <Skeleton className="h-6 w-full" />
             <Skeleton className="h-6 w-full" />
             <Skeleton className="h-6 w-full" />
           </CardContent>
-        </Card>
-      ) : (
-        <Controller
-          control={control}
-          name="services"
-          defaultValue={[]}
-          render={({ field }) => {
-            const { value, onChange } = field;
-
-            function toggleService(id: number) {
-              if (value?.includes(id)) {
-                onChange(value.filter((item: number) => item !== id));
-                return;
-              }
-
-              onChange([...value, id]);
-            }
-
-            return (
-              <Card className="h-full p-2">
-                <CardContent className="scrollbar-custom max-h-50 overflow-auto p-4">
-                  {serviceOptions &&
-                    serviceOptions.map((service) => {
-                      return (
-                        <label
-                          htmlFor={service.name}
-                          className="border-b-background hover:bg-background flex w-full items-center justify-between border-b-[1px] p-3 pb-3 leading-none font-medium peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                        >
-                          <span className="w-40">{service.name}</span>
-                          <span className="w-40">{service.price}</span>
-
-                          <Checkbox
-                            name="services"
-                            onCheckedChange={() => toggleService(service.id)}
-                            id={service.name}
-                            value={service.id}
-                            checked={value?.includes(service.id)}
-                          />
-                        </label>
-                      );
-                    })}
-                </CardContent>
-              </Card>
-            );
-          }}
-        />
+        ) : (
+          <>
+            {fields.map((service, index) => (
+              <label
+                key={index}
+                className="flex justify-between items-center space-x-2 px-4 hover:bg-muted py-2 duration-150"
+              >
+                <div className="flex items-center space-x-8">
+                  <Controller
+                    control={control}
+                    name={`services.${index}.enabled`}
+                    render={({ field }) => (
+                      <Checkbox
+                        checked={field.value}
+                        onCheckedChange={field.onChange}
+                      />
+                    )}
+                  />
+                  <span>{service.name}</span>
+                </div>
+                <span className="font-medium">
+                  {formatPrice(Number(service.price))}
+                </span>
+              </label>
+            ))}
+          </>
+        )}
+      </Card>
+      {errors.services && (
+        <p className="text-destructive text-sm">
+          {errors.services.root?.message}
+        </p>
       )}
-    </>
+    </div>
   );
 }

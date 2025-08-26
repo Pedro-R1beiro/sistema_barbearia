@@ -1,169 +1,104 @@
-import { useForm } from "react-hook-form";
+import { useEffect } from "react";
+import { FormProvider, useForm } from "react-hook-form";
 
+import { AppointmentDetails } from "./components/AppointmentDetails";
 import { BarberSelect } from "./components/BarberSelect";
-import { SelectServices } from "./components/CheckBoxServices";
+import { CheckBoxServices } from "./components/CheckBoxServices";
+import { DatePicker } from "./components/DatePicker";
 import { TimeSelect } from "./components/TimeSelect";
-import { registerAppointment } from "@/api/register-appointment";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { DatePicker } from "@/components/ui/date-picker";
-import { queryClient } from "@/lib/react-query";
+import { getServices } from "@/api/get-services";
+import { useCreateAppointment } from "@/hooks/useCreateAppointment";
+import {
+  type ScheduleFormData,
+  scheduleFormDataSchema,
+} from "@/schemas/schedule-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation } from "@tanstack/react-query";
-import { toast } from "sonner";
-import { z } from "zod";
-
-const scheduleFormDataSchema = z.object({
-  barber: z.string().min(1, "Selecione um barbeiro"),
-  services: z.array(z.number()).min(1, "Selecione algum serviço"),
-  date: z.date(),
-  startTime: z.string().min(5, "selecione um horário"),
-});
-
-export type ScheduleFormData = z.infer<typeof scheduleFormDataSchema>;
+import { useQuery } from "@tanstack/react-query";
 
 export function ScheduleForm() {
-  const {
-    handleSubmit,
-    control,
-    watch,
-    reset,
-    formState: { errors },
-  } = useForm<ScheduleFormData>({
+  const { data: services, isLoading: loadingServices } = useQuery({
+    queryFn: getServices,
+    queryKey: ["services"],
+  });
+
+  const { registerAppointmentFn } = useCreateAppointment();
+
+  const defaultServices = services?.map((s) => {
+    return { ...s, enabled: false };
+  });
+
+  const methods = useForm<ScheduleFormData>({
     resolver: zodResolver(scheduleFormDataSchema),
     defaultValues: {
-      barber: "",
-      services: [],
+      barberId: "",
       startTime: "",
+      date: new Date(),
+      services: defaultServices || [],
     },
   });
 
-  const selectedBarber = watch("barber");
-  const selectedServices = watch("services");
-  const selectedDate = watch("date");
+  const {
+    handleSubmit,
+    reset,
+    formState: { isSubmitting },
+  } = methods;
 
-  const { mutateAsync: registerAppointmentFn, isPending } = useMutation({
-    mutationFn: registerAppointment,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["next-appointments"] });
-      queryClient.invalidateQueries({ queryKey: ["available-appointments"] });
-      queryClient.invalidateQueries({ queryKey: ["next-appointment"] });
-    },
-  });
-
-  async function onSubmit(data: ScheduleFormData) {
-    try {
-      await registerAppointmentFn({
-        date: data.date,
-        idProfessional: Number(data.barber),
-        service: data.services,
-        startTime: data.startTime,
+  useEffect(() => {
+    if (services) {
+      const defaultServices = services.map((s) => ({ ...s, enabled: false }));
+      reset({
+        barberId: "",
+        startTime: "",
+        date: new Date(),
+        services: defaultServices,
       });
-
-      reset();
-
-      toast.success("Agendamento feito com sucesso!");
-    } catch (err) {
-      toast.error("Horário não disponível!");
-      console.log(err);
     }
+  }, [services, reset]);
+
+  async function handleCreateAppointment(data: ScheduleFormData) {
+    await registerAppointmentFn({
+      date: data.date,
+      startTime: data.startTime,
+      idProfessional: Number(data.barberId),
+      service: data.services.filter((s) => s.enabled).map((s) => s.id),
+    });
+
+    reset({
+      barberId: "",
+      startTime: "",
+      date: new Date(),
+      services: defaultServices,
+    });
   }
 
   return (
-    <div className="w-full space-y-12 pb-16 lg:pt-10">
+    <div className="w-full space-y-12 pb-16 lg:pt-8">
       <div className="space-y-1 text-center">
         <h1 className="text-xl font-bold sm:text-2xl">
           Adicionar um novo agendamento
         </h1>
-        <p className="text-muted-foreground font-semibold">
+        <p className="text-muted-foreground">
           Selecione uma data e um serviço para ver os horários e barbeiros
           disponíveis
         </p>
       </div>
-
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        className="min-w-full space-y-7 pb-8 lg:flex lg:max-w-2xl lg:flex-1 lg:items-start lg:justify-center lg:gap-15"
-      >
-        <div className="space-y-7 lg:flex-1">
-          <div>
-            <h3 className="text-lg font-bold">Selecione uma data</h3>
-            <DatePicker control={control} />
-            {errors.date && (
-              <p className="text-sm text-red-500 dark:text-red-400">
-                Selecione uma data
-              </p>
-            )}
-          </div>
-
-          <div>
-            <h3 className="text-lg font-bold">Selecione serviços</h3>
-            <SelectServices control={control} />
-            {errors.services && (
-              <p className="text-sm text-red-500 dark:text-red-400">
-                {errors.services.message}
-              </p>
-            )}
-          </div>
-        </div>
-
-        <div className="space-y-7 lg:w-120">
-          {selectedServices.length >= 1 && !!selectedDate ? (
-            <div>
-              <h3 className="text-lg font-bold">Selecione um barbeiro</h3>
-              <BarberSelect control={control} watch={watch} />
-              {errors.barber && (
-                <p className="text-sm text-red-500 dark:text-red-400">
-                  {errors.barber.message}
-                </p>
-              )}
-            </div>
-          ) : (
-            <Card className="p-2.5">
-              <CardContent className="px-2">
-                <p>Selecione horário e data</p>
-              </CardContent>
-            </Card>
-          )}
-
-          {selectedBarber && selectedServices.length >= 1 ? (
-            <div>
-              <h3 className="text-lg font-bold">Selecione um horário</h3>
-              <TimeSelect control={control} watch={watch} />
-              {errors.startTime && (
-                <p className="text-sm text-red-500 dark:text-red-400">
-                  {errors.startTime.message}
-                </p>
-              )}
-            </div>
-          ) : (
-            <Card className="p-2.5">
-              <CardContent className="px-2">
-                <p>Selecione um barbeiro.</p>
-              </CardContent>
-            </Card>
-          )}
-
-          <div className="flex w-full items-center justify-between">
-            <span className="text-xl font-bold">Total:</span>
-            <span>33,90</span>
-          </div>
-          <Button
-            disabled={isPending}
-            type="submit"
-            className="w-full py-6 font-bold"
+      <div>
+        <FormProvider {...methods}>
+          <form
+            onSubmit={handleSubmit(handleCreateAppointment)}
+            className="space-y-7 pb-8 lg:gap-15 grid min-w-full gap-7 grid-cols-1 md:grid-cols-[minmax(0,460px)_minmax(0,460px)] justify-center"
           >
-            {isPending ? (
-              <>
-                Agendando{" "}
-                <span className="bg-background ml-1 h-3 w-3 animate-spin" />
-              </>
-            ) : (
-              "Adicionar novo agendamento"
-            )}
-          </Button>
-        </div>
-      </form>
+            <div className="space-y-7 lg:flex-1">
+              <DatePicker />
+
+              <CheckBoxServices isLoading={loadingServices} />
+              <BarberSelect />
+              <TimeSelect />
+            </div>
+            <AppointmentDetails isSubmitting={isSubmitting} />
+          </form>
+        </FormProvider>
+      </div>
     </div>
   );
 }
