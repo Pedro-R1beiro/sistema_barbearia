@@ -7,16 +7,22 @@ use PHPUnit\Framework\TestCase;
 
 class ClientModelTest extends TestCase
 {
-    private int $idClient;
+    private static int $idClient;
+    private static string $codeClient;
+    private static string $emailClient;
 
-    public function testPostClient()
+    public static function setUpBeforeClass(): void
     {
-        $client = new Client();
-        $res = $client->post('Teste', 'testePost@gmail.com', 'teste12345', '1111111111');
+        $client = new Client;
+        $res = $client->post('Teste', uniqid() . '@gmail.com', 'teste12345', '1111111111');
 
-        $this->assertTrue($res[0]);
+        if ($res[0]) {
+            self::$idClient = $res['id'];
+            self::$codeClient = $res['code'];
+            self::$emailClient = $res['email'];
+        }
     }
-
+    
     public function testGetDataClient() 
     {
         $client = new Client();
@@ -32,9 +38,54 @@ class ClientModelTest extends TestCase
     public function testGetByIdClient()
     {
         $client = new Client();
-        $res = $client->getById(1);
+        $res = $client->getById(self::$idClient);
 
         $this->assertIsArray($res);
         $this->assertArrayHasKey('id', $res);
+        $this->assertArrayHasKey('email', $res);
+    }
+
+    public function testGetByEmailClient()
+    {
+        $client = new Client();
+        $res = $client->getByEmail(self::$emailClient);
+
+        $this->assertIsArray($res);
+        $this->assertArrayHasKey('id', $res);
+        $this->assertArrayHasKey('email', $res);
+    }
+
+    public function testGetByCodeClient()
+    {
+        $client = new Client();
+        $res = $client->getByCode(self::$codeClient);
+
+        $this->assertIsArray($res);
+        $this->assertArrayHasKey('id', $res);
+        $this->assertArrayHasKey('email', $res);
+    }
+
+    public function testPostClient()
+    {
+        $client = new Client();
+        $res = $client->post('Teste', uniqid() . '@gmail.com', 'teste12345', '1111111111');
+
+        $this->assertTrue($res[0]);
+    }
+
+    public function testPatchClient()
+    {
+        $client = new Client();
+        $data = [
+            'name' => 'TestePatch',
+            'email' => uniqid() . '@gmail.com',
+            'password' => '12345teste',
+            'phone' => '2222222222',
+            'verified' => 1,
+            'active' => 0
+        ];
+        $res = $client->patch(self::$idClient, $data);
+
+        $this->assertTrue($res);
     }
 }

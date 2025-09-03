@@ -101,13 +101,15 @@ class Client extends Database
     public function post($name, $email, $password, $phone)
     {
         if (!empty($name) && !empty($email) && !empty($password) && !empty($phone)) {
+            $conn = $this->getConnection();
+
             $name = trim($name);
             $email = trim($email);
             $password = trim($password);
             $phone = trim($phone);
 
             $sql = "INSERT INTO clients (name, email, password, phone, code) VALUES (:name, :email, :hashPassword, :phone, :code)";
-            $stmt = $this->getConnection()->prepare($sql);
+            $stmt = $this->conn->prepare($sql);
             $stmt->bindParam(':name', $name);
             $stmt->bindParam(':email', $email);
             $hashPassword = password_hash($password, PASSWORD_DEFAULT); // Criptografa a senha
@@ -116,10 +118,15 @@ class Client extends Database
             $code = md5(uniqid(rand(), true)); // Gera um código único
             $stmt->bindParam(':code', $code);
 
+            
             if ($stmt->execute()) {
+                $id = $this->conn->lastInsertId();
+                
                 return [
                     true,
-                    'code' => $code
+                    'code' => $code,
+                    'id' => $id,
+                    'email' => $email
                 ]; // Retorna true em caso de sucesso
             }
         }
