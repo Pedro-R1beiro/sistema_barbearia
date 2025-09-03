@@ -2,15 +2,15 @@
 
 namespace App\Models;
 
+use App\Models\Services\Database;
 use PDO;
 
-class Vacation
+class Vacation extends Database
 {
-    public $conn;
 
-    public function __construct($conn)
+    public function __construct()
     {
-        $this->conn = $conn;
+        parent::__construct();
     }
 
     // Verifica se o profissional está de férias em uma data específica
@@ -20,7 +20,7 @@ class Vacation
             $sql = "SELECT 1 FROM vacation
                     WHERE idProfessional = :idProfessional
                     AND :date BETWEEN startDate AND endDate";
-            $stmt = $this->conn->prepare($sql);
+            $stmt = $this->getConnection()->prepare($sql);
             $stmt->bindParam(":idProfessional", $idProfessional);
             $stmt->bindParam(":date", $date);
             if ($stmt->execute()) {
@@ -37,7 +37,7 @@ class Vacation
             $sql = "SELECT * FROM vacation
                     WHERE idProfessional = :idProfessional
                     ORDER BY startDate ASC"; // Ordena as férias por data de início
-            $stmt = $this->conn->prepare($sql);
+            $stmt = $this->getConnection()->prepare($sql);
             $stmt->bindParam(':idProfessional', $idProfessional);
             if ($stmt->execute()) {
                 return $stmt->fetchAll(PDO::FETCH_ASSOC); // Retorna um array com os períodos de férias
@@ -52,7 +52,7 @@ class Vacation
         if (is_numeric($idProfessional) && !empty($startDate) && !empty($endDate)) {
             $sql = "INSERT INTO vacation (idProfessional, startDate, endDate)
                     VALUES (:idProfessional, :startDate, :endDate)";
-            $stmt = $this->conn->prepare($sql);
+            $stmt = $this->getConnection()->prepare($sql);
             $stmt->bindParam(':idProfessional', $idProfessional);
             $stmt->bindParam(':startDate', $startDate);
             $stmt->bindParam(':endDate', $endDate);
@@ -68,7 +68,7 @@ class Vacation
             $sql = "UPDATE vacation
                     SET startDate = :startDate, endDate = :endDate
                     WHERE id = :id";
-            $stmt = $this->conn->prepare($sql);
+            $stmt = $this->getConnection()->prepare($sql);
             $stmt->bindParam(':startDate', $startDate);
             $stmt->bindParam(':endDate', $endDate);
             $stmt->bindParam(':id', $id);
@@ -82,7 +82,7 @@ class Vacation
     {
         if (is_numeric($id)) {
             $sql = "DELETE FROM vacation WHERE id = :id";
-            $stmt = $this->conn->prepare($sql);
+            $stmt = $this->getConnection()->prepare($sql);
             $stmt->bindParam(':id', $id);
             return $stmt->execute(); // Retorna true em caso de sucesso
         }

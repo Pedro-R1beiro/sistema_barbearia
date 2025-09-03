@@ -62,7 +62,7 @@ class GetAppointment
             if ($appointment) {
                 foreach ($appointment as $_appo => $_value) {
                     $appointment[$_appo]['services'] = [];
-                    $appointmentServices = $this->appoService->getBYAppointment($_value['id']);
+                    $appointmentServices = $this->appoService->getByAppointment($_value['id']);
                     foreach ($appointmentServices as $_service) {
                         $appointment[$_appo]['services'][] = [
                             'name' => $_service['serviceName'],

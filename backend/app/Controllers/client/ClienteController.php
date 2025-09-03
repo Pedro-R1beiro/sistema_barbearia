@@ -2,7 +2,6 @@
 
 namespace App\Controllers\Client;
 
-use App\Database\Database;
 use App\Models\Appointment;
 use App\Models\AppointmentService;
 use App\Models\Availability;
@@ -15,7 +14,6 @@ use App\Services\Authenticate;
 use App\Services\EmailSender;
 
 class ClienteController {
-    protected $conn;
     public $client;
     public $auth;
     public $emailSender;
@@ -29,18 +27,16 @@ class ClienteController {
     
     public function __construct()
     {
-        $db = new Database();
-        $this->conn = $db->connect();
-        $this->client = new Client($this->conn);
+        $this->client = new Client();
         $this->auth = new Authenticate('client');
         $this->emailSender = new EmailSender();
-        $this->appo = new Appointment($this->conn);
-        $this->appoService = new AppointmentService($this->conn);
-        $this->avail = new Availability($this->conn);
-        $this->dayOff = new DayOff($this->conn);
-        $this->prof = new Professional($this->conn);
-        $this->service = new Service($this->conn);
-        $this->vacat = new Vacation($this->conn);
+        $this->appo = new Appointment();
+        $this->appoService = new AppointmentService();
+        $this->avail = new Availability();
+        $this->dayOff = new DayOff();
+        $this->prof = new Professional();
+        $this->service = new Service();
+        $this->vacat = new Vacation();
     }
 }
 

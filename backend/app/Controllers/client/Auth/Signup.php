@@ -67,7 +67,7 @@ class Signup
                 ];
             }
 
-            $code = $this->client->post($name, $email, $password, $phone);
+            $code = $this->client->post($name, $email, $password, $phone)['code'];
             if (!$code) {
                 return [
                     'code' => 500,

@@ -2,25 +2,24 @@
 
 namespace App\Models;
 
-use App\Models\Appointment;
+use App\Models\Services\Database;
 use PDO;
 
-class Service
+class Service extends Database
 {
-    private $conn;
-    private $appo;
+    private $appoService;
 
-    public function __construct($conn)
+    public function __construct()
     {
-        $this->conn = $conn;
-        $this->appo = new Appointment($conn); // Instancia a classe de agendamento
+        parent::__construct();
+        $this->appoService = new AppointmentService(); // Instancia a classe de procedimentos (serviços->agendamento)
     }
 
     public function get()
     {
         # Seleciona todos os serviços ativos
         $sql = "SELECT * FROM services WHERE active = 1";
-        $stmt = $this->conn->query($sql);
+        $stmt = $this->getConnection()->query($sql);
 
         return $stmt->fetchAll(PDO::FETCH_ASSOC); // Retorna os serviços como array associativo
     }
@@ -30,7 +29,7 @@ class Service
         if (is_numeric($id)) {
             # Seleciona um serviço específico pelo ID
             $sql = "SELECT * FROM services WHERE id = :id AND active = 1";
-            $stmt = $this->conn->prepare($sql);
+            $stmt = $this->getConnection()->prepare($sql);
             $stmt->bindParam(':id', $id);
             if ($stmt->execute()) {
                 return $stmt->fetch(PDO::FETCH_ASSOC); // Retorna o serviço ou false se não encontrado
@@ -48,7 +47,7 @@ class Service
 
         if (!empty($name) && is_numeric($price) && is_numeric($duration)) {
             $sql = "INSERT INTO services (name, price, duration) VALUES (:name, :price, :duration)";
-            $stmt = $this->conn->prepare($sql);
+            $stmt = $this->getConnection()->prepare($sql);
             $stmt->bindParam(':name', $name);
             $stmt->bindParam(':price', $price);
             $stmt->bindParam(':duration', $duration);
@@ -67,7 +66,7 @@ class Service
             $name = trim($name);
 
             $checkSql = "SELECT COUNT(*) FROM services WHERE id = :id";
-            $checkStmt = $this->conn->prepare($checkSql);
+            $checkStmt = $this->getConnection()->prepare($checkSql);
             $checkStmt->bindParam(':id', $id, PDO::PARAM_INT);
             $checkStmt->execute();
 
@@ -76,7 +75,7 @@ class Service
             }
 
             $sql = "UPDATE services SET name = :name, price = :price, duration = :duration WHERE id = :id";
-            $stmt = $this->conn->prepare($sql);
+            $stmt = $this->getConnection()->prepare($sql);
             $stmt->bindParam(':name', $name);
             $stmt->bindParam(':price', $price);
             $stmt->bindParam(':duration', $duration);
@@ -92,12 +91,12 @@ class Service
     public function delete($id)
     {
         if (is_numeric($id)) {
-            $appointmentEntries = $this->appo->getByService($id); // Verifica se há agendamentos para este serviço
+            $appointmentEntries = $this->appoService->getByService($id); // Verifica se há agendamentos para este serviço
 
             if ($appointmentEntries && count($appointmentEntries) > 0) {
                 # Inativa o serviço se houver agendamentos relacionados
                 $sql = "UPDATE services SET active = 0 WHERE id = :id";
-                $stmt = $this->conn->prepare($sql);
+                $stmt = $this->getConnection()->prepare($sql);
                 $stmt->bindParam(':id', $id);
 
                 if ($stmt->execute()) {
@@ -106,7 +105,7 @@ class Service
             } else {
                 # Exclui o serviço se não houver agendamentos relacionados
                 $sql = "DELETE FROM services WHERE id = :id";
-                $stmt = $this->conn->prepare($sql);
+                $stmt = $this->getConnection()->prepare($sql);
                 $stmt->bindParam(':id', $id);
 
                 if ($stmt->execute()) {

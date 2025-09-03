@@ -2,15 +2,14 @@
 
 namespace App\Models;
 
+use App\Models\Services\Database;
 use PDO;
 
-class Availability
+class Availability extends Database
 {
-    public $conn;
-
-    public function __construct($conn)
+    public function __construct()
     {
-        $this->conn = $conn;
+        parent::__construct();
     }
 
     public function getByProfessional($idProfessional, $dayWeek = null)
@@ -21,7 +20,7 @@ class Availability
                 $sql .= " AND dayWeek = :dayWeek"; // Adiciona filtro por dia da semana se fornecido
             }
             $sql .= " ORDER BY dayWeek"; // Ordena por dia da semana
-            $stmt = $this->conn->prepare($sql);
+            $stmt = $this->getConnection()->prepare($sql);
             $stmt->bindParam(':idProfessional', $idProfessional);
             if (is_numeric($dayWeek)) {
                 $stmt->bindParam(':dayWeek', $dayWeek);
@@ -38,7 +37,7 @@ class Availability
         if (is_numeric($idProfessional) && is_numeric($dayWeek) && !empty($startTime) && !empty($endTime)) {
             $sql = "INSERT INTO availability (idProfessional, dayWeek, startTime, endTime, breakTime, startBreak, endBreak) VALUES (:idProfessional, :dayWeek, :startTime, :endTime, :breakTime, :startBreak, :endBreak)";
 
-            $stmt = $this->conn->prepare($sql);
+            $stmt = $this->getConnection()->prepare($sql);
 
             $stmt->bindParam(':idProfessional', $idProfessional, PDO::PARAM_INT);
             $stmt->bindParam(':dayWeek', $dayWeek, PDO::PARAM_INT);
@@ -87,7 +86,7 @@ class Availability
                         endBreak = :endBreak
                     WHERE id = :id";
 
-            $stmt = $this->conn->prepare($sql);
+            $stmt = $this->getConnection()->prepare($sql);
 
             // Bind dos dados
             $stmt->bindParam(':id', $id, PDO::PARAM_INT);
@@ -123,7 +122,7 @@ class Availability
     {
         if (is_numeric($id)) {
             $sql = "DELETE FROM availability WHERE id = :id";
-            $stmt = $this->conn->prepare($sql);
+            $stmt = $this->getConnection()->prepare($sql);
             $stmt->bindParam(':id', $id, PDO::PARAM_INT);
 
             if ($stmt->execute()) {

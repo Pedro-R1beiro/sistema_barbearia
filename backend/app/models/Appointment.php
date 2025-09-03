@@ -2,15 +2,14 @@
 
 namespace App\Models;
 
+use App\Models\Services\Database;
 use PDO;
 
-class Appointment
+class Appointment extends Database
 {
-    private $conn;
-
-    public function __construct($conn)
+    public function __construct()
     {
-        $this->conn = $conn;
+        parent::__construct();
     }
 
     public function isOnAppointment($date, $idProfessional, $startTime, $endTime)
@@ -25,7 +24,7 @@ class Appointment
                         AND :endTime <= endTime)
                     OR(:startTime <= startTime
                         AND :endTime >= endTime))";
-            $stmt = $this->conn->prepare($sql);
+            $stmt = $this->getConnection()->prepare($sql);
             $stmt->bindParam(':date', $date);
             $stmt->bindParam(':idProfessional', $idProfessional);
             $stmt->bindParam(':startTime', $startTime);
@@ -137,7 +136,7 @@ class Appointment
             $sql .= " ORDER BY ap.date, ap.startTime";
         }
 
-        $stmt = $this->conn->prepare($sql);
+        $stmt = $this->getConnection()->prepare($sql);
 
         foreach ($params as $key => $value) {
             $stmt->bindValue($key, $value);
@@ -154,7 +153,7 @@ class Appointment
     {
         if (!empty($id) && is_numeric($id)) {
             $sql = "SELECT * FROM appointments WHERE id = :id";
-            $stmt = $this->conn->prepare($sql);
+            $stmt = $this->getConnection()->prepare($sql);
             $stmt->bindParam(':id', $id);
 
             if ($stmt->execute()) {
@@ -177,7 +176,7 @@ class Appointment
         }
 
         $sql = "UPDATE appointments SET status = :status WHERE id = :id";
-        $stmt = $this->conn->prepare($sql);
+        $stmt = $this->getConnection()->prepare($sql);
         $stmt->bindParam(':status', $status);
         $stmt->bindParam(':id', $id);
 
@@ -197,7 +196,7 @@ class Appointment
 
             $sql = "INSERT INTO appointments (date, startTime, endTime, idClient, idProfessional) VALUES (:date, :startTime, :endTime, :idClient, :idProfessional)";
 
-            $stmt = $this->conn->prepare($sql);
+            $stmt = $this->getConnection()->prepare($sql);
             $stmt->bindParam(':date', $date);
             $stmt->bindParam(':startTime', $startTime);
             $stmt->bindParam(':endTime', $endTime);
@@ -205,7 +204,7 @@ class Appointment
             $stmt->bindParam(':idProfessional', $idProfessional);
 
             if ($stmt->execute()) {
-                return $this->conn->lastInsertId();
+                return $this->getConnection()->lastInsertId();
             }
         }
         return false;
@@ -215,7 +214,7 @@ class Appointment
     {
         if (is_numeric($id)) {
             $sql = "DELETE FROM appointments WHERE id = :id";
-            $stmt = $this->conn->prepare($sql);
+            $stmt = $this->getConnection()->prepare($sql);
             $stmt->bindParam(':id', $id);
 
             if ($stmt->execute()) {

@@ -3,24 +3,24 @@
 namespace App\Models;
 
 use App\Models\Appointment;
+use App\Models\Services\Database;
 use PDO;
 
-class Professional
+class Professional extends Database
 {
-    private $conn;
     private $appo;
 
-    public function __construct($conn)
+    public function __construct()
     {
-        $this->conn = $conn;
-        $this->appo = new Appointment($conn); // Instancia a classe de agendamento
+        parent::__construct();
+        $this->appo = new Appointment(); // Instancia a classe de agendamento
     }
 
     public function getById($id)
     {
         if (is_numeric($id)) {
             $sql = "SELECT * FROM professionals WHERE id = :id AND active = 1";
-            $stmt = $this->conn->prepare($sql);
+            $stmt = $this->getConnection()->prepare($sql);
             $stmt->bindParam(':id', $id);
             if ($stmt->execute()) {
                 return $stmt->fetch(PDO::FETCH_ASSOC); // Retorna o profissional encontrado ou false
@@ -34,7 +34,7 @@ class Professional
         if (!empty($email)) {
             $email = trim($email);
             $sql = "SELECT * FROM professionals WHERE email = :email AND active = 1";
-            $stmt = $this->conn->prepare($sql);
+            $stmt = $this->getConnection()->prepare($sql);
             $stmt->bindParam(':email', $email);
             if ($stmt->execute()) {
                 return $stmt->fetch(PDO::FETCH_ASSOC); // Retorna o profissional encontrado ou false
@@ -46,7 +46,7 @@ class Professional
     public function get()
     {
         $sql = "SELECT * FROM professionals WHERE active = 1";
-        $stmt = $this->conn->query($sql);
+        $stmt = $this->getConnection()->query($sql);
 
         return $stmt->fetchAll(PDO::FETCH_ASSOC); // Retorna todos os profissionais ativos
     }
@@ -63,7 +63,7 @@ class Professional
             $code = md5(uniqid(rand(), true)); // Gera um código único
 
             $sql = "INSERT INTO professionals (name, email, password, phone, code) VALUES (:name, :email, :hashPassword, :phone, :code)";
-            $stmt = $this->conn->prepare($sql);
+            $stmt = $this->getConnection()->prepare($sql);
             $stmt->bindParam(':name', $name);
             $stmt->bindParam(':email', $email);
             $stmt->bindParam(':hashPassword', $hashPassword);
@@ -109,7 +109,7 @@ class Professional
             }
 
             $sql = "UPDATE professionals SET " . implode(', ', $fields) . " WHERE id = :id";
-            $stmt = $this->conn->prepare($sql);
+            $stmt = $this->getConnection()->prepare($sql);
 
             // Vincula os parâmetros dinamicamente
             foreach ($params as $key => $value) {
@@ -147,11 +147,11 @@ class Professional
             // Se houver agendamentos anteriores, inativa o profissional, senão, exclui completamente
             if ($appoPrev && count($appoPrev) > 0) {
                 $sql = "UPDATE professionals SET name = 'ghost', email = null, password = null, phone = null, code = null, active = 0 WHERE id = :id";
-                $stmt = $this->conn->prepare($sql);
+                $stmt = $this->getConnection()->prepare($sql);
                 $stmt->bindParam(':id', $id);
             } else {
                 $sql = "DELETE FROM professionals WHERE id = :id";
-                $stmt = $this->conn->prepare($sql);
+                $stmt = $this->getConnection()->prepare($sql);
                 $stmt->bindParam(':id', $id);
             }
 

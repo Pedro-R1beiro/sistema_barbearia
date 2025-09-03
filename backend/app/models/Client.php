@@ -3,17 +3,17 @@
 namespace App\Models;
 
 use App\Models\Appointment;
+use App\Models\Services\Database;
 use PDO;
 
-class Client
+class Client extends Database
 {
-    public $conn;
     public $appo;
 
-    public function __construct($conn)
+    public function __construct()
     {
-        $this->conn = $conn;
-        $this->appo = new Appointment($conn); // Instancia a classe de agendamento
+        parent::__construct();
+        $this->appo = new Appointment(); // Instancia a classe de agendamento
     }
 
     public function getData()
@@ -49,7 +49,7 @@ class Client
         WHERE
             c.active = '1'; # Filtra apenas clientes ativos
         ";
-        $stmt = $this->conn->query($sql);
+        $stmt = $this->getConnection()->query($sql);
 
         return $stmt->fetchAll(PDO::FETCH_ASSOC); // Retorna os resultados como um array associativo
     }
@@ -58,7 +58,7 @@ class Client
     {
         if (is_numeric($id)) {
             $sql = "SELECT * FROM clients WHERE id = :id AND active = 1";
-            $stmt = $this->conn->prepare($sql);
+            $stmt = $this->getConnection()->prepare($sql);
             $stmt->bindParam(':id', $id);
 
             if ($stmt->execute()) {
@@ -73,7 +73,7 @@ class Client
         if (!empty($email)) {
             $email = trim($email);
             $sql = "SELECT * FROM clients WHERE email = :email AND active = 1";
-            $stmt = $this->conn->prepare($sql);
+            $stmt = $this->getConnection()->prepare($sql);
             $stmt->bindParam(':email', $email);
 
             if ($stmt->execute()) {
@@ -88,7 +88,7 @@ class Client
         if (!empty($code)) {
             $code = trim($code);
             $sql = "SELECT * FROM clients WHERE code = :code AND active = 1";
-            $stmt = $this->conn->prepare($sql);
+            $stmt = $this->getConnection()->prepare($sql);
             $stmt->bindParam(':code', $code);
 
             if ($stmt->execute()) {
@@ -107,7 +107,7 @@ class Client
             $phone = trim($phone);
 
             $sql = "INSERT INTO clients (name, email, password, phone, code) VALUES (:name, :email, :hashPassword, :phone, :code)";
-            $stmt = $this->conn->prepare($sql);
+            $stmt = $this->getConnection()->prepare($sql);
             $stmt->bindParam(':name', $name);
             $stmt->bindParam(':email', $email);
             $hashPassword = password_hash($password, PASSWORD_DEFAULT); // Criptografa a senha
@@ -117,7 +117,10 @@ class Client
             $stmt->bindParam(':code', $code);
 
             if ($stmt->execute()) {
-                return $code; // Retorna true em caso de sucesso
+                return [
+                    true,
+                    'code' => $code
+                ]; // Retorna true em caso de sucesso
             }
         }
         return false; // Retorna false se algum campo estiver vazio ou ocorrer um erro
@@ -165,7 +168,7 @@ class Client
             }
 
             $sql = "UPDATE clients SET " . implode(', ', $fields) . " WHERE id = :id";
-            $stmt = $this->conn->prepare($sql);
+            $stmt = $this->getConnection()->prepare($sql);
 
             // Vincula os parâmetros dinamicamente
             foreach ($params as $key => $value) {
@@ -180,7 +183,7 @@ class Client
     public function disable(int $id)
     {
         $sql = "UPDATE clients SET name = 'ghost', email = null, password = null, phone = null, code = null, active = 0, verified = 0 WHERE id = :id";
-        $stmt = $this->conn->prepare($sql);
+        $stmt = $this->getConnection()->prepare($sql);
         $stmt->bindParam(':id', $id);
 
         if ($stmt->execute()) {
@@ -193,7 +196,7 @@ class Client
     {
         if (is_numeric($id)) {
             $sql = "DELETE FROM clients WHERE id = :id";
-            $stmt = $this->conn->prepare($sql);
+            $stmt = $this->getConnection()->prepare($sql);
             $stmt->bindParam(':id', $id);
 
             if ($stmt->execute()) {

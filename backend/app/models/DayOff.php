@@ -2,15 +2,14 @@
 
 namespace App\Models;
 
+use App\Models\Services\Database;
 use PDO;
 
-class DayOff
+class DayOff extends Database
 {
-    public $conn;
-
-    public function __construct($conn)
+    public function __construct()
     {
-        $this->conn = $conn;
+        parent::__construct();
     }
 
     public function isOnDayOff($idProfessional, $date)
@@ -19,7 +18,7 @@ class DayOff
             $sql = "SELECT 1 FROM dayOff
                     WHERE idProfessional = :idProfessional
                     AND date = :date";
-            $stmt = $this->conn->prepare($sql);
+            $stmt = $this->getConnection()->prepare($sql);
             $stmt->bindParam(":idProfessional", $idProfessional);
             $stmt->bindParam(":date", $date);
             if ($stmt->execute()) {
@@ -33,7 +32,7 @@ class DayOff
     {
         if (is_numeric($idProfessional)) {
             $sql = "SELECT * FROM dayOff WHERE idProfessional = :idProfessional";
-            $stmt = $this->conn->prepare($sql);
+            $stmt = $this->getConnection()->prepare($sql);
             $stmt->bindParam(':idProfessional', $idProfessional);
             if ($stmt->execute()) {
                 return $stmt->fetchAll(PDO::FETCH_ASSOC); // Retorna todos os dias de folga do profissional
@@ -46,7 +45,7 @@ class DayOff
     {
         if (is_numeric($idProfessional) && !empty($date)) {
             $sql = "INSERT INTO dayOff (idProfessional, date) VALUES (:idProfessional, :date)";
-            $stmt = $this->conn->prepare($sql);
+            $stmt = $this->getConnection()->prepare($sql);
             $stmt->bindParam(':idProfessional', $idProfessional);
             $stmt->bindParam(':date', $date);
             if ($stmt->execute()) {
@@ -60,7 +59,7 @@ class DayOff
     {
         if (is_numeric($id) && !empty($date)) {
             $sql = "UPDATE dayOff SET date = :date WHERE id = :id";
-            $stmt = $this->conn->prepare($sql);
+            $stmt = $this->getConnection()->prepare($sql);
             $stmt->bindParam(':date', $date);
             $stmt->bindParam(':id', $id);
             if ($stmt->execute()) {
@@ -74,7 +73,7 @@ class DayOff
     {
         if (is_numeric($id)) {
             $sql = "DELETE FROM dayOff WHERE id = :id";
-            $stmt = $this->conn->prepare($sql);
+            $stmt = $this->getConnection()->prepare($sql);
             $stmt->bindParam(':id', $id);
             if ($stmt->execute()) {
                 return true; // Retorna true em caso de sucesso
