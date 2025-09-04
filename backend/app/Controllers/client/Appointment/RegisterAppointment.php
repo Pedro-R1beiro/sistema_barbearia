@@ -172,7 +172,7 @@ class RegisterAppointment
                 ];
             }
 
-            $appointmentId = $this->appo->post($date, $startTime->format('H:i:s'), $endTime->format('H:i:s'), $idProfessional, $id);
+            $appointmentId = $this->appo->post($date, $startTime->format('H:i:s'), $endTime->format('H:i:s'), $idProfessional, $id)['id'];
             $appoServicesIds = [];
 
             foreach ($services as $_idService) {

@@ -12,9 +12,9 @@ class Appointment extends Database
         parent::__construct();
     }
 
-    public function isOnAppointment($date, $idProfessional, $startTime, $endTime)
+    public function isOnAppointment($date, int $idProfessional, $startTime, $endTime)
     {
-        if (is_numeric($idProfessional) && !empty($date) && !empty($startTime) && !empty($endTime)) {
+        if (is_numeric($idProfessional) && !empty($date) && !empty($startTime) && !empty($endTime)) { 
             $sql = "SELECT * FROM appointments
                     WHERE date = :date
                     AND idProfessional = :idProfessional
@@ -149,7 +149,7 @@ class Appointment extends Database
         return false;
     }
 
-    public function getById($id)
+    public function getById(int $id)
     {
         if (!empty($id) && is_numeric($id)) {
             $sql = "SELECT * FROM appointments WHERE id = :id";
@@ -196,7 +196,8 @@ class Appointment extends Database
 
             $sql = "INSERT INTO appointments (date, startTime, endTime, idClient, idProfessional) VALUES (:date, :startTime, :endTime, :idClient, :idProfessional)";
 
-            $stmt = $this->getConnection()->prepare($sql);
+            $conn = $this->getConnection();
+            $stmt = $conn->prepare($sql);
             $stmt->bindParam(':date', $date);
             $stmt->bindParam(':startTime', $startTime);
             $stmt->bindParam(':endTime', $endTime);
@@ -204,7 +205,10 @@ class Appointment extends Database
             $stmt->bindParam(':idProfessional', $idProfessional);
 
             if ($stmt->execute()) {
-                return $this->getConnection()->lastInsertId();
+                return [
+                    true,
+                    'id' => $conn->lastInsertId()
+                ];
             }
         }
         return false;
