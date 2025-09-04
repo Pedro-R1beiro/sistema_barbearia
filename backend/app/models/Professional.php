@@ -62,8 +62,9 @@ class Professional extends Database
             $hashPassword = password_hash($password, PASSWORD_DEFAULT); // Criptografa a senha
             $code = md5(uniqid(rand(), true)); // Gera um código único
 
+            $conn = $this->getConnection();
             $sql = "INSERT INTO professionals (name, email, password, phone, code) VALUES (:name, :email, :hashPassword, :phone, :code)";
-            $stmt = $this->getConnection()->prepare($sql);
+            $stmt = $conn->prepare($sql);
             $stmt->bindParam(':name', $name);
             $stmt->bindParam(':email', $email);
             $stmt->bindParam(':hashPassword', $hashPassword);
@@ -71,13 +72,18 @@ class Professional extends Database
             $stmt->bindParam(':code', $code);
 
             if ($stmt->execute()) {
-                return true; // Retorna true em caso de sucesso
+                $id = $conn->lastInsertId();
+                return [
+                    true,
+                    'email' => $email,
+                    'id' => $id
+                ]; // Retorna true em caso de sucesso
             }
         }
         return false; // Retorna false se algum campo estiver vazio ou ocorrer um erro
     }
 
-    public function update($id, $name = null, $email = null, $password = null, $phone = null)
+    public function patch($id, $name = null, $email = null, $password = null, $phone = null)
     {
         if (is_numeric($id)) {
             $fields = [];
@@ -123,7 +129,7 @@ class Professional extends Database
         return false; // Retorna false se o ID não for numérico
     }
 
-    public function delete($id)
+    public function delete(int $id)
     {
         if (is_numeric($id)) {
             $appoPrev = $this->appo->get('prev', null, $id); // Busca agendamentos anteriores
