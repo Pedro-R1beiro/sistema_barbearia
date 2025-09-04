@@ -88,4 +88,20 @@ class ClientModelTest extends TestCase
 
         $this->assertTrue($res);
     }
+
+    public function testDisableClient()
+    {
+        $client = new Client();
+        $res = $client->disable(self::$idClient);
+
+        $this->assertTrue($res);
+    }
+
+    public function testDeleteClient()
+    {
+        $client = new Client();
+        $res = $client->delete(self::$idClient);
+
+        $this->assertTrue($res);
+    }
 }

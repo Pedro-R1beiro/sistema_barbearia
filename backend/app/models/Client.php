@@ -109,7 +109,7 @@ class Client extends Database
             $phone = trim($phone);
 
             $sql = "INSERT INTO clients (name, email, password, phone, code) VALUES (:name, :email, :hashPassword, :phone, :code)";
-            $stmt = $this->conn->prepare($sql);
+            $stmt = $conn->prepare($sql);
             $stmt->bindParam(':name', $name);
             $stmt->bindParam(':email', $email);
             $hashPassword = password_hash($password, PASSWORD_DEFAULT); // Criptografa a senha
@@ -120,7 +120,7 @@ class Client extends Database
 
             
             if ($stmt->execute()) {
-                $id = $this->conn->lastInsertId();
+                $id = $conn->lastInsertId();
                 
                 return [
                     true,
@@ -199,7 +199,7 @@ class Client extends Database
         return false;
     }
 
-    public function delete($id)
+    public function delete(int $id)
     {
         if (is_numeric($id)) {
             $sql = "DELETE FROM clients WHERE id = :id";
