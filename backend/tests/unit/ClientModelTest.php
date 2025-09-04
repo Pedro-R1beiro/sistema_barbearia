@@ -14,7 +14,7 @@ class ClientModelTest extends TestCase
     public static function setUpBeforeClass(): void
     {
         $client = new Client;
-        $res = $client->post('Teste', uniqid() . '@gmail.com', 'teste12345', '1111111111');
+        $res = $client->post('Client', uniqid() . '@gmail.com', 'client12345', '1111111111');
 
         if ($res[0]) {
             self::$idClient = $res['id'];
@@ -68,7 +68,7 @@ class ClientModelTest extends TestCase
     public function testPostClient()
     {
         $client = new Client();
-        $res = $client->post('Teste', uniqid() . '@gmail.com', 'teste12345', '1111111111');
+        $res = $client->post('Client', uniqid() . '@gmail.com', 'client12345', '1111111111');
 
         $this->assertTrue($res[0]);
     }
@@ -77,9 +77,9 @@ class ClientModelTest extends TestCase
     {
         $client = new Client();
         $data = [
-            'name' => 'TestePatch',
+            'name' => 'ClientPatch',
             'email' => uniqid() . '@gmail.com',
-            'password' => '12345teste',
+            'password' => '12345client',
             'phone' => '2222222222',
             'verified' => 1,
             'active' => 0
