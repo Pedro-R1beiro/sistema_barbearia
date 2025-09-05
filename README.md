@@ -1,4 +1,4 @@
-# Sistema para barberias  🪒 
+# Sistema para barbearias  🪒 
 
 ### Desenvolvedores:
 
@@ -85,5 +85,6 @@
  - Mais especifidades nas documentações do Backend e do Client
 
  
+
 
 
