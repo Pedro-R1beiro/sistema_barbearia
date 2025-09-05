@@ -7,7 +7,7 @@ use PHPUnit\Framework\TestCase;
 
 class ServiceModelTest extends TestCase
 {
-    public static int $idService;
+    private static int $idService;
 
     public static function setUpBeforeClass(): void
     {

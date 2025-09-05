@@ -26,7 +26,7 @@ class AppointmentModelTest extends TestCase
             self::$idProfessional = $resProfessional['id'];
             self::$idClient = $resClient['id'];
 
-            $resAppointment = $appointment->post('2025-09-19', '08:00', '09:00', $resProfessional['id'], $resClient['id']);
+            $resAppointment = $appointment->post(date('Y-m-d', strtotime('tomorrow')), '08:00', '09:00', $resProfessional['id'], $resClient['id']);
 
             if ($resAppointment[0]) {
                 self::$idAppointment = $resAppointment['id'];
@@ -37,7 +37,7 @@ class AppointmentModelTest extends TestCase
     public function testIsOnAppointment()
     {
         $appointment = new Appointment;
-        $res = $appointment->isOnAppointment('2025-09-19', self::$idProfessional, '08:00', '09:00');
+        $res = $appointment->isOnAppointment(date('Y-m-d', strtotime('tomorrow')), self::$idProfessional, '08:00', '09:00');
 
         $this->assertIsArray($res);
         $this->assertArrayHasKey('date', $res[0]);
@@ -100,7 +100,7 @@ class AppointmentModelTest extends TestCase
     public function testPostAppointment()
     {
         $appointment = new Appointment;
-        $res = $appointment->post('2025-09-19', '08:00', '09:00', self::$idProfessional, self::$idClient);
+        $res = $appointment->post(date('Y-m-d', strtotime('tomorrow')), '08:00', '09:00', self::$idProfessional, self::$idClient);
 
         $this->assertTrue($res[0]);
     }

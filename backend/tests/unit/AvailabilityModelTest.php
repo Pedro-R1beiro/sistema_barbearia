@@ -8,8 +8,8 @@ use PHPUnit\Framework\TestCase;
 
 class AvailabilityModelTest extends TestCase
 {
-    public static int $idProfessional;
-    public static int $idAvailability;
+    private static int $idProfessional;
+    private static int $idAvailability;
 
     public static function setUpBeforeClass(): void
     {
