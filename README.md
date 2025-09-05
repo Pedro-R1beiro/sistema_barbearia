@@ -68,10 +68,10 @@
 ## Como funciona: 🖱📋
 
  É um sistema muito simples de usar. Ao entrar, o usuário vê um landing page onde ficaram
- imagens da barberia que optar pelos serviços, mostrando mais sobre ela. 
+ informações da barberia que optar pelos serviços, mostrando mais sobre ela. 
  <br/>
  <br/>
- Dado isso, o usuário pode fazer login ou cadastro e ver um dashboard com todos os seus agendamentos, card específicos
+ Dado isso, o usuário pode fazer login ou cadastro e ver um dashboard com todos os seus agendamentos, card's específicos
  para próximo agendamento e os que ainda estão por vir. 
  <br/>
  <br/>
@@ -85,4 +85,5 @@
  - Mais especifidades nas documentações do Backend e do Client
 
  
+
 
