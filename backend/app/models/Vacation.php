@@ -50,19 +50,26 @@ class Vacation extends Database
     public function post($idProfessional, $startDate, $endDate)
     {
         if (is_numeric($idProfessional) && !empty($startDate) && !empty($endDate)) {
+            $conn = $this->getConnection();
             $sql = "INSERT INTO vacation (idProfessional, startDate, endDate)
                     VALUES (:idProfessional, :startDate, :endDate)";
-            $stmt = $this->getConnection()->prepare($sql);
+            $stmt = $conn->prepare($sql);
             $stmt->bindParam(':idProfessional', $idProfessional);
             $stmt->bindParam(':startDate', $startDate);
             $stmt->bindParam(':endDate', $endDate);
-            return $stmt->execute(); // Retorna true em caso de sucesso
+            if ($stmt->execute()) {
+                $id = $conn->lastInsertId();
+                return [
+                    true,
+                    'id' => $id
+                ]; // Retorna true em caso de sucesso
+            }
         }
         return false; // Retorna false se os dados forem inválidos
     }
 
     // Atualiza o período de férias
-    public function put($id, $startDate, $endDate)
+    public function patch($id, $startDate, $endDate)
     {
         if (is_numeric($id) && !empty($startDate) && !empty($endDate)) {
             $sql = "UPDATE vacation
@@ -72,7 +79,9 @@ class Vacation extends Database
             $stmt->bindParam(':startDate', $startDate);
             $stmt->bindParam(':endDate', $endDate);
             $stmt->bindParam(':id', $id);
-            return $stmt->execute(); // Retorna true em caso de sucesso
+            if ($stmt->execute()) {
+                return true; // Retorna true em caso de sucesso
+            }
         }
         return false; // Retorna false se os dados forem inválidos
     }
@@ -84,7 +93,9 @@ class Vacation extends Database
             $sql = "DELETE FROM vacation WHERE id = :id";
             $stmt = $this->getConnection()->prepare($sql);
             $stmt->bindParam(':id', $id);
-            return $stmt->execute(); // Retorna true em caso de sucesso
+            if ($stmt->execute()) {
+                return true; // Retorna true em caso de sucesso
+            }
         }
         return false; // Retorna false se o ID não for numérico
     }
