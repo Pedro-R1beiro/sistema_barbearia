@@ -44,18 +44,23 @@ class DayOff extends Database
     public function post($idProfessional, $date)
     {
         if (is_numeric($idProfessional) && !empty($date)) {
+            $conn = $this->getConnection();
             $sql = "INSERT INTO dayOff (idProfessional, date) VALUES (:idProfessional, :date)";
-            $stmt = $this->getConnection()->prepare($sql);
+            $stmt = $conn->prepare($sql);
             $stmt->bindParam(':idProfessional', $idProfessional);
             $stmt->bindParam(':date', $date);
             if ($stmt->execute()) {
-                return true; // Retorna true em caso de sucesso
+                $id = $conn->lastInsertId();
+                return [
+                    true,
+                    'id' => $id
+                ]; // Retorna true em caso de sucesso
             }
         }
         return false; // Retorna false se os dados de entrada não forem válidos
     }
 
-    public function put($id, $date)
+    public function patch($id, $date)
     {
         if (is_numeric($id) && !empty($date)) {
             $sql = "UPDATE dayOff SET date = :date WHERE id = :id";
