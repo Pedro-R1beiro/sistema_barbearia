@@ -15,9 +15,9 @@ class AppointmentModelTest extends TestCase
 
     public static function setUpBeforeClass(): void
     {
-        $professional = new Professional();
-        $client = new Client();
-        $appointment = new Appointment();
+        $professional = new Professional;
+        $client = new Client;
+        $appointment = new Appointment;
 
         $resProfessional = $professional->post('ProfessionalAppo', uniqid() . '@gmail.com', 'professional123', '1111111111');
         $resClient = $client->post('ClientAppo', uniqid() . '@gmail.com', 'client12345', '1111111111');
@@ -36,7 +36,7 @@ class AppointmentModelTest extends TestCase
 
     public function testIsOnAppointment()
     {
-        $appointment = new Appointment();
+        $appointment = new Appointment;
         $res = $appointment->isOnAppointment('2025-09-19', self::$idProfessional, '08:00', '09:00');
 
         $this->assertIsArray($res);
@@ -45,7 +45,7 @@ class AppointmentModelTest extends TestCase
 
     public function testGetAppointment()
     {
-        $appointment = new Appointment();
+        $appointment = new Appointment;
         $res = $appointment->get();
 
         $this->assertIsArray($res);
@@ -54,7 +54,7 @@ class AppointmentModelTest extends TestCase
 
     public function testGetByFilterAppointment()
     {
-        $appointment = new Appointment();
+        $appointment = new Appointment;
         $res = $appointment->get('booked');
 
         $this->assertIsArray($res);
@@ -63,7 +63,7 @@ class AppointmentModelTest extends TestCase
 
     public function testGetByStatusAppointment()
     {
-        $appointment = new Appointment();
+        $appointment = new Appointment;
         $res = $appointment->get(null, 'booked');
 
         $this->assertIsArray($res);
@@ -72,7 +72,7 @@ class AppointmentModelTest extends TestCase
 
     public function testGetByProfessionalAppointment()
     {
-        $appointment = new Appointment();
+        $appointment = new Appointment;
         $res = $appointment->get(null, null, self::$idProfessional);
 
         $this->assertIsArray($res);
@@ -81,7 +81,7 @@ class AppointmentModelTest extends TestCase
 
     public function testGetByClientAppointment()
     {
-        $appointment = new Appointment();
+        $appointment = new Appointment;
         $res = $appointment->get(null, null, null, self::$idClient);
 
         $this->assertIsArray($res);
@@ -90,7 +90,7 @@ class AppointmentModelTest extends TestCase
 
     public function testGetByIdAppointment()
     {
-        $appointment = new Appointment();
+        $appointment = new Appointment;
         $res = $appointment->getById(self::$idAppointment);
 
         $this->assertIsArray($res);
@@ -99,7 +99,7 @@ class AppointmentModelTest extends TestCase
 
     public function testPostAppointment()
     {
-        $appointment = new Appointment();
+        $appointment = new Appointment;
         $res = $appointment->post('2025-09-19', '08:00', '09:00', self::$idProfessional, self::$idClient);
 
         $this->assertTrue($res[0]);
@@ -107,7 +107,7 @@ class AppointmentModelTest extends TestCase
 
     public function testPatchAppointment()
     {
-        $appointment = new Appointment();
+        $appointment = new Appointment;
         $res = $appointment->patch(self::$idAppointment, 'canceled');
 
         $this->assertTrue($res);

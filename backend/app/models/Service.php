@@ -46,20 +46,25 @@ class Service extends Database
         $duration = trim($duration);
 
         if (!empty($name) && is_numeric($price) && is_numeric($duration)) {
+            $conn = $this->getConnection();
             $sql = "INSERT INTO services (name, price, duration) VALUES (:name, :price, :duration)";
-            $stmt = $this->getConnection()->prepare($sql);
+            $stmt = $conn->prepare($sql);
             $stmt->bindParam(':name', $name);
             $stmt->bindParam(':price', $price);
             $stmt->bindParam(':duration', $duration);
 
             if ($stmt->execute()) {
-                return true; // Retorna true em caso de sucesso
+                $id = $conn->lastInsertId();
+                return [
+                    true,
+                    'id' => $id
+                ]; // Retorna true em caso de sucesso
             }
         }
         return false; // Retorna false se os dados não forem válidos
     }
 
-    public function put($name, $price, $duration, $id)
+    public function patch($name, $price, $duration, $id)
     {
         # Atualiza um serviço existente
         if (!empty($name) && is_numeric($price) && is_numeric($duration) && is_numeric($id)) {

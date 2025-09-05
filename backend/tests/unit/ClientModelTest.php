@@ -25,7 +25,7 @@ class ClientModelTest extends TestCase
     
     public function testGetDataClient() 
     {
-        $client = new Client();
+        $client = new Client;
         $res = $client->getData();
 
         $this->assertIsArray($res);
@@ -37,7 +37,7 @@ class ClientModelTest extends TestCase
 
     public function testGetByIdClient()
     {
-        $client = new Client();
+        $client = new Client;
         $res = $client->getById(self::$idClient);
 
         $this->assertIsArray($res);
@@ -47,7 +47,7 @@ class ClientModelTest extends TestCase
 
     public function testGetByEmailClient()
     {
-        $client = new Client();
+        $client = new Client;
         $res = $client->getByEmail(self::$emailClient);
 
         $this->assertIsArray($res);
@@ -57,7 +57,7 @@ class ClientModelTest extends TestCase
 
     public function testGetByCodeClient()
     {
-        $client = new Client();
+        $client = new Client;
         $res = $client->getByCode(self::$codeClient);
 
         $this->assertIsArray($res);
@@ -67,7 +67,7 @@ class ClientModelTest extends TestCase
 
     public function testPostClient()
     {
-        $client = new Client();
+        $client = new Client;
         $res = $client->post('Client', uniqid() . '@gmail.com', 'client12345', '1111111111');
 
         $this->assertTrue($res[0]);
@@ -75,7 +75,7 @@ class ClientModelTest extends TestCase
 
     public function testPatchClient()
     {
-        $client = new Client();
+        $client = new Client;
         $data = [
             'name' => 'ClientPatch',
             'email' => uniqid() . '@gmail.com',
@@ -91,7 +91,7 @@ class ClientModelTest extends TestCase
 
     public function testDisableClient()
     {
-        $client = new Client();
+        $client = new Client;
         $res = $client->disable(self::$idClient);
 
         $this->assertTrue($res);
@@ -99,7 +99,7 @@ class ClientModelTest extends TestCase
 
     public function testDeleteClient()
     {
-        $client = new Client();
+        $client = new Client;
         $res = $client->delete(self::$idClient);
 
         $this->assertTrue($res);
