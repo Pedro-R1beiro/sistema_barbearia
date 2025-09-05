@@ -1,7 +1,10 @@
 RewriteEngine On
+<<<<<<< HEAD
 RewriteBase /sistema_barbearia/backend/
+=======
+>>>>>>> fcaebbc11660236e1e74da3c881b11a73a7d9b75
 
 # Redireciona tudo para index.php, exceto arquivos e pastas reais
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^ index.php [QSA,L]
+RewriteRule ^ public/index.php [QSA,L]
