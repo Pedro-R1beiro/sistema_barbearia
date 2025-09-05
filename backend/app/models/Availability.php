@@ -35,9 +35,10 @@ class Availability extends Database
     public function post($idProfessional, $dayWeek, $startTime, $endTime, $breakTime = null, $startBreak = null, $endBreak = null)
     {
         if (is_numeric($idProfessional) && is_numeric($dayWeek) && !empty($startTime) && !empty($endTime)) {
-            $sql = "INSERT INTO availability (idProfessional, dayWeek, startTime, endTime, breakTime, startBreak, endBreak) VALUES (:idProfessional, :dayWeek, :startTime, :endTime, :breakTime, :startBreak, :endBreak)";
+            $conn = $this->getConnection();
+            $sql = "INSERT INTO availability (idProfessional, dayWeek, startTime, endTime, break, startBreak, endBreak) VALUES (:idProfessional, :dayWeek, :startTime, :endTime, :break, :startBreak, :endBreak)";
 
-            $stmt = $this->getConnection()->prepare($sql);
+            $stmt = $conn->prepare($sql);
 
             $stmt->bindParam(':idProfessional', $idProfessional, PDO::PARAM_INT);
             $stmt->bindParam(':dayWeek', $dayWeek, PDO::PARAM_INT);
@@ -55,19 +56,23 @@ class Availability extends Database
                 $endBreakValue = null;
             }
 
-            $stmt->bindParam(':breakTime', $breakTimeValue, PDO::PARAM_INT);
+            $stmt->bindParam(':break', $breakTimeValue, PDO::PARAM_INT);
             $stmt->bindParam(':startBreak', $startBreakValue);
             $stmt->bindParam(':endBreak', $endBreakValue);
 
             if ($stmt->execute()) {
-                return true; // Retorna true em caso de sucesso
+                $id = $conn->lastInsertId();
+                return [
+                    true,
+                    'id' => $id
+                ]; // Retorna true em caso de sucesso
             }
         }
 
         return false; // Retorna false se os dados obrigatórios não forem válidos
     }
 
-    public function put($id, $idProfessional, $dayWeek, $startTime, $endTime, $breakTime = null, $startBreak = null, $endBreak = null)
+    public function patch($id, $idProfessional, $dayWeek, $startTime, $endTime, $breakTime = null, $startBreak = null, $endBreak = null)
     {
         if (
             is_numeric($id) &&
@@ -81,7 +86,7 @@ class Availability extends Database
                         dayWeek = :dayWeek,
                         startTime = :startTime,
                         endTime = :endTime,
-                        breakTime = :breakTime,
+                        break = :break,
                         startBreak = :startBreak,
                         endBreak = :endBreak
                     WHERE id = :id";
@@ -106,7 +111,7 @@ class Availability extends Database
                 $endBreakValue = null;
             }
 
-            $stmt->bindParam(':breakTime', $breakTimeValue, PDO::PARAM_INT);
+            $stmt->bindParam(':break', $breakTimeValue, PDO::PARAM_INT);
             $stmt->bindParam(':startBreak', $startBreakValue);
             $stmt->bindParam(':endBreak', $endBreakValue);
 
