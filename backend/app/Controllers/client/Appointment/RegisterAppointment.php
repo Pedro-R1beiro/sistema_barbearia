@@ -178,7 +178,7 @@ class RegisterAppointment
             foreach ($services as $_idService) {
                 $result = $this->appoService->post($_idService, $appointmentId);
 
-                if ($result === false) {
+                if ($result[0] === false) {
                     $this->appo->delete($appointmentId);
                     foreach ($appoServicesIds as $appoServicesId) {
                         $this->appoService->delete($appoServicesId);
@@ -192,7 +192,7 @@ class RegisterAppointment
                     ];
                 }
 
-                $appointmentIds[] = $result;
+                $appointmentIds[] = $result['id'];
             }
             return [
                 'code' => 201,

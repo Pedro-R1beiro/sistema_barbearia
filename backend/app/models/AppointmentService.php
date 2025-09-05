@@ -42,12 +42,17 @@ class AppointmentService  extends Database
     
     public function post(int $idService, int $idAppointment) 
     {
+        $conn = $this->getConnection();
         $sql = "INSERT INTO appointment_services (idService, idAppointment) VALUES (:idService, :idAppointment)";
         $stmt = $this->getConnection()->prepare($sql);
         $stmt->bindParam(':idService', $idService);
         $stmt->bindParam(':idAppointment', $idAppointment);
         if ($stmt->execute()) {
-            return $this->getConnection()->lastInsertId();
+            $id = $conn->lastInsertId();
+            return [
+                true,
+                'id' => $id
+            ];
         }
         return false;
     }
