@@ -15,10 +15,10 @@ abstract class Database
 
     public function __construct()
     {
-        $this->host = 'localhost';
-        $this->dbname = 'barbershop-system';
-        $this->username = 'root';
-        $this->password = '';
+        $this->host = $_ENV['DB_HOST'];
+        $this->dbname = $_ENV['DB_NAME'];
+        $this->username = $_ENV['DB_USERNAME'];
+        $this->password = $_ENV['DB_PASSWORD'];
     }
 
     public function getConnection()
