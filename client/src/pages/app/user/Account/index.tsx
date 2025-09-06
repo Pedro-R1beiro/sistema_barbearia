@@ -1,7 +1,8 @@
+import { AccountDetailsCard } from "./components/AccountDetailsCard";
+import { AccountDetailsCardSkeleton } from "./components/AccountDetailsCardSkeleton";
 import { accountInformation } from "@/api/account-informations";
 import { ContactButton } from "@/components/ContactButton";
 import { NextAppointmentCard } from "@/components/NextAppointmentCard";
-import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -10,54 +11,18 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { faInstagram, faWhatsapp } from "@fortawesome/free-brands-svg-icons";
-import { faUser } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useQuery } from "@tanstack/react-query";
 
 export function Account() {
-  const { data: accountDetails } = useQuery({
+  const { isLoading } = useQuery({
     queryKey: ["account-information"],
     queryFn: accountInformation,
   });
 
-  console.log(accountDetails);
   return (
     <div className="gap-16 space-y-10 lg:flex lg:items-stretch lg:space-y-0">
       <div className="w-full space-y-10 md:flex md:gap-6 md:space-y-0 lg:flex-row-reverse">
-        <Card className="min-h-full md:flex-1">
-          <CardHeader className="flex items-center justify-between">
-            <CardTitle className="text-[1.375rem] font-bold">
-              Sua conta
-            </CardTitle>
-            <FontAwesomeIcon icon={faUser} size="lg" />
-          </CardHeader>
-          <CardContent className="space-y-4 text-lg">
-            <div>
-              <span className="block font-bold">Seu nome</span>
-              {accountDetails?.name}
-            </div>
-            <div>
-              <span className="block font-bold">Seu e-mail</span>
-              {accountDetails?.email}
-            </div>
-            <div>
-              <span className="block font-bold">Seu número</span>
-              {accountDetails?.phone}
-            </div>
-
-            <div className="bg-background h-[0.09rem] w-full border-b" />
-
-            <Button variant="secondary" className="w-full py-5 font-bold">
-              Editar dados
-            </Button>
-            <Button
-              variant="customDestructive"
-              className="w-full py-5 font-bold"
-            >
-              Deletar conta
-            </Button>
-          </CardContent>
-        </Card>
+        {isLoading ? <AccountDetailsCardSkeleton /> : <AccountDetailsCard />}
         <Card className="bg-custom-foreground text-background min-h-full border-4 md:flex-1">
           <CardHeader>
             <div className="flex items-center gap-4">
