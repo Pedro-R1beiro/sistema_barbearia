@@ -15,11 +15,11 @@ import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { Eraser, PlusIcon } from "lucide-react";
 
-interface AppointmentDetailsProps {
+interface ConfirmAppointmentProps {
   isSubmitting: boolean;
 }
 
-export function AppointmentDetails({ isSubmitting }: AppointmentDetailsProps) {
+export function ConfirmAppointment({ isSubmitting }: ConfirmAppointmentProps) {
   const { watch, reset } = useFormContext<ScheduleFormData>();
 
   const selectedDate = watch("date");

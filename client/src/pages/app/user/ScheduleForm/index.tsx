@@ -1,9 +1,9 @@
 import { useEffect } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 
-import { AppointmentDetails } from "./components/AppointmentDetails";
 import { BarberSelect } from "./components/BarberSelect";
 import { CheckBoxServices } from "./components/CheckBoxServices";
+import { ConfirmAppointment } from "./components/ConfirmAppointment";
 import { DatePicker } from "./components/DatePicker";
 import { TimeSelect } from "./components/TimeSelect";
 import { getServices } from "@/api/get-services";
@@ -95,7 +95,7 @@ export function ScheduleForm() {
               <BarberSelect />
               <TimeSelect />
             </div>
-            <AppointmentDetails isSubmitting={isSubmitting} />
+            <ConfirmAppointment isSubmitting={isSubmitting} />
           </form>
         </FormProvider>
       </div>
