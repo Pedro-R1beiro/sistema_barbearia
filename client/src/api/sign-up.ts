@@ -13,7 +13,6 @@ export async function signUp({ email, password, name, phone }: SignInBody) {
     email,
     password,
     phone,
-    validationScreen:
-      "https://chatgpt.com/c/683634bc-8704-8011-b37c-8217e18efa12",
+    validationScreen: "http://localhost:5173/sign-in",
   });
 }
