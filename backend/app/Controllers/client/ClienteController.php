@@ -13,6 +13,14 @@ use App\Models\Vacation;
 use App\Services\Authenticate;
 use App\Services\EmailSender;
 
+use OpenApi\Attributes as OA;
+
+#[OA\Info(
+    title: "API Barbearia",
+    version: "1.0.0",
+    description: "Documentação da API do sistema de barbearia"
+)]
+
 class ClienteController {
     public $client;
     public $auth;
