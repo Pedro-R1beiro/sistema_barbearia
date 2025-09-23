@@ -26,17 +26,14 @@ export function Services() {
       className="pt-12 mt-8 border-t-1 rounded-t-4xl md:border-0 border-muted-foreground max-w-[1152px] mx-auto"
       id="services"
     >
-      <Title
-        title="Nossos serviços"
-        text="Nossos melhores serviços. Focados em tradicionais e modernos."
-      />
-      <div className="mt-12 md:mt-20 space-y-8 md:space-y-2 mx-auto w-[420px] md:w-[1000px] md:gap-8 max-w-full md:flex md:flex-wrap md:justify-center">
+      <Title title="Nossos serviços" text="Foco em tradicionais e modernos." />
+      <div className="mt-12 md:mt-20 space-y-8 md:space-y-0 mx-auto w-[420px] md:w-full md:gap-8 max-w-full md:flex md:justify-center">
         <CardServices.Root index={1} image={cutting}>
           <CardServices.Content
             title="Cortes"
             text="Tradicionais e modernos. Cortes do seu gosto."
           />
-          <CardServices.Button size="sm" />
+          <CardServices.Button size="sm" className="md:w-[200px]" />
         </CardServices.Root>
 
         <CardServices.Root index={2} image={cuttingBeard}>
@@ -44,7 +41,7 @@ export function Services() {
             title="barba"
             text="Barba alinhada e feita. Essência masculina."
           />
-          <CardServices.Button size="sm" />
+          <CardServices.Button size="sm" className="md:w-[200px]" />
         </CardServices.Root>
 
         <CardServices.Root index={3}>
@@ -53,7 +50,7 @@ export function Services() {
             text="Barba alinhada e feita. Essência masculina."
           />
           <CardServices.Icons icons={icons} />
-          <CardServices.Button size="sm">
+          <CardServices.Button size="sm" className="max-w-full mr-4">
             <Button size="sm" variant="outline">
               Já tem horários?
             </Button>

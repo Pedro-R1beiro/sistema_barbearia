@@ -27,7 +27,7 @@ export function CardServicesRoot({
         backgroundImage: `url(${image})`,
       }}
       className={cn(
-        "p-5.5 bg-cover bg-center hover:rotate-2 md:min-w-[420px] hover:scale-105 duration-300 relative rounded-xl border-2 border-card",
+        "p-5.5 bg-cover bg-center min-w-[350px] hover:rotate-2 md:w-full hover:scale-105 duration-300 relative rounded-xl border-2 border-card",
         image && "bg-[#282828]",
       )}
     >
