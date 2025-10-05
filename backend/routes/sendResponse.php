@@ -15,13 +15,6 @@ function sendResponse($data, $httpCode = 200) {
     exit;
 }
 
-if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS' ) {
-    sendResponse([
-        'status' => 'success',
-        'message' => 'Requisição aceita'
-    ]);
-}
-
 $response = $router->dispacth($_SERVER['REQUEST_METHOD'], $_SERVER['REQUEST_URI']);
 sendResponse(data: $response['body'], httpCode: $response['code']);
 
