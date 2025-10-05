@@ -102,7 +102,6 @@ $routes = [
 function addRoute($methodHttp, $uri, $controller, $methodName, $routeConfig)
 {
     global $router;
-    global $routes;
 
     $fullUri = 'client/' . $uri;
 
@@ -123,13 +122,7 @@ function addRoute($methodHttp, $uri, $controller, $methodName, $routeConfig)
             $authResult = $auth->ensureAuth();
 
             if (!isset($authResult['id'])) {
-                return [
-                    'code' => 401,
-                    'body' => [
-                        'status' => 'error',
-                        'message' => 'Não autenticado'
-                    ]
-                ];
+                return $authResult;
             }
 
             if ($routeConfig['requires_id']) {

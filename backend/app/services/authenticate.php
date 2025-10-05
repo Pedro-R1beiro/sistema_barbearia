@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\Client;
 use Exception;
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
@@ -33,27 +34,43 @@ class Authenticate
 
     public function ensureAuth()
     {
-        $user = $this->getUser();
+        $unauthorized = [
+            'code' => 401,
+            'body' => [
+                'status' => 'error',
+                'message' => 'UNAUTHORIZED'
+            ]
+        ];
 
-        if (!$user) {
-            return [
-                'code' => 401,
-                'body' => [
-                    'status' => 'error',
-                    'message' => 'UNAUTHORIZED'
-                ]
-            ];
+        $user = $this->getUser();
+        if (!$user) return $unauthorized;
+
+        $client = new Client;
+        $account = $client->getByEmail($user['email']);
+        if (!$account) {
+            $this->inspireToken();
+            return $unauthorized;
         }
 
-        return $user;
+        if (!password_verify($user['password'], $account['password'])) {
+            $this->inspireToken();
+            return $unauthorized;
+        }
+
+        return [
+            'id' => $user['id'],
+            'code' => $user['code']
+        ];
     }
 
-    public function generateToken($id, $code, $duration = 7)
+    public function generateToken($id, $code, $email, $password, $duration = 7)
     {
         try {
             $payload = [
                 'id' => $id,
                 'code' => $code,
+                'email' => $email,
+                'password' => $password,
                 'iat' => time(),
                 'exp' => time() + (60 * 60 * 24 * $duration)
             ];

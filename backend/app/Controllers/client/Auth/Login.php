@@ -66,7 +66,7 @@ class Login
             }
 
             // gerar token
-            $this->auth->generateToken($account['id'], $account['code']);
+            $this->auth->generateToken($account['id'], $account['code'], $account['email'], $password);
             return [
                 'code' => 200,
                 'body' => [
