@@ -149,6 +149,11 @@ class Client extends Database
                 $params[':email'] = trim($data['email']);
             }
 
+            if (isset($data['code'])) {
+                $fields[] = "code = :code";
+                $params[':code'] = md5(uniqid(rand(), true));
+            }
+
             if (!empty($data['password'])) {
                 $fields[] = "password = :password";
                 $params[':password'] = password_hash(trim($data['password']), PASSWORD_DEFAULT); // Criptografa a nova senha

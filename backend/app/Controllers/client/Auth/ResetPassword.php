@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace App\Controllers\Client\Auth;
 
@@ -6,7 +6,8 @@ use App\Models\Client;
 
 use Exception;
 
-class ResetPassword {
+class ResetPassword
+{
     public $client;
 
     public function __construct(Client $client)
@@ -51,7 +52,10 @@ class ResetPassword {
                 ];
             }
 
-            $value = ['password' => $newPass];
+            $value = [
+                'password' => $newPass,
+                'code' => true
+            ];
 
             if ($this->client->patch($account['id'], $value)) {
                 return [
@@ -81,5 +85,3 @@ class ResetPassword {
         }
     }
 }
-
-?>

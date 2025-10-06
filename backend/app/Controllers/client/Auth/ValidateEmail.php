@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace App\Controllers\Client\Auth;
 
@@ -6,7 +6,8 @@ use App\Models\Client;
 
 use Exception;
 
-class ValidateEmail {
+class ValidateEmail
+{
     public $client;
 
     public function __construct(Client $client)
@@ -50,7 +51,10 @@ class ValidateEmail {
                 ];
             }
 
-            $value = ['verified' => 1];
+            $value = [
+                'verified' => 1,
+                'code' => true
+            ];
             $validateEmail = $this->client->patch($account['id'], $value);
 
             if ($validateEmail) {
@@ -81,5 +85,3 @@ class ValidateEmail {
         }
     }
 }
-
-?>

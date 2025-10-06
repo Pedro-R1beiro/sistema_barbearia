@@ -91,14 +91,18 @@ class Authenticate
     public function inspireToken()
     {
         try {
-            setcookie($this->cookieName, '', [
-                'expires' => time() - 3600,
-                'path' => '/',
-                'httponly' => true,
-                'secure' => true,
-                'samesite' => 'Lax'
-            ]);
-            return true;
+            $user = $this->getUser();
+
+            if ($user) {
+                setcookie($this->cookieName, '', [
+                    'expires' => time() - 3600,
+                    'path' => '/',
+                    'httponly' => true,
+                    'secure' => true,
+                    'samesite' => 'Lax'
+                ]);
+                return true;
+            }
         } catch (Exception $e) {
             return false;
         }
