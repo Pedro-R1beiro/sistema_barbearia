@@ -6,9 +6,18 @@ $origin = $_SERVER['HTTP_ORIGIN'] ?? '';
 $allowed = false;
 
 if ($origin && !empty($allowed_domains)) {
+    $originHost = parse_url($origin, PHP_URL_HOST);
+    $originPort = parse_url($origin, PHP_URL_PORT);
+
     foreach ($allowed_domains as $domain) {
-        // Verifica se a origem termina com o domínio permitido (.com ou .com.br, por exemplo)
-        if (preg_match("/" . preg_quote($domain, '/') . "$/i", parse_url($origin, PHP_URL_HOST))) {
+        $domainHost = parse_url($domain, PHP_URL_HOST) ?: $domain;
+        $domainPort = parse_url($domain, PHP_URL_PORT);
+
+        // Match host e porta (se definida)
+        $sameHost = strcasecmp($originHost, $domainHost) === 0;
+        $samePort = !$domainPort || $originPort == $domainPort;
+
+        if ($sameHost && $samePort) {
             $allowed = true;
             break;
         }

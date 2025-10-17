@@ -15,10 +15,10 @@ abstract class Database
 
     public function __construct()
     {
-        $this->host = $_ENV['DB_HOST'];
-        $this->dbname = $_ENV['DB_NAME'];
-        $this->username = $_ENV['DB_USERNAME'];
-        $this->password = $_ENV['DB_PASSWORD'];
+        $this->host = $_ENV['MYSQL_HOST'];
+        $this->dbname = $_ENV['MYSQL_DATABASE'];
+        $this->username = $_ENV['MYSQL_USERNAME'];
+        $this->password = $_ENV['MYSQL_PASSWORD'];
     }
 
     public function getConnection()

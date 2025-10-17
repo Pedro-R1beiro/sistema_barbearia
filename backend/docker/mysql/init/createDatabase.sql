@@ -1,9 +1,3 @@
-CREATE DATABASE IF NOT EXISTS barbershop_system
-CHARACTER SET utf8mb4
-COLLATE utf8mb4_unicode_ci;
-
-USE barbershop_system;
-
 -- Tabela Clients
 CREATE TABLE IF NOT EXISTS clients (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -92,3 +86,52 @@ CREATE TABLE IF NOT EXISTS appointment_services (
   FOREIGN KEY (idService) REFERENCES services(id),
   FOREIGN KEY (idAppointment) REFERENCES appointments(id)
 );
+
+-- INSERTS
+
+-- Inserindo Clients
+INSERT INTO clients (name, email, password, phone, code, verified, active)
+VALUES
+('Client 1', 'client1@example.com', '$2y$10$EixZaYVK1fsbw1ZfbX3OXePaWxn96p36hWJ4z9Oyb0m0XK9rQfG5e', '11911111111', 'CLI001', 1, 1),
+('Client 2', 'client2@example.com', '$2y$10$EixZaYVK1fsbw1ZfbX3OXePaWxn96p36hWJ4z9Oyb0m0XK9rQfG5e', '11922222222', 'CLI002', 1, 1);
+
+-- Inserindo Professionals
+INSERT INTO professionals (name, email, password, phone, code, verified, active)
+VALUES
+('Professional 1', 'prof1@example.com', '$2y$10$EixZaYVK1fsbw1ZfbX3OXePaWxn96p36hWJ4z9Oyb0m0XK9rQfG5e', '11933333333', 'PRO001', 1, 1),
+('Professional 2', 'prof2@example.com', '$2y$10$EixZaYVK1fsbw1ZfbX3OXePaWxn96p36hWJ4z9Oyb0m0XK9rQfG5e', '11944444444', 'PRO002', 1, 1);
+
+-- Inserindo Availability
+INSERT INTO availability (idProfessional, dayWeek, startTime, endTime, `break`, startBreak, endBreak)
+VALUES
+(1, 1, '09:00:00', '18:00:00', 1, '12:00:00', '13:00:00'),
+(1, 2, '09:00:00', '18:00:00', 1, '12:00:00', '13:00:00'),
+(2, 3, '09:00:00', '18:00:00', 0, NULL, NULL),
+(2, 4, '09:00:00', '18:00:00', 0, NULL, NULL);
+
+-- Inserindo Services
+INSERT INTO services (name, price, duration, active)
+VALUES
+('Corte de Cabelo', 50.00, 30, 1),
+('Barba', 35.00, 25, 1),
+('Sobrancelha', 20.00, 15, 1),
+('Massagem Facial', 40.00, 30, 1);
+
+-- Inserindo Appointments
+INSERT INTO appointments (date, startTime, endTime, idClient, idService, idProfessional, status)
+VALUES
+('2025-10-07', '09:00:00', '09:30:00', 1, 1, 1, 'booked'),
+('2025-10-07', '10:00:00', '10:25:00', 2, 2, 1, 'completed'),
+('2025-10-08', '09:00:00', '09:30:00', 1, 1, 2, 'booked'),
+('2025-10-08', '10:00:00', '10:30:00', 2, 3, 2, 'canceled'),
+('2025-10-09', '11:00:00', '11:30:00', 1, 4, 1, 'completed'),
+('2025-10-09', '14:00:00', '14:30:00', 2, 1, 2, 'booked');
+
+-- Inserindo appointment_services (para simular múltiplos serviços no mesmo agendamento)
+INSERT INTO appointment_services (idService, idAppointment)
+VALUES
+(1, 1), -- Corte
+(2, 1), -- Barba
+(1, 3), -- Corte
+(3, 3), -- Sobrancelha
+(4, 5); -- Massagem

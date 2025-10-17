@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <title>Swagger UI</title>
     <link rel="stylesheet" type="text/css" href="../../public/swagger-ui/dist/swagger-ui.css" />
-    <link rel="stylesheet" type="text/css" href="index.css" />
+    <link rel="stylesheet" type="text/css" href="../../public/swagger-ui/dist/index.css" />
     <link rel="icon" type="image/png" href="../../public/swagger-ui/dist/favicon-32x32.png" sizes="32x32" />
     <link rel="icon" type="image/png" href="../../public/swagger-ui/dist/favicon-16x16.png" sizes="16x16" />
   </head>

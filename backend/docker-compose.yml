@@ -1,0 +1,56 @@
+version: '3.8'
+
+services:
+  app:
+    build: .
+    env_file:
+      - .env
+    container_name: barbershop_app
+    ports:
+      - "8080:80"
+    volumes:
+      - .:/var/www/html
+    depends_on:
+      - db
+    environment:
+      - APACHE_DOCUMENT_ROOT=/var/www/html/public
+    networks:
+      - barbershop_network
+
+  db:
+    image: mysql:8.0
+    container_name: barbershop_db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USERNAME}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    volumes:
+      - db_data:/var/lib/mysql
+      - ./docker/mysql/init:/docker-entrypoint-initdb.d
+    ports:
+      - "${MYSQL_PORT}:3306"
+    networks:
+      - barbershop_network
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: barbershop_phpmyadmin
+    restart: always
+    environment:
+      PMA_HOST: db
+      PMA_USER: ${PHPMYADMIN_USER}
+      PMA_PASSWORD: ${PHPMYADMIN_PASSWORD}
+    ports:
+      - "${PHPMYADMIN_PORT}:80"
+    depends_on:
+      - db
+    networks:
+      - barbershop_network
+
+networks:
+  barbershop_network:
+
+volumes:
+  db_data:
